@@ -34,12 +34,37 @@ declare module 'next-auth' {
 export const authOptions: NextAuthOptions = {
     callbacks: {
         session({ session, user }) {
+            console.log('session', session);
+            console.log('user', user);
             if (session.user) {
-                session.user.id = user.id;
+                // session.user.id = user.id;
                 // session.user.role = user.role; <-- put other properties on the session here
             }
             return session;
         },
+        signIn({ user, account, profile, email, credentials }) {
+            console.log('signIn', user);
+            return true;
+        },
+    },
+    events: {
+        async createUser({ user }) {
+            console.log('New User Created: ', user);
+            const result = await prisma.folder.create({
+                data: {
+                    name: 'New Folder',
+                    userId: user.id,
+                },
+            });
+            console.log('New Folder Created: ', result);
+        },
+    },
+    session: {
+        strategy: 'jwt',
+    },
+    secret: process.env.NEXTAUTH_SECRET,
+    jwt: {
+        secret: process.env.NEXTAUTH_SECRET,
     },
     adapter: PrismaAdapter(prisma),
     providers: [
