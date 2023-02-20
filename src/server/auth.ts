@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { env } from '../env/server.mjs';
 import { prisma } from './db';
+import { type Prisma } from '@prisma/client';
 
 /**
  * Module augmentation for `next-auth` types
@@ -33,12 +34,9 @@ declare module 'next-auth' {
  **/
 export const authOptions: NextAuthOptions = {
     callbacks: {
-        session({ session, user }) {
-            console.log('session', session);
-            console.log('user', user);
-            if (session.user) {
-                // session.user.id = user.id;
-                // session.user.role = user.role; <-- put other properties on the session here
+        session({ session, user, token }) {
+            if (session.user && token?.sub) {
+                session.user.id = token.sub;
             }
             return session;
         },
@@ -50,13 +48,15 @@ export const authOptions: NextAuthOptions = {
     events: {
         async createUser({ user }) {
             console.log('New User Created: ', user);
-            const result = await prisma.folder.create({
+            const result = await prisma.note.create({
                 data: {
-                    name: 'New Folder',
+                    name: 'Hello',
+                    content: 'World',
                     userId: user.id,
-                },
+                    category: 'Sample',
+                } as Prisma.NoteUncheckedCreateInput,
             });
-            console.log('New Folder Created: ', result);
+            console.log('New Note Created: ', result);
         },
     },
     session: {
