@@ -25,7 +25,7 @@ const Home: NextPageWithLayout = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
-                <h1 className="text-5xl font-extrabold tracking-tight text-black sm:text-[5rem]">Folders Index Page</h1>
+                <h1 className="text-5xl font-extrabold tracking-tight text-black sm:text-[5rem]">Notes Index Page</h1>
             </div>
         </>
     );
