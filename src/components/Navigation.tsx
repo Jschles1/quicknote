@@ -3,7 +3,7 @@ import UserDropdown from './UserDropdown';
 import NavigationNotes from './NavigationNotes';
 import NoteStatistics from './NoteStatistics';
 import NavigationCreateNoteButton from './NavigationCreateNoteButton';
-import { Button } from './ui/Button';
+import { Separator } from './ui/Separator';
 import { api } from '@/utils/api';
 
 const Navigation: React.FC = () => {
@@ -16,6 +16,8 @@ const Navigation: React.FC = () => {
             <UserDropdown />
 
             <NoteStatistics notes={data} />
+
+            <Separator />
 
             {/* <RecentNotes /> */}
 
