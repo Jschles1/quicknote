@@ -5,9 +5,9 @@ interface Props {
     notes: Note[] | undefined;
 }
 
-const NavigationNotes: React.FC<Props> = ({ notes }) => {
+const NoteStatistics: React.FC<Props> = ({ notes }) => {
     if (!notes) return null;
-    return <div className="p-4">Sidebar Notes</div>;
+    return <div className="p-4">Notes Stats</div>;
 };
 
-export default NavigationNotes;
+export default NoteStatistics;
