@@ -8,7 +8,6 @@ import { api } from '@/utils/api';
 
 const Navigation: React.FC = () => {
     const { data } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
-
     // if (!data) return null;
 
     return (
