@@ -24,14 +24,13 @@ const NoteStatistics: React.FC<Props> = ({ notes }) => {
     return (
         <div className="p-4">
             <Link href="/?type=starred" className="mb-4 flex items-center gap-4 font-bold">
-                <Star color="gold" fill="gold" /> Starred <span className="font-normal"> {stats.starred}</span>
+                <Star className="fill-amber-500" /> Starred <span className="font-normal"> {stats.starred}</span>
             </Link>
             <Link href="/?type=archived" className="mb-4 flex items-center gap-4 font-bold">
-                <Archive color="limegreen" fill="limegreen" /> Archived{' '}
-                <span className="font-normal"> {stats.archived}</span>
+                <Archive className="fill-lime-500" /> Archived <span className="font-normal"> {stats.archived}</span>
             </Link>
             <Link href="/?type=trash" className="mb-4 flex items-center gap-4 font-bold">
-                <Trash color="red" fill="red" /> Trash <span className="font-normal"> {stats.trashed}</span>
+                <Trash className="fill-red-500" /> Trash <span className="font-normal"> {stats.trashed}</span>
             </Link>
         </div>
     );
