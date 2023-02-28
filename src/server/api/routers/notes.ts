@@ -33,6 +33,22 @@ export const notesRouter = createTRPCRouter({
             }
             return 'Unauthorized';
         }),
+    toggleNoteType: protectedProcedure
+        .input(z.object({ noteId: z.string(), type: z.enum(['starred', 'archived', 'trash']) }))
+        .mutation(async ({ ctx, input }) => {
+            const userId = ctx.session.user.id;
+            const result = (await ctx.prisma.note.findFirst({ where: { id: input.noteId, userId } })) as Note;
+
+            if (result) {
+                const updated = await ctx.prisma.note.update({
+                    where: { id: result.id },
+                    data: { [input.type]: !result[input.type] },
+                });
+                return updated;
+            }
+
+            return 'Unauthorized';
+        }),
     deleteOne: protectedProcedure.input(z.object({ noteId: z.string() })).mutation(async ({ ctx, input }) => {
         const userId = ctx.session.user.id;
         const result = (await ctx.prisma.note.findFirst({ where: { id: input.noteId, userId } })) as Note;
