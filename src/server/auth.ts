@@ -50,10 +50,10 @@ export const authOptions: NextAuthOptions = {
             console.log('New User Created: ', user);
             const result = await prisma.note.create({
                 data: {
-                    name: 'Hello',
-                    content: 'World',
+                    name: 'New Note',
+                    content: 'Your First Note!',
                     userId: user.id,
-                    category: 'Sample',
+                    category: 'Notes',
                 } as Prisma.NoteUncheckedCreateInput,
             });
             console.log('New Note Created: ', result);
