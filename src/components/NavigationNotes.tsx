@@ -10,9 +10,7 @@ interface Props {
 }
 
 const NavigationNotes: React.FC<Props> = ({ notes }) => {
-    if (!notes) return null;
     const utils = api.useContext();
-
     // TODO: add optimistic update
     const { mutateAsync } = api.notes.toggleNoteType.useMutation({
         onMutate: async (data) => {
@@ -24,6 +22,9 @@ const NavigationNotes: React.FC<Props> = ({ notes }) => {
             await utils.notes.invalidate();
         },
     });
+
+    if (!notes) return null;
+
     const sortedNotes = notesSortedByCategory(notes);
 
     const handleStarClick = async (noteId: string) => {
