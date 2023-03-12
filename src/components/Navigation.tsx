@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Logo from './Logo';
 import UserDropdown from './UserDropdown';
 import NavigationNotes from './NavigationNotes';
 import NoteStatistics from './NoteStatistics';
@@ -12,6 +13,8 @@ const Navigation: React.FC = () => {
 
     return (
         <div className="relative min-h-screen w-[300px] min-w-[300px] bg-[#f9f9f9]">
+            <Logo />
+
             <UserDropdown />
 
             <NoteStatistics notes={data} />
