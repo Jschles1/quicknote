@@ -25,7 +25,7 @@ const UserDropdown: React.FC = () => {
     return (
         <div className="p-4">
             <DropdownMenu onOpenChange={(isOpen) => handleOpenChange(isOpen)}>
-                <DropdownMenuTrigger className="'active:scale-95 dark:data-[state=open]:bg-slate-800' text-md inline-flex w-full items-center justify-center rounded-md p-2 font-medium outline-none transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-slate-100 dark:hover:bg-slate-800 dark:hover:text-slate-100 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900">
+                <DropdownMenuTrigger className="'active:scale-95 dark:data-[state=open]:bg-slate-200' text-md inline-flex w-full items-center justify-center rounded-md p-2 font-medium outline-none transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-slate-200 dark:hover:bg-slate-200 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900">
                     <div className="flex w-full items-center justify-start">
                         <div className="relative h-full">
                             {src ? <UserImage name={name} src={src} /> : <UserImageSkeleton />}

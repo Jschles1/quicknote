@@ -3,6 +3,12 @@ import Link from 'next/link';
 import { Note } from '@prisma/client';
 import { Star, Archive, Trash } from 'lucide-react';
 
+const StatLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
+    <Link href={href} className="mb-2 flex items-center gap-4 rounded-md p-2 font-bold hover:bg-slate-200">
+        {children}
+    </Link>
+);
+
 interface Props {
     notes: Note[] | undefined;
 }
@@ -23,15 +29,15 @@ const NoteStatistics: React.FC<Props> = ({ notes }) => {
 
     return (
         <div className="p-4">
-            <Link href="/?type=starred" className="mb-4 flex items-center gap-4 font-bold">
+            <StatLink href="/?type=starred">
                 <Star className="fill-amber-500" /> Starred <span className="font-normal"> {stats.starred}</span>
-            </Link>
-            <Link href="/?type=archived" className="mb-4 flex items-center gap-4 font-bold">
+            </StatLink>
+            <StatLink href="/?type=archived">
                 <Archive className="fill-lime-500" /> Archived <span className="font-normal"> {stats.archived}</span>
-            </Link>
-            <Link href="/?type=trash" className="mb-4 flex items-center gap-4 font-bold">
+            </StatLink>
+            <StatLink href="/?type=trash">
                 <Trash className="fill-red-500" /> Trash <span className="font-normal"> {stats.trashed}</span>
-            </Link>
+            </StatLink>
         </div>
     );
 };

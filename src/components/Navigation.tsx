@@ -12,7 +12,7 @@ const Navigation: React.FC = () => {
     // if (!data) return null;
 
     return (
-        <div className="relative min-h-screen w-[300px] min-w-[300px] bg-[#f9f9f9]">
+        <div className="relative min-h-screen w-[300px] min-w-[300px] bg-slate-100">
             <Logo />
 
             <UserDropdown />

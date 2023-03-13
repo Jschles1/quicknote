@@ -36,7 +36,7 @@ const NavigationNotes: React.FC<Props> = ({ notes }) => {
             <Accordion type="single" collapsible>
                 {sortedNotes.map((category, i) => (
                     <AccordionItem key={category.notes[i]?.name} value={i.toString()} className="border-0">
-                        <AccordionTrigger className="pt-0 decoration-0 hover:no-underline">
+                        <AccordionTrigger className="mb-4 rounded-md p-2 decoration-0 hover:bg-slate-200 hover:no-underline data-[state=open]:bg-slate-200">
                             {category.name}
                         </AccordionTrigger>
                         <AccordionContent className="ml-4">
