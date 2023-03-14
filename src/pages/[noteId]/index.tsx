@@ -1,28 +1,19 @@
 import * as React from 'react';
-import { type NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
-import { signIn, signOut, useSession } from 'next-auth/react';
-
+import { useRouter } from 'next/router';
 import { api } from '../../utils/api';
 import { NextPageWithLayout } from '../_app';
-import AppLayout from '../../components/AppLayout';
-import { useRouter } from 'next/router';
+import AppLayout from '@/components/AppLayout';
+import TextEditor from '@/components/ui/TextEditor';
+import { Separator } from '@/components/ui/Separator';
+import { Note } from '@prisma/client';
 
-// #fff
-// #f9f9f9
-// #f3f3f3
-
-const NoteDetailPage: NextPageWithLayout = () => {
+const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const router = useRouter();
     const [param, setParam] = React.useState('');
+    console.log({ notes });
 
-    const { data } = api.notes.getOne.useQuery(
-        { noteId: param },
-        { refetchOnWindowFocus: false, refetchOnReconnect: false }
-    );
-
-    // console.log({ data });
+    const note = notes.find((note) => note.id === param);
 
     React.useEffect(() => {
         if (router.isReady) {
@@ -38,9 +29,9 @@ const NoteDetailPage: NextPageWithLayout = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
-                <h1 className="text-5xl font-extrabold tracking-tight text-black sm:text-[5rem]">
-                    Notes Detail Page: {router.query.noteId}{' '}
-                </h1>
+                <h1 className="text-3xl font-extrabold">{note?.name || 'Loading...'}</h1>
+                <Separator className="my-3" />
+                <TextEditor />
             </div>
         </>
     );
