@@ -5,27 +5,30 @@ import NavigationNotes from './NavigationNotes';
 import NoteStatistics from './NoteStatistics';
 import NavigationCreateNoteButton from './NavigationCreateNoteButton';
 import { Separator } from './ui/Separator';
-import { api } from '@/utils/api';
+import { Note } from '@prisma/client';
 
-const Navigation: React.FC = () => {
-    const { data } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
-    // if (!data) return null;
+interface Props {
+    notes: Note[];
+}
 
+const Navigation: React.FC<Props> = ({ notes }) => {
     return (
-        <div className="relative min-h-screen w-[300px] min-w-[300px] bg-slate-100">
-            <Logo />
+        <div className="relative min-h-screen w-[300px] min-w-[300px] border border-r-slate-300 bg-slate-100">
+            {!!notes && (
+                <>
+                    <Logo />
 
-            <UserDropdown />
+                    <UserDropdown />
 
-            <NoteStatistics notes={data} />
+                    <NoteStatistics notes={notes} />
 
-            <Separator />
+                    <Separator />
 
-            {/* <RecentNotes /> */}
+                    <NavigationNotes notes={notes} />
 
-            <NavigationNotes notes={data} />
-
-            <NavigationCreateNoteButton />
+                    <NavigationCreateNoteButton />
+                </>
+            )}
         </div>
     );
 };
