@@ -2,6 +2,7 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import { api } from '@/utils/api';
+import { Note } from '@prisma/client';
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
     ssr: false,
@@ -22,6 +23,7 @@ const modules = {
         matchVisual: false,
     },
 };
+
 /*
  * Quill editor formats
  * See https://quilljs.com/docs/formats/
@@ -43,8 +45,13 @@ const formats = [
     'video',
 ];
 
-const TextEditor: React.FC = () => {
-    return <QuillNoSSRWrapper modules={modules} formats={formats} />;
+interface Props {
+    note: Note | undefined;
+}
+
+const TextEditor: React.FC<Props> = ({ note }) => {
+    if (!note) return null;
+    return <QuillNoSSRWrapper modules={modules} formats={formats} defaultValue={note.content} />;
 };
 
 export default TextEditor;
