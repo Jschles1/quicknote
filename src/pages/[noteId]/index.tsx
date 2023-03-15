@@ -47,7 +47,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
             <div className="w-full">
                 <h1 className="text-3xl font-extrabold">{note?.name || 'Loading...'}</h1>
                 <Separator className="my-3" />
-                <TextEditor note={note} mode="edit" />
+                <TextEditor note={note} mode="edit" height="auto" />
             </div>
         </>
     );

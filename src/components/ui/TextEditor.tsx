@@ -3,17 +3,10 @@ import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import { Note } from '@prisma/client';
 
-const QuillNoSSRWrapper = dynamic(
-    async () => {
-        const { default: RQ } = await import('react-quill');
-        // eslint-disable-next-line react/display-name
-        return ({ forwardedRef, ...props }: any) => <RQ ref={forwardedRef} {...props} />;
-    },
-    {
-        ssr: false,
-        loading: () => <p>Loading ...</p>,
-    }
-);
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+    ssr: false,
+    loading: () => <p>Loading ...</p>,
+});
 
 const modules = {
     toolbar: [
@@ -54,31 +47,36 @@ const formats = [
 interface Props {
     note?: Note | undefined;
     mode: 'edit' | 'create';
+    height: number | string;
 }
 
-const TextEditor: React.FC<Props> = ({ note, mode }) => {
-    const ref = React.useRef<any>(null);
+const TextEditor: React.FC<Props> = ({ note, mode, height }) => {
     if (!note && mode === 'edit') return null;
 
     const placeholder = mode === 'create' ? 'Write something here...' : '';
 
     React.useEffect(() => {
-        if (ref.current) {
-            console.log('focusing');
-            ref.current.focus();
-        }
-    }, [ref]);
+        let timer = setTimeout(() => {
+            if (height) {
+                const toolbar = document.querySelector('.quill');
+                if (toolbar) {
+                    console.log('found');
+                    toolbar.setAttribute('style', `height: ${height}; max-height: ${height};`);
+                }
+            }
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, [height]);
 
     return (
-        <>
+        <div data-height={height} className="editor">
             <QuillNoSSRWrapper
-                ref={ref}
                 modules={modules}
                 formats={formats}
                 defaultValue={note?.content || ''}
                 placeholder={placeholder}
             />
-        </>
+        </div>
     );
 };
 
