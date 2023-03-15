@@ -21,6 +21,22 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         }
     }, [router.isReady]);
 
+    React.useEffect(() => {
+        if (note) {
+            const recentlyViewedNotes = localStorage.getItem('recentlyViewedNotes');
+            if (recentlyViewedNotes) {
+                const parsedRecentlyViewedNotes = JSON.parse(recentlyViewedNotes);
+                const alreadyExists = parsedRecentlyViewedNotes.find((note: Note) => note.id === param);
+                if (!alreadyExists) {
+                    parsedRecentlyViewedNotes.push(note.id);
+                    localStorage.setItem('recentlyViewedNotes', JSON.stringify(parsedRecentlyViewedNotes));
+                }
+            } else {
+                localStorage.setItem('recentlyViewedNotes', JSON.stringify([note.id]));
+            }
+        }
+    }, [note]);
+
     return (
         <>
             <Head>
@@ -31,7 +47,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
             <div className="w-full">
                 <h1 className="text-3xl font-extrabold">{note?.name || 'Loading...'}</h1>
                 <Separator className="my-3" />
-                <TextEditor note={note} />
+                <TextEditor note={note} mode="edit" />
             </div>
         </>
     );

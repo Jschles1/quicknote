@@ -4,14 +4,16 @@ import UserDropdown from './UserDropdown';
 import NavigationNotes from './NavigationNotes';
 import NoteStatistics from './NoteStatistics';
 import NavigationCreateNoteButton from './NavigationCreateNoteButton';
+import NavigationRecentlyViewedNotes from './NavigationRecentlyViewedNotes';
 import { Separator } from './ui/Separator';
 import { Note } from '@prisma/client';
 
 interface Props {
     notes: Note[];
+    recentlyViewedNotes: Note[];
 }
 
-const Navigation: React.FC<Props> = ({ notes }) => {
+const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes }) => {
     return (
         <div className="relative min-h-screen w-[300px] min-w-[300px] border border-r-slate-300 bg-slate-100">
             {!!notes && (
@@ -21,6 +23,8 @@ const Navigation: React.FC<Props> = ({ notes }) => {
                     <UserDropdown />
 
                     <NoteStatistics notes={notes} />
+
+                    <NavigationRecentlyViewedNotes notes={recentlyViewedNotes} />
 
                     <Separator />
 

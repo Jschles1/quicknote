@@ -1,21 +1,9 @@
-import { type NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
-import { signIn, signOut, useSession } from 'next-auth/react';
-
-import { api } from '../utils/api';
 import { NextPageWithLayout } from './_app';
 import AppLayout from '../components/AppLayout';
 import { Note } from '@prisma/client';
 
-// #fff
-// #f9f9f9
-// #ebebeb
-// #f3f3f3
-
 const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
-    console.log({ notes: notes });
-
     return (
         <>
             <Head>

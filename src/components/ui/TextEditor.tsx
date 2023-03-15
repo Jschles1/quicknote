@@ -1,13 +1,19 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
-import { api } from '@/utils/api';
 import { Note } from '@prisma/client';
 
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {
-    ssr: false,
-    loading: () => <p>Loading ...</p>,
-});
+const QuillNoSSRWrapper = dynamic(
+    async () => {
+        const { default: RQ } = await import('react-quill');
+        // eslint-disable-next-line react/display-name
+        return ({ forwardedRef, ...props }: any) => <RQ ref={forwardedRef} {...props} />;
+    },
+    {
+        ssr: false,
+        loading: () => <p>Loading ...</p>,
+    }
+);
 
 const modules = {
     toolbar: [
@@ -46,12 +52,34 @@ const formats = [
 ];
 
 interface Props {
-    note: Note | undefined;
+    note?: Note | undefined;
+    mode: 'edit' | 'create';
 }
 
-const TextEditor: React.FC<Props> = ({ note }) => {
-    if (!note) return null;
-    return <QuillNoSSRWrapper modules={modules} formats={formats} defaultValue={note.content} />;
+const TextEditor: React.FC<Props> = ({ note, mode }) => {
+    const ref = React.useRef<any>(null);
+    if (!note && mode === 'edit') return null;
+
+    const placeholder = mode === 'create' ? 'Write something here...' : '';
+
+    React.useEffect(() => {
+        if (ref.current) {
+            console.log('focusing');
+            ref.current.focus();
+        }
+    }, [ref]);
+
+    return (
+        <>
+            <QuillNoSSRWrapper
+                ref={ref}
+                modules={modules}
+                formats={formats}
+                defaultValue={note?.content || ''}
+                placeholder={placeholder}
+            />
+        </>
+    );
 };
 
 export default TextEditor;
