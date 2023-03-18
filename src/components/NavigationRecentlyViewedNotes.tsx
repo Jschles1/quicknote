@@ -8,7 +8,7 @@ interface Props {
 }
 
 const NavigationRecentlyViewedNotes: React.FC<Props> = ({ notes }) => {
-    if (!notes) return null;
+    if (!notes || !notes.length) return null;
     return (
         <>
             <Separator />
