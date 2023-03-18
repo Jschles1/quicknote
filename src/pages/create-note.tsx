@@ -2,6 +2,7 @@ import * as React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
+import { Star } from 'lucide-react';
 import { api } from '../utils/api';
 import { NextPageWithLayout } from './_app';
 import AppLayout from '@/components/AppLayout';
@@ -9,23 +10,48 @@ import TextEditor from '@/components/ui/TextEditor';
 import { Separator } from '@/components/ui/Separator';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { cn } from '@/lib/util';
 
 const CreateNotePage: NextPageWithLayout = () => {
     const router = useRouter();
+
+    // Used for calculating editor height
     const containerRef = React.useRef<HTMLDivElement>(null);
     const titleRef = React.useRef<HTMLDivElement>(null);
     const inputContainerRef = React.useRef<HTMLDivElement>(null);
+    const [editorHeight, setEditorHeight] = React.useState('auto');
     const parentPadding = 16;
     const separatorHeight = 25;
     const initialEditorHeight = 84;
-    const [editorHeight, setEditorHeight] = React.useState('auto');
+
     const {
         register,
         handleSubmit,
         watch,
+        setValue,
         formState: { errors },
-    } = useForm();
-    const onSubmit = (data: any) => console.log(data);
+        getValues,
+    } = useForm({ defaultValues: { name: '', content: '', category: '', starred: false } });
+    const onSubmit = (data: any) => {
+        console.log('Submit');
+        console.log(data);
+    };
+
+    const handleStarClick = () => {
+        console.log('Star Clicked');
+        const starred = getValues('starred');
+        setValue('starred', !starred);
+    };
+
+    const handleEditorChange = (content: string) => {
+        console.log('Editor Change', content);
+        setValue('content', content);
+    };
+
+    const isStarred = watch('starred');
+
+    const errorInputClass = 'border-red-500';
+    console.log({ errors });
 
     React.useEffect(() => {
         if (containerRef.current && titleRef.current && inputContainerRef.current) {
@@ -55,23 +81,40 @@ const CreateNotePage: NextPageWithLayout = () => {
             <div className="w-full flex-1" ref={containerRef}>
                 <div className="flex items-center justify-between" ref={titleRef}>
                     <h1 className="text-2xl font-extrabold">Create Note:</h1>
-                    <Button>Submit</Button>
+                    <div className="space-between flex items-center">
+                        <Star
+                            role="button"
+                            {...register('starred')}
+                            size="1rem"
+                            className={cn(
+                                'mr-4 cursor-pointer',
+                                isStarred ? 'fill-amber-500 hover:fill-none' : 'fill-none hover:fill-amber-500'
+                            )}
+                            onClick={handleStarClick}
+                        />
+                        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+                    </div>
                 </div>
 
-                <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+                <form className="flex flex-col">
                     <div ref={inputContainerRef}>
                         <div className="py-2 font-bold">Note Title:</div>
-                        <Input className="h-12 py-2 px-3 text-2xl" {...register('name')} placeholder="Note Title" />
-
+                        <Input
+                            className={cn('h-12 py-2 px-3 text-2xl', errors.name && errorInputClass)}
+                            {...register('name', { required: true })}
+                            placeholder="Note Title"
+                        />
+                        {errors.name && <div className="mt-2 text-sm text-red-500">Please enter a title.</div>}
                         <div className="py-2 font-bold">Note Category:</div>
                         <Input
-                            className="h-12 py-2 px-3 text-2xl"
-                            {...register('category')}
+                            className={cn('h-12 py-2 px-3 text-2xl', errors.category && errorInputClass)}
+                            {...register('category', { required: true })}
                             placeholder="Note Category"
                         />
+                        {errors.category && <div className="mt-2 text-sm text-red-500">Please enter a category.</div>}
                     </div>
                     <Separator className="my-3" />
-                    <TextEditor mode="create" height={editorHeight} />
+                    <TextEditor mode="create" height={editorHeight} onChange={handleEditorChange} />
                 </form>
             </div>
         </>

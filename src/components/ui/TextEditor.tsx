@@ -48,9 +48,10 @@ interface Props {
     note?: Note | undefined;
     mode: 'edit' | 'create';
     height: number | string;
+    onChange: (value: string) => void;
 }
 
-const TextEditor: React.FC<Props> = ({ note, mode, height }) => {
+const TextEditor: React.FC<Props> = ({ note, mode, height, onChange }) => {
     if (!note && mode === 'edit') return null;
 
     const placeholder = mode === 'create' ? 'Write something here...' : '';
@@ -75,6 +76,11 @@ const TextEditor: React.FC<Props> = ({ note, mode, height }) => {
                 formats={formats}
                 defaultValue={note?.content || ''}
                 placeholder={placeholder}
+                onChange={(content, _, source) => {
+                    if (source === 'user') {
+                        onChange(content);
+                    }
+                }}
             />
         </div>
     );
