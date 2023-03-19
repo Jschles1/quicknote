@@ -20,3 +20,12 @@ export function notesSortedByCategory(notes: Note[]) {
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
+
+export function decodeHtml(html: string) {
+    if (typeof window === 'undefined') {
+        return '';
+    }
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
+}
