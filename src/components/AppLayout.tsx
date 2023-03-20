@@ -25,7 +25,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     return (
         <main className="min-w-screen relative flex min-h-screen">
             <Navigation notes={data || []} recentlyViewedNotes={recentlyViewedNotes} />
-            <div className="container mx-auto flex max-w-7xl flex-col items-center gap-12 p-4">
+            <div className="container mx-auto flex max-w-7xl flex-col items-center gap-12">
                 {React.cloneElement(children, { notes: !!data ? data : [] })}
             </div>
         </main>

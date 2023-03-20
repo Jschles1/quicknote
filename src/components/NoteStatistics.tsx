@@ -4,7 +4,7 @@ import { Note } from '@prisma/client';
 import { Star, Archive, Trash } from 'lucide-react';
 
 const StatLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-    <Link href={href} className="mb-2 flex items-center gap-4 rounded-md p-2 font-bold hover:bg-slate-200">
+    <Link href={href} className="mb-2 flex items-center gap-4 rounded-md p-2 font-bold hover:bg-slate-300">
         {children}
     </Link>
 );
