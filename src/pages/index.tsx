@@ -21,7 +21,7 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="flex w-full flex-1 flex-col">
-                <div className="p-4">
+                <div className="p-4 pb-0">
                     <h1 className="text-3xl font-extrabold text-black">Notes</h1>
                 </div>
                 <Tabs defaultValue="all" className="flex w-full flex-1 flex-col">
