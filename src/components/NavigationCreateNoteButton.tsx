@@ -13,4 +13,4 @@ const NavigationCreateNoteButton: React.FC = () => {
     );
 };
 
-export default NavigationCreateNoteButton;
+export default React.memo(NavigationCreateNoteButton);
