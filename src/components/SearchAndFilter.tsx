@@ -8,7 +8,7 @@ const SearchAndFilter = () => {
     return (
         <>
             <Separator />
-            <div className="flex items-center justify-between p-4">
+            <div className="container mx-auto flex items-center justify-between p-4">
                 <div>
                     <Input className="w-[408px]" placeholder="Search notes:" />
                 </div>

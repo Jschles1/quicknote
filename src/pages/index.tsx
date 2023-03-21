@@ -7,11 +7,37 @@ import { Note } from '@prisma/client';
 import { Separator } from '@/components/ui/Separator';
 import SearchAndFilter from '@/components/SearchAndFilter';
 
+type NotesByCategory = {
+    category: string;
+    notes: Note[];
+};
+
+const sortNotesByCategory = (notes: Note[]): NotesByCategory[] => {
+    const notesByCategory: NotesByCategory[] = [];
+
+    notes.forEach((note) => {
+        const category = note.category;
+        const existingCategory = notesByCategory.find((nbc) => nbc.category === category);
+
+        if (existingCategory) {
+            existingCategory.notes.push(note);
+        } else {
+            notesByCategory.push({
+                category,
+                notes: [note],
+            });
+        }
+    });
+
+    return notesByCategory;
+};
+
 const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const session = useSession();
     if (!session) return null;
 
     console.log(session);
+    console.log(sortNotesByCategory(notes));
 
     return (
         <>
@@ -21,11 +47,11 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="flex w-full flex-1 flex-col">
-                <div className="p-4 pb-0">
+                <div className="container mx-auto p-4 pb-0">
                     <h1 className="text-3xl font-extrabold text-black">Notes</h1>
                 </div>
                 <Tabs defaultValue="all" className="flex w-full flex-1 flex-col">
-                    <div className="flex items-center justify-between p-4">
+                    <div className="container mx-auto flex items-center justify-between p-4">
                         <TabsList>
                             <TabsTrigger value="all">All Notes</TabsTrigger>
                             <TabsTrigger value="starred">Starred</TabsTrigger>
@@ -36,19 +62,21 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
 
                     <SearchAndFilter />
 
-                    <div className="flex-1 bg-slate-100 p-4">
-                        <TabsContent value="all" className="mt-0 border-0 p-0">
-                            <p className="text-sm text-slate-500">All Notes</p>
-                        </TabsContent>
-                        <TabsContent value="starred" className="mt-0 border-0 p-0">
-                            <p className="text-sm text-slate-500">Starred Notes</p>
-                        </TabsContent>
-                        <TabsContent value="archived" className="mt-0 border-0 p-0">
-                            <p className="text-sm text-slate-500">Archived Notes</p>
-                        </TabsContent>
-                        <TabsContent value="trash" className="mt-0 border-0 p-0">
-                            <p className="text-sm text-slate-500">Trash</p>
-                        </TabsContent>
+                    <div className="flex-1 bg-slate-100">
+                        <div className="container mx-auto h-full p-4">
+                            <TabsContent value="all" className="mt-0 border-0 p-0">
+                                <p className="text-sm text-slate-500">All Notes</p>
+                            </TabsContent>
+                            <TabsContent value="starred" className="mt-0 border-0 p-0">
+                                <p className="text-sm text-slate-500">Starred Notes</p>
+                            </TabsContent>
+                            <TabsContent value="archived" className="mt-0 border-0 p-0">
+                                <p className="text-sm text-slate-500">Archived Notes</p>
+                            </TabsContent>
+                            <TabsContent value="trash" className="mt-0 border-0 p-0">
+                                <p className="text-sm text-slate-500">Trash</p>
+                            </TabsContent>
+                        </div>
                     </div>
                 </Tabs>
             </div>
