@@ -14,7 +14,7 @@ const SearchAndFilter = () => {
                 </div>
                 <div>
                     <DropdownMenu onOpenChange={() => {}}>
-                        <DropdownMenuTrigger className="'active:scale-95 dark:data-[state=open]:bg-slate-300' text-md inline-flex w-full items-center justify-center rounded-md bg-slate-200 py-2 px-3 font-medium outline-none transition-colors hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-slate-300">
+                        <DropdownMenuTrigger className="'active:scale-95 dark:data-[state=open]:bg-slate-300' text-md inline-flex w-full items-center justify-center rounded-md bg-slate-200 py-2 px-3 font-medium outline-none transition-colors hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-slate-300">
                             <ArrowUpDown size="1rem" className="mr-2" /> Sort
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="center">

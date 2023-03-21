@@ -35,6 +35,7 @@
         "react-dom": "18.2.0",
         "react-google-button": "^0.7.2",
         "react-hook-form": "^7.43.5",
+        "react-multi-carousel": "^2.8.2",
         "react-quill": "^2.0.0",
         "sanitize-html": "^2.10.0",
         "superjson": "1.9.1",

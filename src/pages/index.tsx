@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Note } from '@prisma/client';
 import { Separator } from '@/components/ui/Separator';
 import SearchAndFilter from '@/components/SearchAndFilter';
+import CategoryNotes from '@/components/CategoryNotes';
 
 type NotesByCategory = {
     category: string;
@@ -39,6 +40,11 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     console.log(session);
     console.log(sortNotesByCategory(notes));
 
+    const allNotes = sortNotesByCategory(notes.filter((n) => !n.archived && !n.trash));
+    const starredNotes = sortNotesByCategory(notes.filter((n) => n.starred && !n.archived && !n.trash));
+    const archivedNotes = sortNotesByCategory(notes.filter((n) => n.archived));
+    const trashNotes = sortNotesByCategory(notes.filter((n) => n.trash));
+
     return (
         <>
             <Head>
@@ -52,7 +58,7 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 </div>
                 <Tabs defaultValue="all" className="flex w-full flex-1 flex-col">
                     <div className="container mx-auto flex items-center justify-between p-4">
-                        <TabsList>
+                        <TabsList onChange={() => {}}>
                             <TabsTrigger value="all">All Notes</TabsTrigger>
                             <TabsTrigger value="starred">Starred</TabsTrigger>
                             <TabsTrigger value="archived">Archived</TabsTrigger>
@@ -65,16 +71,24 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                     <div className="flex-1 bg-slate-100">
                         <div className="container mx-auto h-full p-4">
                             <TabsContent value="all" className="mt-0 border-0 p-0">
-                                <p className="text-sm text-slate-500">All Notes</p>
+                                {allNotes.map((notesByCategory) => (
+                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                ))}
                             </TabsContent>
                             <TabsContent value="starred" className="mt-0 border-0 p-0">
-                                <p className="text-sm text-slate-500">Starred Notes</p>
+                                {starredNotes.map((notesByCategory) => (
+                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                ))}
                             </TabsContent>
                             <TabsContent value="archived" className="mt-0 border-0 p-0">
-                                <p className="text-sm text-slate-500">Archived Notes</p>
+                                {archivedNotes.map((notesByCategory) => (
+                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                ))}
                             </TabsContent>
                             <TabsContent value="trash" className="mt-0 border-0 p-0">
-                                <p className="text-sm text-slate-500">Trash</p>
+                                {trashNotes.map((notesByCategory) => (
+                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                ))}
                             </TabsContent>
                         </div>
                     </div>
