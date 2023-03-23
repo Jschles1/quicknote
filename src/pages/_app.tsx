@@ -27,7 +27,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
     Component,
     pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) => {
-    const { data } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
     // Use the layout defined at the page level, if available
     const getLayout = Component.getLayout ?? ((page) => page);
     const Page = getLayout(<Component {...pageProps} />);
