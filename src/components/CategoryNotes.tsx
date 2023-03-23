@@ -43,6 +43,7 @@ const CategoryNotes: React.FC<Props> = ({ data }) => {
             <Carousel ssr responsive={responsive} centerMode={false} itemClass={''}>
                 {data.notes.map((note) => (
                     <Link
+                        key={note.id}
                         href={`/${note.id}`}
                         className="block h-[300px] rounded-md border border-slate-200 bg-white p-4  hover:border-slate-400"
                     >
