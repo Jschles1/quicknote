@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import { NextPageWithLayout } from './_app';
@@ -35,6 +36,8 @@ const sortNotesByCategory = (notes: Note[]): NotesByCategory[] => {
 
 const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const session = useSession();
+    const [search, setSearch] = React.useState('');
+    const [filter, setFilter] = React.useState('');
     if (!session) return null;
 
     console.log(session);
@@ -44,6 +47,18 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const starredNotes = sortNotesByCategory(notes.filter((n) => n.starred && !n.archived && !n.trash));
     const archivedNotes = sortNotesByCategory(notes.filter((n) => n.archived));
     const trashNotes = sortNotesByCategory(notes.filter((n) => n.trash));
+
+    const handleTabChange = (tab: any) => {
+        console.log(tab);
+    };
+
+    const handleSearchChange = (value: any) => {
+        console.log(value);
+    };
+
+    const handleFilterChange = (value: any) => {
+        console.log(value);
+    };
 
     return (
         <>
@@ -66,7 +81,7 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                         </TabsList>
                     </div>
 
-                    <SearchAndFilter />
+                    <SearchAndFilter onSearchChange={handleSearchChange} onFilterChange={handleFilterChange} />
 
                     <div className="flex-1 bg-slate-100">
                         <div className="container mx-auto h-full p-4">

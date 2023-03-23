@@ -4,13 +4,18 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from './ui/Input';
 import { Separator } from './ui/Separator';
 
-const SearchAndFilter = () => {
+interface Props {
+    onSearchChange: (value: any) => void;
+    onFilterChange: (value: any) => void;
+}
+
+const SearchAndFilter: React.FC<Props> = ({ onSearchChange, onFilterChange }) => {
     return (
         <>
             <Separator />
             <div className="container mx-auto flex items-center justify-between p-4">
                 <div>
-                    <Input className="w-[408px]" placeholder="Search notes:" />
+                    <Input className="w-[408px]" placeholder="Search notes:" onChange={onSearchChange} />
                 </div>
                 <div>
                     <DropdownMenu onOpenChange={() => {}}>
@@ -18,10 +23,10 @@ const SearchAndFilter = () => {
                             <ArrowUpDown size="1rem" className="mr-2" /> Sort
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="center">
-                            <DropdownMenuItem className="cursor-pointer" onClick={() => {}}>
+                            <DropdownMenuItem className="cursor-pointer" onClick={onFilterChange}>
                                 Newest First
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer" onClick={() => {}}>
+                            <DropdownMenuItem className="cursor-pointer" onClick={onFilterChange}>
                                 Oldest First
                             </DropdownMenuItem>
                         </DropdownMenuContent>
