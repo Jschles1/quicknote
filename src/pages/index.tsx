@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { NextPageWithLayout } from './_app';
 import AppLayout from '../components/AppLayout';
@@ -36,20 +37,19 @@ const sortNotesByCategory = (notes: Note[]): NotesByCategory[] => {
 
 const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const session = useSession();
+    const router = useRouter();
+    const [tabValue, setTabValue] = React.useState('all');
     const [search, setSearch] = React.useState('');
     const [filter, setFilter] = React.useState('');
     if (!session) return null;
-
-    console.log(session);
-    console.log(sortNotesByCategory(notes));
 
     const allNotes = sortNotesByCategory(notes.filter((n) => !n.archived && !n.trash));
     const starredNotes = sortNotesByCategory(notes.filter((n) => n.starred && !n.archived && !n.trash));
     const archivedNotes = sortNotesByCategory(notes.filter((n) => n.archived));
     const trashNotes = sortNotesByCategory(notes.filter((n) => n.trash));
 
-    const handleTabChange = (tab: any) => {
-        console.log(tab);
+    const handleTabChange = (e: any) => {
+        setTabValue(e.target.getAttribute('data-value'));
     };
 
     const handleSearchChange = (value: any) => {
@@ -59,6 +59,12 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const handleFilterChange = (value: any) => {
         console.log(value);
     };
+
+    React.useEffect(() => {
+        if (router.query.type) {
+            setTabValue(router.query.type.toString());
+        }
+    }, [router.isReady]);
 
     return (
         <>
@@ -71,43 +77,53 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 <div className="container mx-auto p-4 pb-0">
                     <h1 className="text-3xl font-extrabold text-black">Notes</h1>
                 </div>
-                <Tabs defaultValue="all" className="flex w-full flex-1 flex-col">
-                    <div className="container mx-auto flex items-center justify-between p-4">
-                        <TabsList onChange={() => {}}>
-                            <TabsTrigger value="all">All Notes</TabsTrigger>
-                            <TabsTrigger value="starred">Starred</TabsTrigger>
-                            <TabsTrigger value="archived">Archived</TabsTrigger>
-                            <TabsTrigger value="trash">Trash</TabsTrigger>
-                        </TabsList>
-                    </div>
-
-                    <SearchAndFilter onSearchChange={handleSearchChange} onFilterChange={handleFilterChange} />
-
-                    <div className="flex-1 bg-slate-100">
-                        <div className="container mx-auto h-full p-4">
-                            <TabsContent value="all" className="mt-0 border-0 p-0">
-                                {allNotes.map((notesByCategory) => (
-                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                ))}
-                            </TabsContent>
-                            <TabsContent value="starred" className="mt-0 border-0 p-0">
-                                {starredNotes.map((notesByCategory) => (
-                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                ))}
-                            </TabsContent>
-                            <TabsContent value="archived" className="mt-0 border-0 p-0">
-                                {archivedNotes.map((notesByCategory) => (
-                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                ))}
-                            </TabsContent>
-                            <TabsContent value="trash" className="mt-0 border-0 p-0">
-                                {trashNotes.map((notesByCategory) => (
-                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                ))}
-                            </TabsContent>
+                {router.isReady && (
+                    <Tabs defaultValue={tabValue} value={tabValue} className="flex w-full flex-1 flex-col">
+                        <div className="container mx-auto flex items-center justify-between p-4">
+                            <TabsList>
+                                <TabsTrigger onClick={handleTabChange} data-value="all" value="all">
+                                    All Notes
+                                </TabsTrigger>
+                                <TabsTrigger onClick={handleTabChange} data-value="starred" value="starred">
+                                    Starred
+                                </TabsTrigger>
+                                <TabsTrigger onClick={handleTabChange} data-value="archived" value="archived">
+                                    Archived
+                                </TabsTrigger>
+                                <TabsTrigger onClick={handleTabChange} data-value="trash" value="trash">
+                                    Trash
+                                </TabsTrigger>
+                            </TabsList>
                         </div>
-                    </div>
-                </Tabs>
+
+                        <SearchAndFilter onSearchChange={handleSearchChange} onFilterChange={handleFilterChange} />
+
+                        <div className="flex-1 bg-slate-100">
+                            <div className="container mx-auto h-full p-4">
+                                <TabsContent value="all" className="mt-0 border-0 p-0">
+                                    {allNotes.map((notesByCategory) => (
+                                        <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                    ))}
+                                </TabsContent>
+                                <TabsContent value="starred" className="mt-0 border-0 p-0">
+                                    {starredNotes.map((notesByCategory) => (
+                                        <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                    ))}
+                                </TabsContent>
+                                <TabsContent value="archived" className="mt-0 border-0 p-0">
+                                    {archivedNotes.map((notesByCategory) => (
+                                        <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                    ))}
+                                </TabsContent>
+                                <TabsContent value="trash" className="mt-0 border-0 p-0">
+                                    {trashNotes.map((notesByCategory) => (
+                                        <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                    ))}
+                                </TabsContent>
+                            </div>
+                        </div>
+                    </Tabs>
+                )}
             </div>
         </>
     );

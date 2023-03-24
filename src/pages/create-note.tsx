@@ -71,7 +71,6 @@ const CreateNotePage: NextPageWithLayout = () => {
     };
 
     const handleStarClick = () => {
-        console.log('Star Clicked');
         const starred = getValues('starred');
         setValue('starred', !starred);
     };
