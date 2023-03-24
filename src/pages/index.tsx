@@ -64,7 +64,7 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         if (router.query.type) {
             setTabValue(router.query.type.toString());
         }
-    }, [router.isReady]);
+    }, [router.isReady, router.query?.type]);
 
     return (
         <>
