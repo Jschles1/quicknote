@@ -15,6 +15,17 @@ import { cn } from '@/lib/util';
 const CreateNotePage: NextPageWithLayout = () => {
     const router = useRouter();
 
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        setError,
+        clearErrors,
+        formState: { errors, isSubmitted },
+        getValues,
+    } = useForm({ defaultValues: { name: '', content: '', category: '', starred: false } });
+
     // Used for calculating editor height
     const containerRef = React.useRef<HTMLDivElement>(null);
     const titleRef = React.useRef<HTMLDivElement>(null);
@@ -23,18 +34,40 @@ const CreateNotePage: NextPageWithLayout = () => {
     const parentPadding = 16;
     const separatorHeight = 25;
     const initialEditorHeight = 84;
+    const nameErrorHeight = errors.name ? 28 : 0;
+    const categoryErrorHeight = errors.category ? 28 : 0;
+    const contentErrorHeight = errors.content ? 28 : 0;
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        setValue,
-        formState: { errors },
-        getValues,
-    } = useForm({ defaultValues: { name: '', content: '', category: '', starred: false } });
-    const onSubmit = (data: any) => {
-        console.log('Submit');
-        console.log(data);
+    // Custom handleSubmit to extend functionality to text editor
+    const onSubmit = () => {
+        clearErrors();
+        const values = getValues();
+        let isValid = true;
+        if (!values.category) {
+            setError('category', {
+                type: 'manual',
+                message: 'Please enter a category.',
+            });
+            isValid = false;
+        }
+        if (!values.name) {
+            setError('name', {
+                type: 'manual',
+                message: 'Please enter a name.',
+            });
+            isValid = false;
+        }
+        if (!values.content) {
+            setError('content', {
+                type: 'manual',
+                message: 'Please enter some content.',
+            });
+            isValid = false;
+        }
+        if (isValid) {
+            console.log('Submitting');
+            // TODO: Mutation
+        }
     };
 
     const handleStarClick = () => {
@@ -65,11 +98,14 @@ const CreateNotePage: NextPageWithLayout = () => {
                     inputContainerHeight -
                     parentPadding -
                     separatorHeight -
-                    initialEditorHeight
+                    initialEditorHeight -
+                    nameErrorHeight -
+                    categoryErrorHeight -
+                    contentErrorHeight
                 }px`
             );
         }
-    }, [titleRef, containerRef, inputContainerRef]);
+    }, [titleRef, containerRef, inputContainerRef, errors.name, errors.category]);
 
     return (
         <>
@@ -92,7 +128,7 @@ const CreateNotePage: NextPageWithLayout = () => {
                             )}
                             onClick={handleStarClick}
                         />
-                        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+                        <Button onClick={onSubmit}>Submit</Button>
                     </div>
                 </div>
 
@@ -104,17 +140,23 @@ const CreateNotePage: NextPageWithLayout = () => {
                             {...register('name', { required: true })}
                             placeholder="Note Title"
                         />
-                        {errors.name && <div className="mt-2 text-sm text-red-500">Please enter a title.</div>}
+                        {errors.name && <div className="mt-2 text-sm text-red-500">{errors.name.message}</div>}
                         <div className="py-2 font-bold">Note Category:</div>
                         <Input
                             className={cn('h-12 py-2 px-3 text-2xl', errors.category && errorInputClass)}
                             {...register('category', { required: true })}
                             placeholder="Note Category"
                         />
-                        {errors.category && <div className="mt-2 text-sm text-red-500">Please enter a category.</div>}
+                        {errors.category && <div className="mt-2 text-sm text-red-500">{errors.category.message}</div>}
                     </div>
                     <Separator className="my-3" />
-                    <TextEditor mode="create" height={editorHeight} onChange={handleEditorChange} />
+                    {errors.content && <div className="mb-2 text-sm text-red-500">{errors.content.message}</div>}
+                    <TextEditor
+                        mode="create"
+                        height={editorHeight}
+                        onChange={handleEditorChange}
+                        error={errors?.content?.message}
+                    />
                 </form>
             </div>
         </>

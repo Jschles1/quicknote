@@ -49,25 +49,52 @@ interface Props {
     mode: 'edit' | 'create';
     height: number | string;
     onChange: (value: string) => void;
+    error: string | undefined;
 }
 
-const TextEditor: React.FC<Props> = ({ note, mode, height, onChange }) => {
+const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, error = '' }) => {
     if (!note && mode === 'edit') return null;
 
-    const placeholder = mode === 'create' ? 'Write something here...' : '';
+    let placeholder = mode === 'create' ? 'Write something here...' : '';
 
+    const setHeight = (height: string, toolbar: Element) => {
+        if (height) {
+            toolbar.setAttribute('style', `height: ${height}; max-height: ${height};`);
+        }
+    };
+
+    // Dynamically set height of editor
     React.useEffect(() => {
-        let timer = setTimeout(() => {
-            if (height) {
-                const toolbar = document.querySelector('.quill');
-                if (toolbar) {
-                    console.log('found');
-                    toolbar.setAttribute('style', `height: ${height}; max-height: ${height};`);
+        const toolbar = document.querySelector('.quill');
+        if (toolbar) {
+            setHeight(height.toString(), toolbar);
+        } else {
+            // For first load
+            let timer = setTimeout(() => {
+                if (height) {
+                    const toolbar = document.querySelector('.quill');
+                    if (toolbar) {
+                        // toolbar.setAttribute('style', `height: ${height}; max-height: ${height};`);
+                        setHeight(height.toString(), toolbar);
+                    }
                 }
-            }
-        }, 1000);
-        return () => clearTimeout(timer);
+            }, 1000);
+            return () => clearTimeout(timer);
+        }
     }, [height]);
+
+    // Add red border if error is present
+    React.useEffect(() => {
+        const container = document.querySelector('.ql-container');
+        if (container) {
+            const errorClass = 'ql-error';
+            if (error) {
+                container.classList.add(errorClass);
+            } else if (container.classList.contains(errorClass)) {
+                container.classList.remove(errorClass);
+            }
+        }
+    }, [error]);
 
     return (
         <div data-height={height} className="editor">
