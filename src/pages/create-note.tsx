@@ -10,7 +10,7 @@ import TextEditor from '@/components/ui/TextEditor';
 import { Separator } from '@/components/ui/Separator';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { cn } from '@/lib/util';
+import { cn, decodeHtml } from '@/lib/util';
 
 const CreateNotePage: NextPageWithLayout = () => {
     const router = useRouter();
@@ -57,7 +57,7 @@ const CreateNotePage: NextPageWithLayout = () => {
             });
             isValid = false;
         }
-        if (!values.content) {
+        if (!decodeHtml(values.content)) {
             setError('content', {
                 type: 'manual',
                 message: 'Please enter some content.',
