@@ -14,6 +14,19 @@ import { cn, decodeHtml } from '@/lib/util';
 
 const CreateNotePage: NextPageWithLayout = () => {
     const router = useRouter();
+    const utils = api.useContext();
+    // TODO: add optimistic update
+    const { mutateAsync } = api.notes.createOne.useMutation({
+        onMutate: async (data) => {
+            // Cancel outgoing fetches (so they don't overwrite our optimistic update)
+            await utils.notes.getAll.cancel();
+            console.log('Submitting form with values: ', data);
+        },
+        onSuccess: async (data) => {
+            await utils.notes.invalidate();
+            console.log('Form submitted successfully with values: ', data);
+        },
+    });
 
     const {
         register,
@@ -39,7 +52,7 @@ const CreateNotePage: NextPageWithLayout = () => {
     const contentErrorHeight = errors.content ? 28 : 0;
 
     // Custom handleSubmit to extend functionality to text editor
-    const onSubmit = () => {
+    const onSubmit = async () => {
         clearErrors();
         const values = getValues();
         let isValid = true;
@@ -65,8 +78,7 @@ const CreateNotePage: NextPageWithLayout = () => {
             isValid = false;
         }
         if (isValid) {
-            console.log('Submitting');
-            // TODO: Mutation
+            await mutateAsync(values);
         }
     };
 
