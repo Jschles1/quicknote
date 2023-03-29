@@ -2,14 +2,25 @@ import * as React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { Trash } from 'lucide-react';
 import { NextPageWithLayout } from './_app';
+import { GetServerSidePropsContext } from 'next';
 import AppLayout from '../components/AppLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Note } from '@prisma/client';
 import { Separator } from '@/components/ui/Separator';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/Dialog';
 import SearchAndFilter from '@/components/SearchAndFilter';
 import CategoryNotes from '@/components/CategoryNotes';
-import { GetServerSidePropsContext } from 'next';
+
+import { Button } from '@/components/ui/Button';
 
 type NotesByCategory = {
     category: string;
@@ -74,6 +85,10 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
         console.log(value);
     };
 
+    const handleEmptyTrash = () => {
+        // Open modal
+    };
+
     React.useEffect(() => {
         if (router.query.type) {
             setTabValue(router.query.type.toString());
@@ -107,6 +122,26 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                                 Trash
                             </TabsTrigger>
                         </TabsList>
+
+                        {tabValue === 'trash' && (
+                            <div>
+                                <Dialog>
+                                    <DialogTrigger className="inline-flex h-10 items-center justify-center rounded-md bg-red-500 py-2 px-4 text-sm font-medium text-white transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-red-600 dark:hover:text-slate-100 dark:focus:ring-slate-400">
+                                        <Trash className="mr-2 h-4 w-4" />
+                                        Empty Trash
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+                                            <DialogDescription>
+                                                This action cannot be undone. This will permanently delete your notes
+                                                marked as trash from our servers.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                        )}
                     </div>
 
                     <SearchAndFilter onSearchChange={handleSearchChange} onFilterChange={handleFilterChange} />
