@@ -9,6 +9,7 @@ import { Note } from '@prisma/client';
 import { Separator } from '@/components/ui/Separator';
 import SearchAndFilter from '@/components/SearchAndFilter';
 import CategoryNotes from '@/components/CategoryNotes';
+import { GetServerSidePropsContext } from 'next';
 
 type NotesByCategory = {
     category: string;
@@ -35,10 +36,23 @@ const sortNotesByCategory = (notes: Note[]): NotesByCategory[] => {
     return notesByCategory;
 };
 
-const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
+export async function getServerSideProps({ req, res, query }: GetServerSidePropsContext) {
+    let defaultTab = 'all';
+    if (query?.type) {
+        defaultTab = query.type as string;
+    }
+    return { props: { defaultTab } };
+}
+
+interface Props {
+    notes: Note[];
+    defaultTab?: string;
+}
+
+const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
     const session = useSession();
     const router = useRouter();
-    const [tabValue, setTabValue] = React.useState('all');
+    const [tabValue, setTabValue] = React.useState(defaultTab);
     const [search, setSearch] = React.useState('');
     const [filter, setFilter] = React.useState('');
     if (!session) return null;
@@ -48,8 +62,8 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const archivedNotes = sortNotesByCategory(notes.filter((n) => n.archived));
     const trashNotes = sortNotesByCategory(notes.filter((n) => n.trash));
 
-    const handleTabChange = (e: any) => {
-        setTabValue(e.target.getAttribute('data-value'));
+    const handleTabChange = (e: React.SyntheticEvent) => {
+        setTabValue(e.currentTarget.getAttribute('data-value')!);
     };
 
     const handleSearchChange = (value: any) => {
@@ -77,53 +91,51 @@ const Home: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 <div className="container mx-auto p-4 pb-0">
                     <h1 className="text-3xl font-extrabold text-black">Notes</h1>
                 </div>
-                {router.isReady && (
-                    <Tabs defaultValue={tabValue} value={tabValue} className="flex w-full flex-1 flex-col">
-                        <div className="container mx-auto flex items-center justify-between p-4">
-                            <TabsList>
-                                <TabsTrigger onClick={handleTabChange} data-value="all" value="all">
-                                    All Notes
-                                </TabsTrigger>
-                                <TabsTrigger onClick={handleTabChange} data-value="starred" value="starred">
-                                    Starred
-                                </TabsTrigger>
-                                <TabsTrigger onClick={handleTabChange} data-value="archived" value="archived">
-                                    Archived
-                                </TabsTrigger>
-                                <TabsTrigger onClick={handleTabChange} data-value="trash" value="trash">
-                                    Trash
-                                </TabsTrigger>
-                            </TabsList>
-                        </div>
+                <Tabs defaultValue={tabValue} value={tabValue} className="flex w-full flex-1 flex-col">
+                    <div className="container mx-auto flex items-center justify-between p-4">
+                        <TabsList>
+                            <TabsTrigger onClick={handleTabChange} data-value="all" value="all">
+                                All Notes
+                            </TabsTrigger>
+                            <TabsTrigger onClick={handleTabChange} data-value="starred" value="starred">
+                                Starred
+                            </TabsTrigger>
+                            <TabsTrigger onClick={handleTabChange} data-value="archived" value="archived">
+                                Archived
+                            </TabsTrigger>
+                            <TabsTrigger onClick={handleTabChange} data-value="trash" value="trash">
+                                Trash
+                            </TabsTrigger>
+                        </TabsList>
+                    </div>
 
-                        <SearchAndFilter onSearchChange={handleSearchChange} onFilterChange={handleFilterChange} />
+                    <SearchAndFilter onSearchChange={handleSearchChange} onFilterChange={handleFilterChange} />
 
-                        <div className="flex-1 bg-slate-100">
-                            <div className="container mx-auto h-full p-4">
-                                <TabsContent value="all" className="mt-0 border-0 p-0">
-                                    {allNotes.map((notesByCategory) => (
-                                        <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                    ))}
-                                </TabsContent>
-                                <TabsContent value="starred" className="mt-0 border-0 p-0">
-                                    {starredNotes.map((notesByCategory) => (
-                                        <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                    ))}
-                                </TabsContent>
-                                <TabsContent value="archived" className="mt-0 border-0 p-0">
-                                    {archivedNotes.map((notesByCategory) => (
-                                        <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                    ))}
-                                </TabsContent>
-                                <TabsContent value="trash" className="mt-0 border-0 p-0">
-                                    {trashNotes.map((notesByCategory) => (
-                                        <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                    ))}
-                                </TabsContent>
-                            </div>
+                    <div className="flex-1 bg-slate-100">
+                        <div className="container mx-auto h-full p-4">
+                            <TabsContent value="all" className="mt-0 border-0 p-0">
+                                {allNotes.map((notesByCategory) => (
+                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                ))}
+                            </TabsContent>
+                            <TabsContent value="starred" className="mt-0 border-0 p-0">
+                                {starredNotes.map((notesByCategory) => (
+                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                ))}
+                            </TabsContent>
+                            <TabsContent value="archived" className="mt-0 border-0 p-0">
+                                {archivedNotes.map((notesByCategory) => (
+                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                ))}
+                            </TabsContent>
+                            <TabsContent value="trash" className="mt-0 border-0 p-0">
+                                {trashNotes.map((notesByCategory) => (
+                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                ))}
+                            </TabsContent>
                         </div>
-                    </Tabs>
-                )}
+                    </div>
+                </Tabs>
             </div>
         </>
     );
