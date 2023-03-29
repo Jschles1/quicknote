@@ -18,7 +18,7 @@ type AppPropsWithLayout = AppProps & {
 };
 
 const nunito = Nunito({
-    weight: ['400', '700'],
+    weight: ['400', '700', '800'],
     style: ['normal', 'italic'],
     subsets: ['latin'],
 });
