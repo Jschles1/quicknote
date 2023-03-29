@@ -34,7 +34,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <SessionProvider session={session}>
             <>
                 <style jsx global>{`
-                    html {
+                    body {
                         font-family: ${nunito.style.fontFamily};
                     }
                 `}</style>
