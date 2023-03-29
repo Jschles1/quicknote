@@ -14,6 +14,7 @@ import {
     DialogContent,
     DialogDescription,
     DialogHeader,
+    DialogClose,
     DialogTitle,
     DialogTrigger,
     DialogFooter,
@@ -67,6 +68,7 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
     const [tabValue, setTabValue] = React.useState(defaultTab);
     const [search, setSearch] = React.useState('');
     const [filter, setFilter] = React.useState('');
+    const [isDialogOpen, setisDialogOpen] = React.useState(false);
     if (!session) return null;
 
     const allNotes = sortNotesByCategory(notes.filter((n) => !n.archived && !n.trash));
@@ -87,7 +89,11 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
     };
 
     const handleEmptyTrash = () => {
-        // Open modal
+        closeDialog();
+    };
+
+    const closeDialog = () => {
+        setisDialogOpen(false);
     };
 
     React.useEffect(() => {
@@ -126,8 +132,11 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
 
                         {tabValue === 'trash' && (
                             <div>
-                                <Dialog>
-                                    <DialogTrigger className="inline-flex h-10 items-center justify-center rounded-md bg-red-500 py-2 px-4 text-sm font-medium text-white transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-red-600 dark:hover:text-slate-100 dark:focus:ring-slate-400">
+                                <Dialog open={isDialogOpen}>
+                                    <DialogTrigger
+                                        onClick={() => setisDialogOpen(true)}
+                                        className="inline-flex h-10 items-center justify-center rounded-md bg-red-500 py-2 px-4 text-sm font-medium text-white transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-red-600 dark:hover:text-slate-100 dark:focus:ring-slate-400"
+                                    >
                                         <Trash className="mr-2 h-4 w-4" />
                                         Empty Trash
                                     </DialogTrigger>
@@ -140,10 +149,14 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                                             </DialogDescription>
                                         </DialogHeader>
                                         <DialogFooter>
-                                            <Button variant="destructive" className="w-full" onClick={handleEmptyTrash}>
+                                            <Button className="w-full" variant="destructive" onClick={handleEmptyTrash}>
                                                 Empty Trash
                                             </Button>
+                                            <Button className="w-full" variant="subtle" onClick={closeDialog}>
+                                                Cancel
+                                            </Button>
                                         </DialogFooter>
+                                        <DialogClose onClick={closeDialog} />
                                     </DialogContent>
                                 </Dialog>
                             </div>

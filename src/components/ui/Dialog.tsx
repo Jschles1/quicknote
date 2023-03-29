@@ -47,14 +47,25 @@ const DialogContent = React.forwardRef<
             {...props}
         >
             {children}
-            <DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900 dark:data-[state=open]:bg-slate-800">
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-            </DialogPrimitive.Close>
         </DialogPrimitive.Content>
     </DialogPortal>
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
+
+const DialogClose = React.forwardRef<
+    React.ElementRef<typeof DialogPrimitive.Close>,
+    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Close>
+>(({ className, children, ...props }, ref) => (
+    <DialogPrimitive.Close
+        ref={ref}
+        className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900 dark:data-[state=open]:bg-slate-800"
+        {...props}
+    >
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+    </DialogPrimitive.Close>
+));
+DialogClose.displayName = DialogPrimitive.Close.displayName;
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div className={cn('flex flex-col space-y-2 text-center sm:text-left', className)} {...props} />
@@ -82,4 +93,13 @@ const DialogDescription = React.forwardRef<
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
-export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription };
+export {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogClose,
+    DialogHeader,
+    DialogFooter,
+    DialogTitle,
+    DialogDescription,
+};
