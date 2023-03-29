@@ -16,6 +16,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogFooter,
 } from '@/components/ui/Dialog';
 import SearchAndFilter from '@/components/SearchAndFilter';
 import CategoryNotes from '@/components/CategoryNotes';
@@ -138,6 +139,11 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                                                 marked as trash from our servers.
                                             </DialogDescription>
                                         </DialogHeader>
+                                        <DialogFooter>
+                                            <Button variant="destructive" className="w-full" onClick={handleEmptyTrash}>
+                                                Empty Trash
+                                            </Button>
+                                        </DialogFooter>
                                     </DialogContent>
                                 </Dialog>
                             </div>
