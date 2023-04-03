@@ -25,6 +25,7 @@ const CreateNotePage: NextPageWithLayout = () => {
         onSuccess: async (data) => {
             await utils.notes.invalidate();
             console.log('Form submitted successfully with values: ', data);
+            router.push('/');
         },
     });
 

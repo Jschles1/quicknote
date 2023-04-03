@@ -12,7 +12,8 @@ interface AppLayoutProps {
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const router = useRouter();
     const [recentlyViewedNotes, setRecentlyViewedNotes] = React.useState<Note[]>([]);
-    const { data, isLoading } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
+    const { data, isLoading: isGetAllLoading } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
+    const { isLoading: isCreateOneLoading } = api.notes.createOne.useMutation();
 
     React.useEffect(() => {
         const recentlyViewedNotesStorage = localStorage.getItem('recentlyViewedNotes');
@@ -24,6 +25,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     }, [router.pathname, data]);
 
     const overlayPages = ['/create-note'];
+    const isLoading = isGetAllLoading || isCreateOneLoading;
     const showOverlay = isLoading && overlayPages.includes(router.pathname);
 
     return (
