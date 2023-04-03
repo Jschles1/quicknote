@@ -110,11 +110,11 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="flex w-full flex-1 flex-col">
-                <div className="container mx-auto p-4 pb-0">
+                <div className="p-4 pb-0">
                     <h1 className="text-3xl font-extrabold text-black">Notes</h1>
                 </div>
                 <Tabs defaultValue={tabValue} value={tabValue} className="flex w-full flex-1 flex-col">
-                    <div className="container mx-auto flex items-center justify-between p-4">
+                    <div className="flex items-center justify-between p-4">
                         <TabsList>
                             <TabsTrigger onClick={handleTabChange} data-value="all" value="all">
                                 All Notes
@@ -166,7 +166,7 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                     <SearchAndFilter onSearchChange={handleSearchChange} onFilterChange={handleFilterChange} />
 
                     <div className="flex-1 bg-slate-100">
-                        <div className="container mx-auto h-full p-4">
+                        <div className="h-full p-4">
                             <TabsContent value="all" className="mt-0 border-0 p-0">
                                 {allNotes.map((notesByCategory) => (
                                     <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
