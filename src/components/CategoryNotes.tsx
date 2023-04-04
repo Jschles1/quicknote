@@ -29,6 +29,7 @@ const CategoryNotes: React.FC<Props> = ({ data }) => {
             >
                 {data.notes.map((note) => (
                     <SwiperSlide key={note.id}>
+                        {/* TODO: CategoryNote component? */}
                         <Link
                             href={`/${note.id}`}
                             className="block h-[300px] rounded-md border border-slate-200 bg-white p-4  hover:border-slate-400"
