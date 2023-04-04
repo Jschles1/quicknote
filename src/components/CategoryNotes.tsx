@@ -18,7 +18,7 @@ const CategoryNotes: React.FC<Props> = ({ data }) => {
     if (!data.notes) return null;
     return (
         <div>
-            <h1 className="my-2 text-xl font-bold">{data.category}</h1>
+            <h1 className="my-4 ml-4 text-xl font-bold italic">{data.category}</h1>
             <Swiper
                 modules={[Navigation]}
                 navigation

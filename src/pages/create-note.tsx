@@ -30,6 +30,7 @@ const CreateNotePage: NextPageWithLayout = () => {
             router.push('/');
             toast({
                 description: 'Successfully created note!',
+                variant: 'success',
             });
         },
     });

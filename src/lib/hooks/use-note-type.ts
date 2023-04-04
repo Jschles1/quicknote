@@ -5,11 +5,11 @@ function useNoteType() {
     const utils = api.useContext();
     // TODO: add optimistic update
     const { mutateAsync } = api.notes.toggleNoteType.useMutation({
-        onMutate: async (data) => {
+        onMutate: async () => {
             console.log('Updating note type');
             await utils.notes.getAll.cancel();
         },
-        onSuccess: async (data) => {
+        onSuccess: async () => {
             console.log('Note type successfully updated');
             await utils.notes.invalidate();
         },

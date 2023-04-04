@@ -49,7 +49,7 @@ interface Props {
     mode: 'edit' | 'create';
     height: number | string;
     onChange: (value: string) => void;
-    error: string | undefined;
+    error?: string | undefined;
 }
 
 const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, error = '' }) => {
