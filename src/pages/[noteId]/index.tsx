@@ -28,6 +28,9 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 const parsedRecentlyViewedNotes = JSON.parse(recentlyViewedNotes);
                 const alreadyExists = parsedRecentlyViewedNotes.find((note: Note) => note.id === param);
                 if (!alreadyExists) {
+                    if (parsedRecentlyViewedNotes.length >= 5) {
+                        parsedRecentlyViewedNotes.pop();
+                    }
                     parsedRecentlyViewedNotes.push(note.id);
                     localStorage.setItem('recentlyViewedNotes', JSON.stringify(parsedRecentlyViewedNotes));
                 }

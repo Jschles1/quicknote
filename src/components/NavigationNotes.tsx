@@ -37,7 +37,7 @@ const NavigationNotes: React.FC<Props> = ({ notes }) => {
         <div className="my-[0.5px] h-[calc(100%-73px)] overflow-y-scroll p-4 scrollbar-thin scrollbar-track-slate-200 scrollbar-thumb-slate-300">
             <Accordion type="single" collapsible>
                 {sortedNotes.map((category, i) => (
-                    <AccordionItem key={category.notes[i]?.name} value={i.toString()} className="border-0">
+                    <AccordionItem key={category.name} value={i.toString()} className="border-0">
                         <AccordionTrigger className="mb-4 rounded-md p-2 decoration-0 data-[state=open]:bg-slate-300 hover:bg-slate-300 hover:no-underline">
                             {category.name}
                         </AccordionTrigger>
