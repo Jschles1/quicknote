@@ -18,11 +18,11 @@ const CategoryNotes: React.FC<Props> = ({ data }) => {
     if (!data.notes) return null;
     return (
         <div>
-            <h1 className="mb-2 text-xl font-bold">{data.category}</h1>
+            <h1 className="my-2 text-xl font-bold">{data.category}</h1>
             <Swiper
                 modules={[Navigation]}
                 navigation
-                spaceBetween={50}
+                spaceBetween={20}
                 slidesPerView={3}
                 onSlideChange={() => console.log('slide change')}
                 onSwiper={(swiper) => console.log(swiper)}

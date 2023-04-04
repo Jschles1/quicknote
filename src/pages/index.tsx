@@ -166,7 +166,7 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                     <SearchAndFilter onSearchChange={handleSearchChange} onFilterChange={handleFilterChange} />
 
                     <div className="flex-1 bg-slate-100">
-                        <div className="mx-auto h-full w-full max-w-7xl p-4">
+                        <div className="mx-auto w-full max-w-7xl p-4">
                             <TabsContent value="all" className="mt-0 border-0 p-0">
                                 {allNotes.map((notesByCategory) => (
                                     <CategoryNotes key={notesByCategory.category} data={notesByCategory} />

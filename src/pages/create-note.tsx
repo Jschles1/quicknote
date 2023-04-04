@@ -11,10 +11,12 @@ import { Separator } from '@/components/ui/Separator';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { cn, decodeHtml } from '@/lib/util';
+import { useToast } from '@/lib/use-toast';
 
 const CreateNotePage: NextPageWithLayout = () => {
     const router = useRouter();
     const utils = api.useContext();
+    const { toast } = useToast();
     // TODO: add optimistic update
     const { mutateAsync } = api.notes.createOne.useMutation({
         onMutate: async (data) => {
@@ -26,6 +28,9 @@ const CreateNotePage: NextPageWithLayout = () => {
             await utils.notes.invalidate();
             console.log('Form submitted successfully with values: ', data);
             router.push('/');
+            toast({
+                description: 'Successfully created note!',
+            });
         },
     });
 

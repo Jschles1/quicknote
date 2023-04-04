@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useRouter } from 'next/router';
 import Navigation from './Navigation';
 import LoadingOverlay from './LoadingOverlay';
+import { Toaster } from '@/components/ui/Toaster';
 import { api } from '@/utils/api';
 import { Note } from '@prisma/client';
 
@@ -29,12 +30,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const showOverlay = isLoading && overlayPages.includes(router.pathname);
 
     return (
-        <main className="min-w-screen relative flex min-h-screen">
+        <main className="min-w-screen relative flex max-h-screen min-h-screen">
             <Navigation notes={data || []} recentlyViewedNotes={recentlyViewedNotes} />
-            <div className="relative mx-auto flex w-[calc(100%-300px)] flex-col items-center gap-12">
+            <div className="relative mx-auto flex w-[calc(100%-300px)] flex-col items-center gap-12 overflow-y-scroll">
                 {React.cloneElement(children, { notes: !!data ? data : [] })}
                 {showOverlay && <LoadingOverlay />}
             </div>
+            <Toaster />
         </main>
     );
 };
