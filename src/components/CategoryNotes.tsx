@@ -1,31 +1,17 @@
 import * as React from 'react';
 import Link from 'next/link';
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
+import Slider from 'react-slick';
 import { decodeHtml } from '@/lib/util';
 import { Note } from '@prisma/client';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-const responsive = {
-    superLargeDesktop: {
-        breakpoint: { max: 4000, min: 3000 },
-        items: 3,
-        slidesToSlide: 3,
-    },
-    desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 3,
-        slidesToSlide: 3,
-    },
-    tablet: {
-        breakpoint: { max: 1024, min: 600 },
-        items: 3,
-        slidesToSlide: 3,
-    },
-    mobile: {
-        breakpoint: { max: 600, min: 0 },
-        items: 1,
-        slidesToSlide: 1,
-    },
+const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
 };
 
 interface Props {
@@ -40,7 +26,7 @@ const CategoryNotes: React.FC<Props> = ({ data }) => {
     return (
         <div>
             <h1 className="mb-2 text-xl font-bold">{data.category}</h1>
-            <Carousel ssr responsive={responsive} centerMode={false} itemClass={''}>
+            <Slider {...settings}>
                 {data.notes.map((note) => (
                     <Link
                         key={note.id}
@@ -54,7 +40,7 @@ const CategoryNotes: React.FC<Props> = ({ data }) => {
                         <div>{decodeHtml(note.content)}</div>
                     </Link>
                 ))}
-            </Carousel>
+            </Slider>
         </div>
     );
 };
