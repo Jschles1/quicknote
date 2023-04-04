@@ -13,7 +13,7 @@ const SearchAndFilter: React.FC<Props> = ({ onSearchChange, onFilterChange }) =>
     return (
         <>
             <Separator />
-            <div className="flex items-center justify-between p-4">
+            <div className="mx-auto flex w-full max-w-7xl items-center justify-between p-4">
                 <div>
                     <Input className="w-[408px]" placeholder="Search notes:" onChange={onSearchChange} />
                 </div>
