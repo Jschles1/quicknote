@@ -12,28 +12,10 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { cn, decodeHtml } from '@/lib/util';
 import { useToast } from '@/lib/hooks/use-toast';
+import useCreateNote from '@/lib/hooks/use-create-note';
 
 const CreateNotePage: NextPageWithLayout = () => {
-    const router = useRouter();
-    const utils = api.useContext();
-    const { toast } = useToast();
-    // TODO: add optimistic update
-    const { mutateAsync } = api.notes.createOne.useMutation({
-        onMutate: async (data) => {
-            // Cancel outgoing fetches (so they don't overwrite our optimistic update)
-            await utils.notes.getAll.cancel();
-            console.log('Submitting form with values: ', data);
-        },
-        onSuccess: async (data) => {
-            await utils.notes.invalidate();
-            console.log('Form submitted successfully with values: ', data);
-            router.push('/');
-            toast({
-                description: 'Successfully created note!',
-                variant: 'success',
-            });
-        },
-    });
+    const { mutateCreateNote } = useCreateNote();
 
     const {
         register,
@@ -85,7 +67,7 @@ const CreateNotePage: NextPageWithLayout = () => {
             isValid = false;
         }
         if (isValid) {
-            await mutateAsync(values);
+            await mutateCreateNote(values);
         }
     };
 

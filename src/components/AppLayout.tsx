@@ -5,6 +5,7 @@ import LoadingOverlay from './LoadingOverlay';
 import { Toaster } from '@/components/ui/Toaster';
 import { api } from '@/utils/api';
 import { Note } from '@prisma/client';
+import useCreateNote from '@/lib/hooks/use-create-note';
 
 interface AppLayoutProps {
     children: React.ReactElement;
@@ -14,7 +15,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const router = useRouter();
     const [recentlyViewedNotes, setRecentlyViewedNotes] = React.useState<Note[]>([]);
     const { data, isLoading: isGetAllLoading } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
-    const { isLoading: isCreateOneLoading } = api.notes.createOne.useMutation();
+    const { isCreateNoteLoading } = useCreateNote();
 
     React.useEffect(() => {
         const recentlyViewedNotesStorage = localStorage.getItem('recentlyViewedNotes');
@@ -26,7 +27,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     }, [router.pathname, data]);
 
     const overlayPages = ['/create-note'];
-    const isLoading = isGetAllLoading || isCreateOneLoading;
+    const isLoading = isGetAllLoading || isCreateNoteLoading;
     const showOverlay = isLoading && overlayPages.includes(router.pathname);
 
     return (
