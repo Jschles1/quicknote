@@ -31,7 +31,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     return (
         <main className="min-w-screen relative flex min-h-screen">
             <Navigation notes={data || []} recentlyViewedNotes={recentlyViewedNotes} />
-            <div className="relative mx-auto flex w-full flex-col items-center gap-12">
+            <div className="relative mx-auto flex w-[calc(100%-300px)] flex-col items-center gap-12">
                 {React.cloneElement(children, { notes: !!data ? data : [] })}
                 {showOverlay && <LoadingOverlay />}
             </div>
