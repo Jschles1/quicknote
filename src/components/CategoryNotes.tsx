@@ -1,18 +1,11 @@
 import * as React from 'react';
 import Link from 'next/link';
-import Slider from 'react-slick';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper';
 import { decodeHtml } from '@/lib/util';
 import { Note } from '@prisma/client';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
-const settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-};
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 interface Props {
     data: {
@@ -26,21 +19,29 @@ const CategoryNotes: React.FC<Props> = ({ data }) => {
     return (
         <div>
             <h1 className="mb-2 text-xl font-bold">{data.category}</h1>
-            <Slider {...settings}>
+            <Swiper
+                modules={[Navigation]}
+                navigation
+                spaceBetween={50}
+                slidesPerView={3}
+                onSlideChange={() => console.log('slide change')}
+                onSwiper={(swiper) => console.log(swiper)}
+            >
                 {data.notes.map((note) => (
-                    <Link
-                        key={note.id}
-                        href={`/${note.id}`}
-                        className="block h-[300px] rounded-md border border-slate-200 bg-white p-4  hover:border-slate-400"
-                    >
-                        <div>
-                            <div className="mb-2 text-xl font-bold">{note.name}</div>
-                        </div>
+                    <SwiperSlide key={note.id}>
+                        <Link
+                            href={`/${note.id}`}
+                            className="block h-[300px] rounded-md border border-slate-200 bg-white p-4  hover:border-slate-400"
+                        >
+                            <div>
+                                <div className="mb-2 text-xl font-bold">{note.name}</div>
+                            </div>
 
-                        <div>{decodeHtml(note.content)}</div>
-                    </Link>
+                            <div>{decodeHtml(note.content)}</div>
+                        </Link>
+                    </SwiperSlide>
                 ))}
-            </Slider>
+            </Swiper>
         </div>
     );
 };
