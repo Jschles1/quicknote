@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/Separator';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { cn, decodeHtml } from '@/lib/util';
-import { useToast } from '@/lib/use-toast';
+import { useToast } from '@/lib/hooks/use-toast';
 
 const CreateNotePage: NextPageWithLayout = () => {
     const router = useRouter();
