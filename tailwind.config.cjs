@@ -22,8 +22,5 @@ module.exports = {
             },
         },
     },
-    plugins: [
-        // require('tailwindcss-radix')(),
-        require('tailwindcss-animate'),
-    ],
+    plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar')],
 };

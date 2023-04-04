@@ -15,7 +15,7 @@ interface Props {
 
 const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes }) => {
     return (
-        <div className="relative min-h-screen w-[300px] min-w-[300px] border border-r-slate-400 bg-slate-200">
+        <div className="relative flex min-h-screen w-[300px] min-w-[300px] flex-col border border-r-slate-400 bg-slate-200">
             {!!notes && (
                 <>
                     <Logo />
