@@ -8,8 +8,10 @@ import TextEditor from '@/components/ui/TextEditor';
 import { Separator } from '@/components/ui/Separator';
 import { Note } from '@prisma/client';
 import NoteTypes from '@/components/NoteTypes';
+import useUpdateNote from '@/lib/hooks/use-update-note';
 
 const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
+    const { mutateUpdateNote } = useUpdateNote();
     const router = useRouter();
     const [param, setParam] = React.useState('');
 
@@ -40,6 +42,18 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         }
     }, [note]);
 
+    const handleChange = async (value: string) => {
+        if (note) {
+            await mutateUpdateNote({
+                noteId: note.id,
+                content: value,
+                name: note.name,
+                category: note.category,
+                starred: note.starred,
+            });
+        }
+    };
+
     return (
         <>
             <Head>
@@ -54,7 +68,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 </div>
 
                 <Separator className="my-3" />
-                <TextEditor note={note} mode="edit" height="auto" onChange={() => {}} />
+                <TextEditor note={note} mode="edit" height="auto" onChange={handleChange} />
             </div>
         </>
     );

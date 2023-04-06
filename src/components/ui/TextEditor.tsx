@@ -49,12 +49,12 @@ interface Props {
     note?: Note | undefined;
     mode: 'edit' | 'create';
     height: number | string;
-    onChange?: (value: string) => void;
+    onChange: (value: string) => void;
     error?: string | undefined;
 }
 
 const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, error = '' }) => {
-    const { mutateUpdateNote } = useUpdateNote();
+    // const { mutateUpdateNote } = useUpdateNote();
     if (!note && mode === 'edit') return null;
 
     let placeholder = mode === 'create' ? 'Write something here...' : '';
@@ -106,19 +106,15 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, error = '' 
                 defaultValue={note?.content || ''}
                 placeholder={placeholder}
                 onChange={(content, _, source) => {
-                    if (source === 'user' && onChange) {
+                    if (source === 'user' && mode === 'create') {
                         onChange(content);
                     }
                 }}
-                onBlur={async (_, source, editor) => {
+                onBlur={(_, source, editor) => {
                     const text = editor.getText();
                     const updatedContent = editor.getHTML();
-                    if (text && source === 'user' && note && note.content !== updatedContent) {
-                        await mutateUpdateNote({
-                            ...note,
-                            content: updatedContent,
-                            noteId: note.id,
-                        });
+                    if (text && source === 'user' && note && note.content !== updatedContent && mode === 'edit') {
+                        onChange(updatedContent);
                     }
                 }}
             />
