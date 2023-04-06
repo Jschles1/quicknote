@@ -14,19 +14,12 @@ interface Props {
     };
 }
 
-const CategoryNotes: React.FC<Props> = ({ data }) => {
+const CategoryNotesList: React.FC<Props> = ({ data }) => {
     if (!data.notes) return null;
     return (
         <div>
             <h1 className="my-4 ml-4 text-xl font-bold italic">{data.category}</h1>
-            <Swiper
-                modules={[Navigation]}
-                navigation={data.notes.length > 3}
-                spaceBetween={20}
-                slidesPerView={3}
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
-            >
+            <Swiper modules={[Navigation]} navigation={data.notes.length > 3} spaceBetween={20} slidesPerView={3}>
                 {data.notes.map((note) => (
                     <SwiperSlide key={note.id}>
                         {/* TODO: CategoryNote component? */}
@@ -47,4 +40,4 @@ const CategoryNotes: React.FC<Props> = ({ data }) => {
     );
 };
 
-export default CategoryNotes;
+export default CategoryNotesList;

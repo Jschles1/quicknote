@@ -20,7 +20,8 @@ import {
     DialogFooter,
 } from '@/components/ui/Dialog';
 import SearchAndFilter from '@/components/SearchAndFilter';
-import CategoryNotes from '@/components/CategoryNotes';
+import CategoryNotesList from '@/components/CategoryNotesList';
+import AllNotesList from '@/components/AllNotesList';
 
 import { Button } from '@/components/ui/Button';
 
@@ -71,10 +72,11 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
     const [isDialogOpen, setisDialogOpen] = React.useState(false);
     if (!session) return null;
 
-    const allNotes = sortNotesByCategory(notes.filter((n) => !n.archived && !n.trash));
-    const starredNotes = sortNotesByCategory(notes.filter((n) => n.starred && !n.archived && !n.trash));
-    const archivedNotes = sortNotesByCategory(notes.filter((n) => n.archived));
-    const trashNotes = sortNotesByCategory(notes.filter((n) => n.trash));
+    const allNotes = notes.filter((n) => !n.archived && !n.trash);
+    const categoryNotes = sortNotesByCategory(notes.filter((n) => !n.archived && !n.trash));
+    const starredNotes = notes.filter((n) => n.starred && !n.archived && !n.trash);
+    const archivedNotes = notes.filter((n) => n.archived);
+    const trashNotes = notes.filter((n) => n.trash);
 
     const handleTabChange = (e: React.SyntheticEvent) => {
         setTabValue(e.currentTarget.getAttribute('data-value')!);
@@ -119,6 +121,9 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                             <TabsTrigger onClick={handleTabChange} data-value="all" value="all">
                                 All Notes
                             </TabsTrigger>
+                            <TabsTrigger onClick={handleTabChange} data-value="category" value="category">
+                                By Category
+                            </TabsTrigger>
                             <TabsTrigger onClick={handleTabChange} data-value="starred" value="starred">
                                 Starred
                             </TabsTrigger>
@@ -135,7 +140,7 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                                 <Dialog open={isDialogOpen}>
                                     <DialogTrigger
                                         onClick={() => setisDialogOpen(true)}
-                                        className="inline-flex h-10 items-center justify-center rounded-md bg-red-500 py-2 px-4 text-sm font-medium text-white transition-colors hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 active:scale-95 disabled:pointer-events-none disabled:opacity-50 dark:hover:bg-red-600 dark:hover:text-slate-100 dark:focus:ring-slate-400"
+                                        className="inline-flex h-10 items-center justify-center rounded-md bg-red-500 py-2 px-4 text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-red-600 active:scale-95 dark:focus:ring-slate-400 dark:hover:bg-red-600 dark:hover:text-slate-100"
                                     >
                                         <Trash className="mr-2 h-4 w-4" />
                                         Empty Trash
@@ -168,24 +173,21 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                     <div className="flex-1 bg-slate-100">
                         <div className="mx-auto w-full max-w-7xl p-4">
                             <TabsContent value="all" className="mt-0 border-0 p-0">
-                                {allNotes.map((notesByCategory) => (
-                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
+                                <AllNotesList notes={allNotes} />
+                            </TabsContent>
+                            <TabsContent value="category" className="mt-0 border-0 p-0">
+                                {categoryNotes.map((notesByCategory) => (
+                                    <CategoryNotesList key={notesByCategory.category} data={notesByCategory} />
                                 ))}
                             </TabsContent>
                             <TabsContent value="starred" className="mt-0 border-0 p-0">
-                                {starredNotes.map((notesByCategory) => (
-                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                ))}
+                                <AllNotesList notes={starredNotes} />
                             </TabsContent>
                             <TabsContent value="archived" className="mt-0 border-0 p-0">
-                                {archivedNotes.map((notesByCategory) => (
-                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                ))}
+                                <AllNotesList notes={archivedNotes} />
                             </TabsContent>
                             <TabsContent value="trash" className="mt-0 border-0 p-0">
-                                {trashNotes.map((notesByCategory) => (
-                                    <CategoryNotes key={notesByCategory.category} data={notesByCategory} />
-                                ))}
+                                <AllNotesList notes={trashNotes} />
                             </TabsContent>
                         </div>
                     </div>
