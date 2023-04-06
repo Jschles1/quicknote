@@ -22,6 +22,7 @@ import {
 import SearchAndFilter from '@/components/SearchAndFilter';
 import CategoryNotesList from '@/components/CategoryNotesList';
 import AllNotesList from '@/components/AllNotesList';
+import useEmptyTrash from '@/lib/hooks/use-empty-trash';
 
 import { Button } from '@/components/ui/Button';
 
@@ -70,6 +71,7 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
     const [search, setSearch] = React.useState('');
     const [filter, setFilter] = React.useState('');
     const [isDialogOpen, setisDialogOpen] = React.useState(false);
+    const { mutateEmptyTrash } = useEmptyTrash();
     if (!session) return null;
 
     const allNotes = notes.filter((n) => !n.archived && !n.trash);
@@ -90,8 +92,10 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
         console.log(value);
     };
 
-    const handleEmptyTrash = () => {
+    const handleEmptyTrash = async () => {
+        await mutateEmptyTrash();
         closeDialog();
+        setTabValue('all');
     };
 
     const closeDialog = () => {

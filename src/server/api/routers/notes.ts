@@ -65,12 +65,12 @@ export const notesRouter = createTRPCRouter({
 
             return 'Unauthorized';
         }),
-    deleteOne: protectedProcedure.input(z.object({ noteId: z.string() })).mutation(async ({ ctx, input }) => {
+    emptyTrash: protectedProcedure.mutation(async ({ ctx }) => {
         const userId = ctx.session.user.id;
-        const result = (await ctx.prisma.note.findFirst({ where: { id: input.noteId, userId } })) as Note;
+        const result = await ctx.prisma.note.deleteMany({ where: { trash: true, userId } });
         if (result) {
-            const deleted = await ctx.prisma.note.delete({ where: { id: result.id } });
-            return deleted;
+            console.log(result);
+            return result;
         }
         return 'Unauthorized';
     }),
