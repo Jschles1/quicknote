@@ -11,28 +11,34 @@ interface Props {
 
 const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
     return (
-        <Link
-            href={`/${note.id}`}
+        <div
             className={cn(
-                'block h-[300px] rounded-md border border-slate-200 bg-white p-4  hover:border-slate-400',
+                'flex h-[300px] flex-col rounded-md border border-slate-200  bg-white p-4 hover:border-slate-400',
                 isSwiperSlide ? '' : 'm-2 basis-[30%] gap-2'
             )}
         >
             <div>
                 {!isSwiperSlide && (
                     <div className="mb-2 flex items-center justify-between text-xl italic">
-                        <div>{note.category}</div>
+                        <Link href={`/${note.id}`} className="flex-1">
+                            {note.category}
+                        </Link>
                         <NoteTypes note={note} />
                     </div>
                 )}
-                <div className={cn('mb-2 text-xl font-bold', isSwiperSlide ? 'flex items-center justify-between' : '')}>
+                <Link
+                    href={`/${note.id}`}
+                    className={cn('mb-2 text-xl font-bold', isSwiperSlide ? 'flex items-center justify-between' : '')}
+                >
                     <div>{note.name}</div>
                     {isSwiperSlide && <NoteTypes note={note} />}
-                </div>
+                </Link>
             </div>
 
-            <div className="overflow-clip truncate text-gray-500">{decodeHtml(note.content)}</div>
-        </Link>
+            <Link href={`/${note.id}`} className="flex-1">
+                <div className="overflow-clip truncate text-gray-500">{decodeHtml(note.content)}</div>
+            </Link>
+        </div>
     );
 };
 

@@ -60,7 +60,7 @@ export const notesRouter = createTRPCRouter({
                     where: { id: result.id },
                     data: { [input.type]: !result[input.type] },
                 });
-                return updated;
+                return { note: updated, type: input.type };
             }
 
             return 'Unauthorized';

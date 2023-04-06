@@ -11,9 +11,20 @@ function useNoteType() {
             console.log('Updating note type');
             await utils.notes.getAll.cancel();
         },
-        onSuccess: async () => {
-            console.log('Note type successfully updated');
-            await utils.notes.invalidate();
+        onSuccess: async (data) => {
+            if (data !== 'Unauthorized') {
+                console.log('Note type successfully updated', data);
+                const { name } = data.note;
+                const updatedType = data.note[data.type];
+                const description = !!updatedType
+                    ? `Successfully set ${name} as ${data.type}!`
+                    : `Successfully removed ${data.type} from ${name}!`;
+                toast({
+                    description,
+                    variant: 'success',
+                });
+                await utils.notes.invalidate();
+            }
         },
         onError: async (error) => {
             console.log('Form submission failed with error: ', error);
