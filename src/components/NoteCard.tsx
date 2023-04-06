@@ -31,7 +31,7 @@ const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
                 </div>
             </div>
 
-            <div>{decodeHtml(note.content)}</div>
+            <div className="overflow-clip truncate text-gray-500">{decodeHtml(note.content)}</div>
         </Link>
     );
 };
