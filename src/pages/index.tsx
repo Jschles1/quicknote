@@ -172,7 +172,11 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                         )}
                     </div>
 
-                    <SearchAndFilter onSearchChange={handleSearchChange} onFilterChange={handleFilterChange} />
+                    <SearchAndFilter
+                        onSearchChange={handleSearchChange}
+                        onFilterChange={handleFilterChange}
+                        currentTab={tabValue as string}
+                    />
 
                     <div className="flex-1 bg-slate-100">
                         <div className="mx-auto w-full max-w-7xl p-4">
