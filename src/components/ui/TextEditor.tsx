@@ -1,13 +1,7 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
-import useUpdateNote from '@/lib/hooks/use-update-note';
 import 'react-quill/dist/quill.snow.css';
 import { Note } from '@prisma/client';
-
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {
-    ssr: false,
-    loading: () => <p>Loading ...</p>,
-});
 
 const modules = {
     toolbar: [
@@ -54,8 +48,15 @@ interface Props {
 }
 
 const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, error = '' }) => {
-    // const { mutateUpdateNote } = useUpdateNote();
+    // May need to find better approach to this
+    const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+        ssr: false,
+        loading: () => <p>Loading ...</p>,
+    });
+
     if (!note && mode === 'edit') return null;
+
+    console.log('editor note', note);
 
     let placeholder = mode === 'create' ? 'Write something here...' : '';
 

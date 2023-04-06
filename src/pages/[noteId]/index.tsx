@@ -14,16 +14,27 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const { mutateUpdateNote } = useUpdateNote();
     const router = useRouter();
     const [param, setParam] = React.useState('');
-
-    const note = notes.find((note) => note.id === param);
+    const [note, setNote] = React.useState<Note | undefined>(undefined);
 
     React.useEffect(() => {
         if (router.isReady) {
             setParam(router.query.noteId as string);
         }
-    }, [router.isReady]);
+    }, [router.isReady, router.pathname, router?.query?.noteId]);
 
     React.useEffect(() => {
+        if (param && notes.length) {
+            const note = notes.find((note) => note.id === param) || undefined;
+            if (note) {
+                setNote(note);
+            } else {
+                router.push('/404');
+            }
+        }
+    }, [param, notes]);
+
+    React.useEffect(() => {
+        // Add note to local storage for recent notes
         if (note) {
             const recentlyViewedNotes = localStorage.getItem('recentlyViewedNotes');
             if (recentlyViewedNotes) {
