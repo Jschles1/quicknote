@@ -23,6 +23,13 @@ function useCreateNote() {
                 variant: 'success',
             });
         },
+        onError: async (error) => {
+            console.log('Form submission failed with error: ', error);
+            toast({
+                description: 'Failed to create note! ' + error.message,
+                variant: 'destructive',
+            });
+        },
     });
 
     return { mutateCreateNote: mutateAsync, isCreateNoteLoading: isLoading };
