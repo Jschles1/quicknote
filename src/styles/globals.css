@@ -10,3 +10,22 @@
     --tw-border-opacity: 1 !important;
     border: 1px solid rgb(239 68 68 / var(--tw-border-opacity)) !important;
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: black !important;
+    /* height: 1rem !important; */
+}
+
+.swiper-button-next {
+    right: var(--swiper-navigation-sides-offset, 1px) !important;
+}
+
+.swiper-button-prev {
+    left: var(--swiper-navigation-sides-offset, 1px) !important;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 1.5rem !important;
+}
