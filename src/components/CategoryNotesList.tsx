@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
+import NoteCard from './NoteCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import { decodeHtml } from '@/lib/util';
@@ -22,17 +23,7 @@ const CategoryNotesList: React.FC<Props> = ({ data }) => {
             <Swiper modules={[Navigation]} navigation={data.notes.length > 3} spaceBetween={20} slidesPerView={3}>
                 {data.notes.map((note) => (
                     <SwiperSlide key={note.id}>
-                        {/* TODO: CategoryNote component? */}
-                        <Link
-                            href={`/${note.id}`}
-                            className="block h-[300px] rounded-md border border-slate-200 bg-white p-4  hover:border-slate-400"
-                        >
-                            <div>
-                                <div className="mb-2 text-xl font-bold">{note.name}</div>
-                            </div>
-
-                            <div>{decodeHtml(note.content)}</div>
-                        </Link>
+                        <NoteCard note={note} isSwiperSlide />
                     </SwiperSlide>
                 ))}
             </Swiper>
