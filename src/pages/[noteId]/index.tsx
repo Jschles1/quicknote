@@ -14,6 +14,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const { mutateUpdateNote } = useUpdateNote();
     const router = useRouter();
     const [param, setParam] = React.useState('');
+    const [hasUnsavedChanges, setHasUnsavedChanges] = React.useState(false);
     const [note, setNote] = React.useState<Note | undefined>(undefined);
 
     React.useEffect(() => {
@@ -53,7 +54,28 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         }
     }, [note]);
 
-    const handleChange = async (value: string) => {
+    React.useEffect(() => {
+        if (hasUnsavedChanges) {
+            const warningText = 'You have unsaved changes - are you sure you wish to leave this page?';
+            const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+                event.preventDefault();
+                event.returnValue = '';
+            };
+            const handleBrowseAway = () => {
+                if (window.confirm(warningText)) return;
+                router.events.emit('routeChangeError');
+                throw 'routeChange aborted.';
+            };
+            window.addEventListener('beforeunload', handleBeforeUnload);
+            router.events.on('routeChangeStart', handleBrowseAway);
+            return () => {
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+                router.events.off('routeChangeStart', handleBrowseAway);
+            };
+        }
+    }, [hasUnsavedChanges]);
+
+    const handleUpdate = async (value: string) => {
         if (note) {
             await mutateUpdateNote({
                 noteId: note.id,
@@ -62,6 +84,15 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 category: note.category,
                 starred: note.starred,
             });
+            setHasUnsavedChanges(false);
+        }
+    };
+
+    const handleChange = (value: string) => {
+        if (note && note.content !== value && !hasUnsavedChanges) {
+            setHasUnsavedChanges(true);
+        } else if (note && note.content === value && hasUnsavedChanges) {
+            setHasUnsavedChanges(false);
         }
     };
 
@@ -79,7 +110,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 </div>
 
                 <Separator className="my-3" />
-                <TextEditor note={note} mode="edit" height="auto" onChange={handleChange} />
+                <TextEditor note={note} mode="edit" height="auto" onChange={handleChange} onUpdate={handleUpdate} />
             </div>
         </>
     );

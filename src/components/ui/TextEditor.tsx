@@ -44,10 +44,11 @@ interface Props {
     mode: 'edit' | 'create';
     height: number | string;
     onChange: (value: string) => void;
+    onUpdate?: (value: string) => void;
     error?: string | undefined;
 }
 
-const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, error = '' }) => {
+const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, onUpdate, error = '' }) => {
     // May need to find better approach to this
     const QuillNoSSRWrapper = dynamic(import('react-quill'), {
         ssr: false,
@@ -55,8 +56,6 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, error = '' 
     });
 
     if (!note && mode === 'edit') return null;
-
-    console.log('editor note', note);
 
     let placeholder = mode === 'create' ? 'Write something here...' : '';
 
@@ -107,15 +106,22 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, error = '' 
                 defaultValue={note?.content || ''}
                 placeholder={placeholder}
                 onChange={(content, _, source) => {
-                    if (source === 'user' && mode === 'create') {
+                    if (source === 'user') {
                         onChange(content);
                     }
                 }}
                 onBlur={(_, source, editor) => {
                     const text = editor.getText();
                     const updatedContent = editor.getHTML();
-                    if (text && source === 'user' && note && note.content !== updatedContent && mode === 'edit') {
-                        onChange(updatedContent);
+                    if (
+                        text &&
+                        source === 'user' &&
+                        note &&
+                        note.content !== updatedContent &&
+                        mode === 'edit' &&
+                        onUpdate
+                    ) {
+                        onUpdate(updatedContent);
                     }
                 }}
             />
