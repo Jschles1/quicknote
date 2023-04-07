@@ -16,7 +16,7 @@ function useUpdateNote() {
             await utils.notes.invalidate();
             console.log('Updated form submitted successfully with values: ', data);
             toast({
-                description: 'Successfully created note!',
+                description: 'Successfully updated note!',
                 variant: 'success',
             });
         },
