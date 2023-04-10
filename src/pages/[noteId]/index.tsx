@@ -14,7 +14,7 @@ import { cn, decodeHtml } from '@/lib/util';
 import { Input } from '@/components/ui/Input';
 
 const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
-    const { mutateUpdateNote } = useUpdateNote();
+    const { mutateUpdateNote, isUpdateNoteLoading } = useUpdateNote();
     const router = useRouter();
     const [param, setParam] = React.useState('');
     const [note, setNote] = React.useState<Note | undefined>(undefined);
@@ -69,6 +69,9 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                     category: note.category,
                     starred: note.starred,
                 });
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+                router.events.off('routeChangeStart', handleBrowseAway);
+                setEventListenersAdded(false);
             }
         }
     };
@@ -209,7 +212,11 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                     <div className="flex items-center justify-between">
                         <div>
                             {isEditingTitleOrCategory ? (
-                                <Button className="mr-3" onClick={handleSaveTitleAndCategoryChanges}>
+                                <Button
+                                    className="mr-3"
+                                    onClick={handleSaveTitleAndCategoryChanges}
+                                    disabled={isUpdateNoteLoading}
+                                >
                                     Save Note Title / Content Changes
                                 </Button>
                             ) : (
@@ -226,7 +233,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
 
                 <div className="flex items-center">
                     <Button
-                        disabled={note?.content === updatedContent}
+                        disabled={note?.content === updatedContent || isUpdateNoteLoading}
                         className="mb-3 mr-3"
                         onClick={handleUpdateContent}
                     >
