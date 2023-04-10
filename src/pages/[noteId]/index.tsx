@@ -10,7 +10,8 @@ import NoteTypes from '@/components/NoteTypes';
 import useUpdateNote from '@/lib/hooks/use-update-note';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/Button';
-import { decodeHtml } from '@/lib/util';
+import { cn, decodeHtml } from '@/lib/util';
+import { Input } from '@/components/ui/Input';
 
 const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const { mutateUpdateNote } = useUpdateNote();
@@ -18,16 +19,22 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const [param, setParam] = React.useState('');
     const [note, setNote] = React.useState<Note | undefined>(undefined);
     const [eventListenersAdded, setEventListenersAdded] = React.useState(false);
+    const [isEditingTitleOrCategory, setIsEditingTitleOrCategory] = React.useState(false);
     const {
         watch,
         setValue,
         setError,
         clearErrors,
+        register,
         formState: { errors, dirtyFields },
         getValues,
         control,
-    } = useForm({ defaultValues: { name: '', content: note?.content, category: '', starred: false } });
+    } = useForm({
+        defaultValues: { name: note?.name, content: note?.content, category: note?.category, starred: false },
+    });
+
     const updatedContent = watch('content');
+    const errorInputClass = 'border-red-500';
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
         event.preventDefault();
@@ -39,6 +46,10 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         if (window.confirm(warningText)) return;
         router.events.emit('routeChangeError');
         throw 'routeChange aborted.';
+    };
+
+    const handleChangeContent = (value: string) => {
+        setValue('content', value);
     };
 
     const handleUpdateContent = async () => {
@@ -62,8 +73,38 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         }
     };
 
-    const handleChangeContent = (value: string) => {
-        setValue('content', value);
+    const handleSaveTitleAndCategoryChanges = async () => {
+        if (note) {
+            clearErrors();
+            const values = getValues();
+            let isValid = true;
+            if (!values.category) {
+                setError('category', {
+                    type: 'manual',
+                    message: 'Category is required.',
+                });
+                isValid = false;
+            }
+            if (!values.name) {
+                setError('name', {
+                    type: 'manual',
+                    message: 'Name is required.',
+                });
+                isValid = false;
+            }
+            if (isValid) {
+                if (note?.name !== values.name || note?.category !== values.category) {
+                    await mutateUpdateNote({
+                        noteId: note?.id,
+                        content: note?.content,
+                        name: values.name as string,
+                        category: values.category as string,
+                        starred: note?.starred,
+                    });
+                }
+                setIsEditingTitleOrCategory(false);
+            }
+        }
     };
 
     React.useEffect(() => {
@@ -78,6 +119,8 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
             if (note) {
                 setNote(note);
                 setValue('content', note.content);
+                setValue('name', note.name);
+                setValue('category', note.category);
             } else {
                 router.push('/404');
             }
@@ -135,8 +178,46 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
             </Head>
             <div className="w-full max-w-7xl p-4">
                 <div className="flex w-full items-center justify-between">
-                    <h1 className="text-3xl font-extrabold">{note?.name || 'Loading...'}</h1>
+                    <div className="basis-1/2">
+                        {isEditingTitleOrCategory ? (
+                            <div>
+                                <div className="py-2 font-bold">Note Title:</div>
+                                <Input
+                                    className={cn('h-12 py-2 px-3 text-2xl', errors.name && errorInputClass)}
+                                    {...register('name', { required: true })}
+                                    placeholder="Note Title"
+                                />
+                                {errors.name && <div className="mt-2 text-sm text-red-500">{errors.name.message}</div>}
+                                <div className="py-2 font-bold">Note Category:</div>
+                                <Input
+                                    className={cn('h-12 py-2 px-3 text-2xl', errors.category && errorInputClass)}
+                                    {...register('category', { required: true })}
+                                    placeholder="Note Category"
+                                />
+                                {errors.category && (
+                                    <div className="mt-2 text-sm text-red-500">{errors.category.message}</div>
+                                )}
+                            </div>
+                        ) : (
+                            <>
+                                <p className="text-lg italic text-gray-500">Category: {note?.category}</p>
+                                <h1 className="mt-2 text-3xl font-extrabold">{note?.name || 'Loading...'}</h1>
+                            </>
+                        )}
+                    </div>
+
                     <div className="flex items-center justify-between">
+                        <div>
+                            {isEditingTitleOrCategory ? (
+                                <Button className="mr-3" onClick={handleSaveTitleAndCategoryChanges}>
+                                    Save Note Title / Content Changes
+                                </Button>
+                            ) : (
+                                <Button className="mr-3" onClick={() => setIsEditingTitleOrCategory(true)}>
+                                    Edit Note Title / Content
+                                </Button>
+                            )}
+                        </div>
                         <NoteTypes note={note} />
                     </div>
                 </div>
@@ -149,7 +230,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                         className="mb-3 mr-3"
                         onClick={handleUpdateContent}
                     >
-                        Save Content Changes
+                        Save Note Content Changes
                     </Button>
                     {errors?.content && <p className="mb-3 text-sm text-red-500">{errors?.content?.message}</p>}
                 </div>

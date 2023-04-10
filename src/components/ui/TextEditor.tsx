@@ -45,7 +45,12 @@ interface Props {
     height: number | string;
     onEditorChange: (value: string) => void;
     error?: string | undefined;
-    control?: Control<{ name: string; content: string | undefined; category: string; starred: boolean }>;
+    control?: Control<{
+        name: string | undefined;
+        content: string | undefined;
+        category: string | undefined;
+        starred: boolean;
+    }>;
 }
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
