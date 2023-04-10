@@ -2,7 +2,7 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import { Note } from '@prisma/client';
-
+import { Controller, Control } from 'react-hook-form';
 const modules = {
     toolbar: [
         [{ header: '1' }, { header: '2' }, { font: [] }],
@@ -43,18 +43,18 @@ interface Props {
     note?: Note | undefined;
     mode: 'edit' | 'create';
     height: number | string;
-    onChange: (value: string) => void;
-    onUpdate?: (value: string) => void;
+    onEditorChange: (value: string) => void;
+    onEditorUpdate?: (value: string) => void;
     error?: string | undefined;
+    control?: Control<{ name: string; content: string | undefined; category: string; starred: boolean }>;
 }
 
-const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, onUpdate, error = '' }) => {
-    // May need to find better approach to this
-    const QuillNoSSRWrapper = dynamic(import('react-quill'), {
-        ssr: false,
-        loading: () => <p>Loading ...</p>,
-    });
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+    ssr: false,
+    loading: () => <p>Loading ...</p>,
+});
 
+const TextEditor: React.FC<Props> = ({ note, mode, height, onEditorChange, onEditorUpdate, error = '', control }) => {
     if (!note && mode === 'edit') return null;
 
     let placeholder = mode === 'create' ? 'Write something here...' : '';
@@ -65,7 +65,7 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, onUpdate, e
         }
     };
 
-    // Dynamically set height of editor
+    // // Dynamically set height of editor
     React.useEffect(() => {
         const toolbar = document.querySelector('.quill');
         if (toolbar) {
@@ -76,7 +76,6 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, onUpdate, e
                 if (height) {
                     const toolbar = document.querySelector('.quill');
                     if (toolbar) {
-                        // toolbar.setAttribute('style', `height: ${height}; max-height: ${height};`);
                         setHeight(height.toString(), toolbar);
                     }
                 }
@@ -85,7 +84,7 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, onUpdate, e
         }
     }, [height]);
 
-    // Add red border if error is present
+    // // Add red border if error is present
     React.useEffect(() => {
         const container = document.querySelector('.ql-container');
         if (container) {
@@ -100,33 +99,40 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onChange, onUpdate, e
 
     return (
         <div data-height={height} className="editor">
-            <QuillNoSSRWrapper
-                modules={modules}
-                formats={formats}
-                defaultValue={note?.content || ''}
-                placeholder={placeholder}
-                onChange={(content, _, source) => {
-                    if (source === 'user') {
-                        onChange(content);
-                    }
-                }}
-                onBlur={(_, source, editor) => {
-                    const text = editor.getText();
-                    const updatedContent = editor.getHTML();
-                    if (
-                        text &&
-                        source === 'user' &&
-                        note &&
-                        note.content !== updatedContent &&
-                        mode === 'edit' &&
-                        onUpdate
-                    ) {
-                        onUpdate(updatedContent);
-                    }
-                }}
-            />
+            {control ? (
+                <Controller
+                    render={({ field: { onChange, value } }) => (
+                        <QuillNoSSRWrapper
+                            modules={modules}
+                            formats={formats}
+                            defaultValue={note?.content || ''}
+                            placeholder={placeholder}
+                            onChange={(content, _, source) => {
+                                if (source === 'user') {
+                                    onChange(content);
+                                }
+                            }}
+                            value={value}
+                        />
+                    )}
+                    name="content"
+                    control={control}
+                />
+            ) : (
+                <QuillNoSSRWrapper
+                    modules={modules}
+                    formats={formats}
+                    defaultValue={note?.content || ''}
+                    placeholder={placeholder}
+                    onChange={(content, _, source) => {
+                        if (source === 'user') {
+                            onEditorChange(content);
+                        }
+                    }}
+                />
+            )}
         </div>
     );
 };
 
-export default TextEditor;
+export default React.memo(TextEditor);

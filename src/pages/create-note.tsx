@@ -84,7 +84,6 @@ const CreateNotePage: NextPageWithLayout = () => {
     const isStarred = watch('starred');
 
     const errorInputClass = 'border-red-500';
-    console.log({ errors });
 
     React.useEffect(() => {
         if (containerRef.current && titleRef.current && inputContainerRef.current) {
@@ -154,7 +153,7 @@ const CreateNotePage: NextPageWithLayout = () => {
                     <TextEditor
                         mode="create"
                         height={editorHeight}
-                        onChange={handleEditorChange}
+                        onEditorChange={handleEditorChange}
                         error={errors?.content?.message}
                     />
                 </form>
