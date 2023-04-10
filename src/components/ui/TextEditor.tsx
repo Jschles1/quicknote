@@ -44,7 +44,6 @@ interface Props {
     mode: 'edit' | 'create';
     height: number | string;
     onEditorChange: (value: string) => void;
-    onEditorUpdate?: (value: string) => void;
     error?: string | undefined;
     control?: Control<{ name: string; content: string | undefined; category: string; starred: boolean }>;
 }
@@ -54,7 +53,7 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
     loading: () => <p>Loading ...</p>,
 });
 
-const TextEditor: React.FC<Props> = ({ note, mode, height, onEditorChange, onEditorUpdate, error = '', control }) => {
+const TextEditor: React.FC<Props> = ({ note, mode, height, onEditorChange, error = '', control }) => {
     if (!note && mode === 'edit') return null;
 
     let placeholder = mode === 'create' ? 'Write something here...' : '';

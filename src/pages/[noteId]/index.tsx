@@ -159,7 +159,6 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                     mode="edit"
                     height="auto"
                     onEditorChange={handleChangeContent}
-                    onEditorUpdate={handleUpdateContent}
                     control={control}
                     error={errors?.content?.message}
                 />
