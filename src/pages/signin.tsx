@@ -1,10 +1,7 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import GoogleButton from 'react-google-button';
 import { GetServerSidePropsContext, NextPage } from 'next';
-import { getSession, signIn, signOut, useSession } from 'next-auth/react';
-
-import { api } from '../utils/api';
+import { getSession, signIn } from 'next-auth/react';
 
 const SignIn: NextPage = () => {
     const handleSignIn = async () => {
