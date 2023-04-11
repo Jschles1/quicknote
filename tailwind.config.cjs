@@ -3,9 +3,6 @@ module.exports = {
     content: ['./src/**/*.{js,ts,jsx,tsx}'],
     theme: {
         extend: {
-            // fontFamily: {
-            //   sans: ["var(--font-sans)", ...fontFamily.sans],
-            // },
             keyframes: {
                 'accordion-down': {
                     from: { height: 0 },
@@ -22,5 +19,5 @@ module.exports = {
             },
         },
     },
-    plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar')],
+    plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar'), require('@tailwindcss/line-clamp')],
 };

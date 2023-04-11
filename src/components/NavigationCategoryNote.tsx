@@ -14,12 +14,13 @@ const NavigationCategoryNote: React.FC<Props> = ({ note, onStarClick }) => {
     return (
         <div className="relative mb-2 rounded-md p-2 hover:bg-slate-300">
             <Link href={`/${note.id}`} key={note.id} className="flex items-center gap-2 text-sm">
-                <FileText size="1rem" color="gray" /> <span>{note.name}</span>{' '}
+                <FileText size="1rem" color="gray" />{' '}
+                <span className="w-[calc(100%-3rem)] overflow-hidden text-ellipsis whitespace-nowrap">{note.name}</span>{' '}
             </Link>
             <Star
                 size="1rem"
                 className={cn(
-                    'absolute right-[8px] top-[10px] cursor-pointer',
+                    'absolute right-[14px] top-[10px] cursor-pointer',
                     isStarred ? 'fill-amber-500 hover:fill-none' : 'fill-none hover:fill-amber-500'
                 )}
                 onClick={() => onStarClick(note.id)}

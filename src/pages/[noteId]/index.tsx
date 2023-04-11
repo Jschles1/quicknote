@@ -35,6 +35,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
 
     const updatedContent = watch('content');
     const errorInputClass = 'border-red-500';
+    const overflowClass = 'whitespace-nowrap overflow-hidden max-w-[900px] text-ellipsis';
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
         event.preventDefault();
@@ -189,6 +190,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                                     className={cn('h-12 py-2 px-3 text-2xl', errors.name && errorInputClass)}
                                     {...register('name', { required: true })}
                                     placeholder="Note Title"
+                                    maxLength={100}
                                 />
                                 {errors.name && <div className="mt-2 text-sm text-red-500">{errors.name.message}</div>}
                                 <div className="py-2 font-bold">Note Category:</div>
@@ -196,6 +198,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                                     className={cn('h-12 py-2 px-3 text-2xl', errors.category && errorInputClass)}
                                     {...register('category', { required: true })}
                                     placeholder="Note Category"
+                                    maxLength={100}
                                 />
                                 {errors.category && (
                                     <div className="mt-2 text-sm text-red-500">{errors.category.message}</div>
@@ -203,8 +206,12 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                             </div>
                         ) : (
                             <>
-                                <p className="text-lg italic text-gray-500">Category: {note?.category}</p>
-                                <h1 className="mt-2 text-3xl font-extrabold">{note?.name || 'Loading...'}</h1>
+                                <p className={cn('text-lg italic text-gray-500', overflowClass)}>
+                                    Category: {note?.category}
+                                </p>
+                                <h1 className={cn('mt-2 text-3xl font-extrabold', overflowClass)}>
+                                    {note?.name || 'Loading...'}
+                                </h1>
                             </>
                         )}
                     </div>
