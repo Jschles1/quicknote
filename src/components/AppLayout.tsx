@@ -7,6 +7,8 @@ import { api } from '@/utils/api';
 import { Note } from '@prisma/client';
 import useCreateNote from '@/lib/hooks/use-create-note';
 import useUpdateNote from '@/lib/hooks/use-update-note';
+import useMediaQuery from '@/lib/hooks/use-media-query';
+import NotSupported from './NotSupported';
 
 interface AppLayoutProps {
     children: React.ReactElement;
@@ -18,6 +20,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const { data, isLoading: isGetAllLoading } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
     const { isCreateNoteLoading } = useCreateNote();
     const { isUpdateNoteLoading } = useUpdateNote();
+    const matches = useMediaQuery('(max-width: 1023px)');
 
     React.useEffect(() => {
         const recentlyViewedNotesStorage = localStorage.getItem('recentlyViewedNotes');
@@ -29,6 +32,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     }, [router.pathname, data]);
 
     const isLoading = isGetAllLoading || isCreateNoteLoading || isUpdateNoteLoading;
+
+    if (matches) {
+        return <NotSupported />;
+    }
 
     return (
         <main className="min-w-screen relative flex max-h-screen min-h-screen">

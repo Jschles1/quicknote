@@ -1,7 +1,5 @@
 import * as React from 'react';
-import Link from 'next/link';
 import NoteCard from './NoteCard';
-import { decodeHtml } from '@/lib/util';
 import { Note } from '@prisma/client';
 
 interface Props {
