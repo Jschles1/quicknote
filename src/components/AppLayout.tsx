@@ -28,16 +28,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         }
     }, [router.pathname, data]);
 
-    const overlayPages = ['/create-note'];
     const isLoading = isGetAllLoading || isCreateNoteLoading || isUpdateNoteLoading;
-    const showOverlay = isLoading && overlayPages.includes(router.pathname);
 
     return (
         <main className="min-w-screen relative flex max-h-screen min-h-screen">
             <Navigation notes={data || []} recentlyViewedNotes={recentlyViewedNotes} />
             <div className="relative mx-auto flex w-[calc(100%-300px)] flex-col items-center gap-12 overflow-y-scroll">
                 {React.cloneElement(children, { notes: !!data ? data : [] })}
-                {showOverlay && <LoadingOverlay />}
+                {isLoading && <LoadingOverlay />}
             </div>
             <Toaster />
         </main>
