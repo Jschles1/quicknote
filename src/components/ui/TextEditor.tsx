@@ -3,19 +3,46 @@ import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import { Note } from '@prisma/client';
 import { Controller, Control } from 'react-hook-form';
+// import { Quill } from 'react-quill';
+// import ImageUploader from 'quill-image-uploader';
+
+// Quill.register('modules/imageUploader', ImageUploader);
+
 const modules = {
     toolbar: [
         [{ header: '1' }, { header: '2' }, { font: [] }],
         [{ size: [] }],
         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
         [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-        ['link', 'image', 'video'],
+        ['link', 'video'],
         ['clean'],
     ],
     clipboard: {
         // toggle to add extra line breaks when pasting HTML:
         matchVisual: false,
     },
+    // imageUploader: {
+    //     upload: (file: any) => {
+    //         return new Promise((resolve, reject) => {
+    //             const formData = new FormData();
+    //             formData.append('image', file);
+
+    //             fetch('/api/upload', {
+    //                 method: 'POST',
+    //                 body: formData,
+    //             })
+    //                 .then((response) => response.json())
+    //                 .then((result) => {
+    //                     console.log('result', result);
+    //                     resolve(result.data.url);
+    //                 })
+    //                 .catch((error) => {
+    //                     reject('Upload failed');
+    //                     console.error('Error:', error);
+    //                 });
+    //         });
+    //     },
+    // },
 };
 
 /*
