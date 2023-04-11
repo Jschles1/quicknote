@@ -29,6 +29,7 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 
 ## Post MVP TODO
 
+-   Loading state skeletons
 -   End to end and integration testing
 -   Support for tablet and mobile devices
 -   Editor updates
