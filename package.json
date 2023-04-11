@@ -28,6 +28,7 @@
         "@trpc/server": "^10.9.0",
         "class-variance-authority": "^0.4.0",
         "clsx": "^1.2.1",
+        "date-fns": "^2.29.3",
         "install": "^0.13.0",
         "lucide-react": "^0.115.0",
         "next": "13.1.6",
@@ -47,6 +48,7 @@
         "zod": "^3.20.2"
     },
     "devDependencies": {
+        "@tailwindcss/line-clamp": "^0.4.4",
         "@types/node": "^18.11.18",
         "@types/prettier": "^2.7.2",
         "@types/react": "^18.0.26",

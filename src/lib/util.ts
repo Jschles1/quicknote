@@ -1,6 +1,11 @@
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Note } from '@prisma/client';
+import { format } from 'date-fns';
+
+export function formatDate(date: Date): string {
+    return format(date, "MMMM do yyyy 'at' h:mm a");
+}
 
 export function notesSortedByCategory(notes: Note[]) {
     const notesByCategory: { name: string; notes: Note[] }[] = [];
