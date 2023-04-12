@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { api } from '@/utils/api';
 import { useToast } from './use-toast';
 
@@ -26,7 +25,7 @@ function useNoteType() {
                 await utils.notes.invalidate();
             }
         },
-        onError: async (error) => {
+        onError: (error) => {
             console.log('Form submission failed with error: ', error);
             toast({
                 description: 'Failed to create note! ' + error.message,

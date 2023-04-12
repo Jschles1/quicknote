@@ -9,19 +9,20 @@ interface Props {
 }
 
 const NavigationRecentlyViewedNotes: React.FC<Props> = ({ notes }) => {
-    if (!notes || !notes.length) return null;
     const { mutateNoteType } = useNoteType();
 
     const handleStarClick = async (noteId: string) => {
         await mutateNoteType({ noteId, type: 'starred' });
     };
 
+    if (!notes || !notes.length) return null;
+
     return (
         <>
             <Separator />
             <div className="p-4">
                 <div className="p-2 font-bold">Recently Viewed:</div>
-                {notes.map((note: any) => (
+                {notes.map((note: Note) => (
                     <NavigationCategoryNote key={note.id} note={note} onStarClick={() => handleStarClick(note.id)} />
                 ))}
             </div>

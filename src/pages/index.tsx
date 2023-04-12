@@ -50,7 +50,7 @@ const sortNotesByCategory = (notes: Note[]): NotesByCategory[] => {
     return notesByCategory;
 };
 
-export async function getServerSideProps({ req, res, query }: GetServerSidePropsContext) {
+export function getServerSideProps({ req, res, query }: GetServerSidePropsContext) {
     let defaultTab = 'all';
     if (query?.type) {
         defaultTab = query.type as string;
@@ -130,7 +130,7 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
         setTabValue(e.currentTarget.getAttribute('data-value')!);
     };
 
-    const handleSearchChange = (e: React.BaseSyntheticEvent) => {
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
     };
 

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { api } from '@/utils/api';
 import { useToast } from './use-toast';
 
@@ -20,7 +19,7 @@ function useUpdateNote() {
                 variant: 'success',
             });
         },
-        onError: async (error) => {
+        onError: (error) => {
             console.log('Form submission failed with error: ', error);
             toast({
                 description: 'Failed to update note! ' + error.message,

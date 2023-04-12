@@ -9,7 +9,6 @@ interface Props {
 }
 
 const NoteTypes: React.FC<Props> = ({ note }) => {
-    if (!note) return null;
     const { mutateNoteType } = useNoteType();
 
     const handleStarClick = async (noteId: string) => {
@@ -23,6 +22,8 @@ const NoteTypes: React.FC<Props> = ({ note }) => {
     const handleTrashClick = async (noteId: string) => {
         await mutateNoteType({ noteId, type: 'trash' });
     };
+
+    if (!note) return null;
 
     return (
         <div className="flex items-center gap-2">
