@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
             }
             return session;
         },
-        signIn({ user, account, profile, email, credentials }) {
+        signIn() {
             return true;
         },
     },

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
-import { Note } from '@prisma/client';
-import { Controller, Control } from 'react-hook-form';
+import type { Note } from '@prisma/client';
+import { Controller, type Control } from 'react-hook-form';
 // import { Quill } from 'react-quill';
 // import ImageUploader from 'quill-image-uploader';
 
@@ -86,9 +86,7 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
 });
 
 const TextEditor: React.FC<Props> = ({ note, mode, height, onEditorChange, error = '', control }) => {
-    if (!note && mode === 'edit') return null;
-
-    let placeholder = mode === 'create' ? 'Write something here...' : '';
+    const placeholder = mode === 'create' ? 'Write something here...' : '';
 
     const setHeight = (height: string, toolbar: Element) => {
         if (height) {
@@ -96,14 +94,14 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onEditorChange, error
         }
     };
 
-    // // Dynamically set height of editor
+    // Dynamically set height of editor
     React.useEffect(() => {
         const toolbar = document.querySelector('.quill');
         if (toolbar) {
             setHeight(height.toString(), toolbar);
         } else {
             // For first load
-            let timer = setTimeout(() => {
+            const timer = setTimeout(() => {
                 if (height) {
                     const toolbar = document.querySelector('.quill');
                     if (toolbar) {
@@ -115,7 +113,7 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onEditorChange, error
         }
     }, [height]);
 
-    // // Add red border if error is present
+    // Add red border if error is present
     React.useEffect(() => {
         const container = document.querySelector('.ql-container');
         if (container) {
@@ -127,6 +125,8 @@ const TextEditor: React.FC<Props> = ({ note, mode, height, onEditorChange, error
             }
         }
     }, [error]);
+
+    if (!note && mode === 'edit') return null;
 
     return (
         <div data-height={height} className="editor">

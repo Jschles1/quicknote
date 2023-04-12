@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { NextPage } from 'next';
-import { type AppType, AppProps } from 'next/app';
+import { type NextPage } from 'next';
+import type { AppType, AppProps } from 'next/app';
 import { Nunito } from '@next/font/google';
 import { type Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
@@ -9,7 +9,7 @@ import { api } from '../utils/api';
 
 import '../styles/globals.css';
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
@@ -31,7 +31,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     const getLayout = Component.getLayout ?? ((page) => page);
     const Page = getLayout(<Component {...pageProps} />);
     return (
-        <SessionProvider session={session}>
+        <SessionProvider session={session as Session}>
             <>
                 <style jsx global>{`
                     body {

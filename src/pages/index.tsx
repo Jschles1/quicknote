@@ -71,7 +71,6 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
     const [filter, setFilter] = React.useState<string>('');
     const [isDialogOpen, setisDialogOpen] = React.useState(false);
     const { mutateEmptyTrash } = useEmptyTrash();
-    if (!session) return null;
 
     const filterNotes = (notes: Note[], type: 'all' | 'starred' | 'archived' | 'trash', isCategory = false) => {
         const hasSearch = search.trim().length > 0;
@@ -154,6 +153,8 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
             setTabValue(router.query.type.toString());
         }
     }, [router.isReady, router.query?.type]);
+
+    if (!session) return null;
 
     return (
         <>

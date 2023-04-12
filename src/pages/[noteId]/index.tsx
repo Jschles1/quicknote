@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { NextPageWithLayout } from '../_app';
+import type { NextPageWithLayout } from '../_app';
 import AppLayout from '@/components/AppLayout';
 import TextEditor from '@/components/ui/TextEditor';
 import { Separator } from '@/components/ui/Separator';
-import { Note } from '@prisma/client';
+import type { Note } from '@prisma/client';
 import NoteTypes from '@/components/NoteTypes';
 import useUpdateNote from '@/lib/hooks/use-update-note';
 import { useForm } from 'react-hook-form';
@@ -53,7 +53,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         setValue('content', value);
     };
 
-    const handleUpdateContent = async () => {
+    const handleUpdateContent = async (): Promise<void> => {
         if (note && note.content !== updatedContent) {
             const updatedContent = getValues().content as string;
             if (!decodeHtml(updatedContent)) {
@@ -77,7 +77,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         }
     };
 
-    const handleSaveTitleAndCategoryChanges = async () => {
+    const handleSaveTitleAndCategoryChanges = async (): Promise<void> => {
         if (note) {
             clearErrors();
             const values = getValues();
@@ -118,6 +118,9 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     }, [router.isReady, router.pathname, router?.query?.noteId]);
 
     React.useEffect(() => {
+        const redirect = async () => {
+            await router.push('/404');
+        };
         if (param && notes.length) {
             const note = notes.find((note) => note.id === param) || undefined;
             if (note) {
@@ -126,7 +129,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 setValue('name', note.name);
                 setValue('category', note.category);
             } else {
-                router.push('/404');
+                redirect().catch((err) => console.error(err));
             }
         }
     }, [param, notes]);
@@ -136,8 +139,8 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         if (note) {
             const recentlyViewedNotes = localStorage.getItem('recentlyViewedNotes');
             if (recentlyViewedNotes) {
-                const parsedRecentlyViewedNotes = JSON.parse(recentlyViewedNotes);
-                const alreadyExists = parsedRecentlyViewedNotes.find((note: Note) => note.id === param);
+                const parsedRecentlyViewedNotes = JSON.parse(recentlyViewedNotes) as string[];
+                const alreadyExists = parsedRecentlyViewedNotes.find((id: string) => id === param);
                 if (!alreadyExists) {
                     if (parsedRecentlyViewedNotes.length >= 5) {
                         parsedRecentlyViewedNotes.pop();

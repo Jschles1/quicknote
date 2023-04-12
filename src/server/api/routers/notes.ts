@@ -1,4 +1,4 @@
-import { Note } from '@prisma/client';
+import type { Note } from '@prisma/client';
 import { z } from 'zod';
 import sanitize from '@/lib/sanitize';
 
