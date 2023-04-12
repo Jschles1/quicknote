@@ -1,9 +1,7 @@
 import * as React from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { Star } from 'lucide-react';
-import { api } from '../utils/api';
 import { NextPageWithLayout } from './_app';
 import AppLayout from '@/components/AppLayout';
 import TextEditor from '@/components/ui/TextEditor';
@@ -11,7 +9,6 @@ import { Separator } from '@/components/ui/Separator';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { cn, decodeHtml } from '@/lib/util';
-import { useToast } from '@/lib/hooks/use-toast';
 import useCreateNote from '@/lib/hooks/use-create-note';
 
 const CreateNotePage: NextPageWithLayout = () => {
@@ -19,12 +16,11 @@ const CreateNotePage: NextPageWithLayout = () => {
 
     const {
         register,
-        handleSubmit,
         watch,
         setValue,
         setError,
         clearErrors,
-        formState: { errors, isSubmitted },
+        formState: { errors },
         getValues,
     } = useForm({ defaultValues: { name: '', content: '', category: '', starred: false } });
 
@@ -82,7 +78,6 @@ const CreateNotePage: NextPageWithLayout = () => {
     };
 
     const isStarred = watch('starred');
-
     const errorInputClass = 'border-red-500';
 
     React.useEffect(() => {

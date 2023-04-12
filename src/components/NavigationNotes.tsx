@@ -3,7 +3,6 @@ import { Note } from '@prisma/client';
 import NavigationCategoryNote from './NavigationCategoryNote';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/Accordion';
 import { notesSortedByCategory } from '@/lib/util';
-import { api } from '@/utils/api';
 import useNoteType from '@/lib/hooks/use-note-type';
 
 interface Props {
@@ -11,18 +10,6 @@ interface Props {
 }
 
 const NavigationNotes: React.FC<Props> = ({ notes }) => {
-    // const utils = api.useContext();
-    // // TODO: add optimistic update
-    // const { mutateAsync } = api.notes.toggleNoteType.useMutation({
-    //     onMutate: async (data) => {
-    //         // Cancel outgoing fetches (so they don't overwrite our optimistic update)
-    //         await utils.notes.getAll.cancel();
-    //     },
-    //     onSuccess: async (data) => {
-    //         // await utils.invalidate();
-    //         await utils.notes.invalidate();
-    //     },
-    // });
     const { mutateNoteType } = useNoteType();
 
     if (!notes) return null;
