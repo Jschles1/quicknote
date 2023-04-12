@@ -8,7 +8,6 @@ import { GetServerSidePropsContext } from 'next';
 import AppLayout from '../components/AppLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Note } from '@prisma/client';
-import { Separator } from '@/components/ui/Separator';
 import {
     Dialog,
     DialogContent,
@@ -69,27 +68,75 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
     const router = useRouter();
     const [tabValue, setTabValue] = React.useState(defaultTab);
     const [search, setSearch] = React.useState('');
-    const [filter, setFilter] = React.useState('');
+    const [filter, setFilter] = React.useState<string>('');
     const [isDialogOpen, setisDialogOpen] = React.useState(false);
     const { mutateEmptyTrash } = useEmptyTrash();
     if (!session) return null;
 
-    const allNotes = notes.filter((n) => !n.archived && !n.trash);
-    const categoryNotes = sortNotesByCategory(notes.filter((n) => !n.archived && !n.trash));
-    const starredNotes = notes.filter((n) => n.starred && !n.archived && !n.trash);
-    const archivedNotes = notes.filter((n) => n.archived);
-    const trashNotes = notes.filter((n) => n.trash);
+    const filterNotes = (notes: Note[], type: 'all' | 'starred' | 'archived' | 'trash', isCategory = false) => {
+        const hasSearch = search.trim().length > 0;
+        const hasFilter = filter.trim().length > 0;
+
+        let filteredNotes = notes;
+
+        const hasSearchTerm = (note: Note) =>
+            hasSearch
+                ? (note.name.toLowerCase().includes(search.toLowerCase()) ||
+                      note.category.toLowerCase().includes(search.toLowerCase())) &&
+                  !isCategory
+                : true;
+
+        switch (type) {
+            case 'all':
+                filteredNotes = notes.filter((note) => {
+                    return hasSearchTerm(note) && !note.archived && !note.trash;
+                });
+                break;
+            case 'starred':
+                filteredNotes = notes.filter((note) => {
+                    return hasSearchTerm(note) && note.starred && !note.archived && !note.trash;
+                });
+                break;
+            case 'archived':
+                filteredNotes = notes.filter((note) => {
+                    return hasSearchTerm(note) && note.archived;
+                });
+                break;
+            case 'trash':
+                filteredNotes = notes.filter((note) => {
+                    return hasSearchTerm(note) && note.trash;
+                });
+                break;
+            default:
+                break;
+        }
+
+        if (hasFilter) {
+            filteredNotes =
+                filter === 'newest'
+                    ? filteredNotes.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+                    : filteredNotes.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+        }
+
+        return filteredNotes;
+    };
+
+    const allNotes = filterNotes(notes, 'all');
+    const categoryNotes = sortNotesByCategory(filterNotes(notes, 'all', true));
+    const starredNotes = filterNotes(notes, 'starred');
+    const archivedNotes = filterNotes(notes, 'archived');
+    const trashNotes = filterNotes(notes, 'trash');
 
     const handleTabChange = (e: React.SyntheticEvent) => {
         setTabValue(e.currentTarget.getAttribute('data-value')!);
     };
 
-    const handleSearchChange = (value: any) => {
-        console.log(value);
+    const handleSearchChange = (e: React.BaseSyntheticEvent) => {
+        setSearch(e.target.value);
     };
 
-    const handleFilterChange = (value: any) => {
-        console.log(value);
+    const handleFilterChange = (e: React.SyntheticEvent) => {
+        setFilter(e.currentTarget.getAttribute('data-value')!);
     };
 
     const handleEmptyTrash = async () => {
@@ -177,6 +224,7 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                         onSearchChange={handleSearchChange}
                         onFilterChange={handleFilterChange}
                         currentTab={tabValue as string}
+                        currentFilter={filter}
                     />
 
                     <div className="flex-1 bg-slate-100">
