@@ -21,6 +21,7 @@ Visit the live website [here](https://quicknote-app.vercel.app/).
 -   [Prisma](https://prisma.io)
 -   [Tailwind CSS](https://tailwindcss.com)
 -   [tRPC](https://trpc.io)
+-   [Quill Text Editor](https://github.com/zenoamaro/react-quill)
 
 ## Supported Authentication Methods
 
