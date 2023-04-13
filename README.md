@@ -1,12 +1,20 @@
-# Create T3 App
+# QuickNote
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+QuickNote is a simple iOS Notes app clone I built to familiarize myself with the [T3 Stack](https://create.t3.gg/).
 
-## What's next? How do I make an app with this?
+Users can create, update and delete notes using a rich text editor. Notes can be flagged by the user to be starred, archived, or trash.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+![QuickNote Editor](https://images2.imgbox.com/70/6f/UHzVb5LD_o.png)
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Users can then sort their notes by these flags.
+
+![QuickNote Home Page](https://images2.imgbox.com/a1/c8/U3kjZaYT_o.png)
+
+App design is inspired by [Nulis Notes App](https://dribbble.com/shots/19726217-Nulis-Notes-Desktop-App) design by Rayfan Tio Saputro.
+
+Visit the live website [here](https://quicknote-app.vercel.app/).
+
+## Technologies Used
 
 -   [Next.js](https://nextjs.org)
 -   [NextAuth.js](https://next-auth.js.org)
@@ -14,18 +22,9 @@ If you are not familiar with the different technologies used in this project, pl
 -   [Tailwind CSS](https://tailwindcss.com)
 -   [tRPC](https://trpc.io)
 
-## Learn More
+## Supported Authentication Methods
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
--   [Documentation](https://create.t3.gg/)
--   [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+QuickNote currently only supports Google authentication for user sign up and login. More authentication methods are planned to be added in the future.
 
 ## Post MVP TODO
 
@@ -38,3 +37,4 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
     -   Image upload functionality
     -   Performance improvements
 -   Interactive tutorial for new users
+-   Add more authentication options
