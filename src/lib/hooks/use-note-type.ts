@@ -5,7 +5,6 @@ import { Note } from '@prisma/client';
 function useNoteType() {
     const utils = api.useContext();
     const { toast } = useToast();
-    // TODO: add optimistic update
     const { mutateAsync } = api.notes.toggleNoteType.useMutation({
         onMutate: async (updated) => {
             console.log('Updating note type', updated);
@@ -30,7 +29,7 @@ function useNoteType() {
             );
 
             // Return the previous data so we can revert if something goes wrong
-            return { prevData: prevData };
+            return { prevData };
         },
         onSuccess: async (data) => {
             if (data !== 'Unauthorized') {
