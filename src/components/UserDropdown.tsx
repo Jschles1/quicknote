@@ -28,7 +28,7 @@ const UserDropdown: React.FC = () => {
                 <DropdownMenuTrigger className="'active:scale-95 dark:data-[state=open]:bg-slate-300' text-md inline-flex w-full items-center justify-center rounded-md p-2 font-medium outline-none transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-slate-300 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900 dark:hover:bg-slate-300">
                     <div className="flex w-full items-center justify-start">
                         <Skeleton height={25} width={25} isLoading={isLoading} className="relative h-full">
-                            <UserImage name={name} src={src} />
+                            {src && <UserImage name={name} src={src} />}
                         </Skeleton>
                         <Skeleton height={25} width={25} isLoading={isLoading} className="mx-3 flex-1">
                             {name}
