@@ -25,7 +25,7 @@ const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes, isLoading }) 
 
                     <NoteStatistics notes={notes} isLoading={isLoading} />
 
-                    <NavigationRecentlyViewedNotes notes={recentlyViewedNotes} />
+                    <NavigationRecentlyViewedNotes notes={recentlyViewedNotes} isLoading={isLoading} />
 
                     <Separator />
 
