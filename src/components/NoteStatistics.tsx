@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { Note } from '@prisma/client';
+import { Skeleton } from './ui/Skeleton';
 import { Star, Archive, Trash } from 'lucide-react';
 
 const StatLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
@@ -9,11 +10,22 @@ const StatLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href,
     </Link>
 );
 
+const NoteStatisticsSkeletons: React.FC = () => (
+    // TODO: Need to figure out why skeleton only shows on height={25} and not on others
+    <div className="p-4">
+        <Skeleton isLoading={true} height={40} className="mb-2 h-[40px]" />
+        <Skeleton isLoading={true} height={40} className="mb-2 h-[40px]" />
+        <Skeleton isLoading={true} height={40} className="mb-2 h-[40px]" />
+    </div>
+);
+
 interface Props {
     notes: Note[] | undefined;
+    isLoading: boolean;
 }
 
-const NoteStatistics: React.FC<Props> = ({ notes }) => {
+const NoteStatistics: React.FC<Props> = ({ notes, isLoading }) => {
+    if (isLoading) return <NoteStatisticsSkeletons />;
     if (!notes) return null;
     const stats = {
         starred: 0,

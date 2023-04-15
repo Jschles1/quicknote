@@ -11,9 +11,10 @@ import { Note } from '@prisma/client';
 interface Props {
     notes: Note[];
     recentlyViewedNotes: Note[];
+    isLoading: boolean;
 }
 
-const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes }) => {
+const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes, isLoading }) => {
     return (
         <div className="relative flex min-h-screen w-[300px] min-w-[300px] flex-col border border-r-slate-400 bg-slate-200">
             {!!notes && (
@@ -22,7 +23,7 @@ const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes }) => {
 
                     <UserDropdown />
 
-                    <NoteStatistics notes={notes} />
+                    <NoteStatistics notes={notes} isLoading={isLoading} />
 
                     <NavigationRecentlyViewedNotes notes={recentlyViewedNotes} />
 
