@@ -30,7 +30,6 @@ QuickNote currently only supports Google authentication for user sign up and log
 
 ## Post MVP TODO
 
--   Loading state skeletons
 -   Optimistic updates w/ TRPC
 -   Dark mode
 -   End to end and integration testing
