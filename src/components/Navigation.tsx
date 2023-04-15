@@ -29,7 +29,7 @@ const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes, isLoading }) 
 
                     <Separator />
 
-                    <NavigationNotes notes={notes} />
+                    <NavigationNotes notes={notes} isLoading={isLoading} />
 
                     <NavigationCreateNoteButton />
                 </>
