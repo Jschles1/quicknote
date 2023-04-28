@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Head from 'next/head';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Star } from 'lucide-react';
 import { NextPageWithLayout } from './_app';
 import AppLayout from '@/components/AppLayout';
@@ -10,6 +11,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { cn, decodeHtml } from '@/lib/util';
 import useCreateNote from '@/lib/hooks/use-create-note';
+import { createNoteSchema, CreateFormSchemaType } from '@/lib/formSchemas';
 
 const CreateNotePage: NextPageWithLayout = () => {
     const { mutateCreateNote } = useCreateNote();
@@ -20,9 +22,13 @@ const CreateNotePage: NextPageWithLayout = () => {
         setValue,
         setError,
         clearErrors,
+        handleSubmit,
         formState: { errors },
         getValues,
-    } = useForm({ defaultValues: { name: '', content: '', category: '', starred: false } });
+    } = useForm<CreateFormSchemaType>({
+        resolver: zodResolver(createNoteSchema),
+        defaultValues: { name: '', content: '', category: '', starred: false },
+    });
 
     // Used for calculating editor height
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -37,34 +43,9 @@ const CreateNotePage: NextPageWithLayout = () => {
     const contentErrorHeight = errors.content ? 28 : 0;
 
     // Custom handleSubmit to extend functionality to text editor
-    const onSubmit = async () => {
+    const onSubmit: SubmitHandler<CreateFormSchemaType> = async (data) => {
         clearErrors();
-        const values = getValues();
-        let isValid = true;
-        if (!values.category) {
-            setError('category', {
-                type: 'manual',
-                message: 'Please enter a category.',
-            });
-            isValid = false;
-        }
-        if (!values.name) {
-            setError('name', {
-                type: 'manual',
-                message: 'Please enter a name.',
-            });
-            isValid = false;
-        }
-        if (!decodeHtml(values.content)) {
-            setError('content', {
-                type: 'manual',
-                message: 'Please enter some content.',
-            });
-            isValid = false;
-        }
-        if (isValid) {
-            await mutateCreateNote(values);
-        }
+        await mutateCreateNote(data);
     };
 
     const handleStarClick = () => {
@@ -122,7 +103,7 @@ const CreateNotePage: NextPageWithLayout = () => {
                             )}
                             onClick={handleStarClick}
                         />
-                        <Button onClick={onSubmit}>Submit</Button>
+                        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
                     </div>
                 </div>
 
