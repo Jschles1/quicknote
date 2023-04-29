@@ -20,17 +20,11 @@ const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes, isLoading }) 
             {!!notes && (
                 <>
                     <Logo />
-
                     <UserDropdown />
-
                     <NoteStatistics notes={notes} isLoading={isLoading} />
-
                     <NavigationRecentlyViewedNotes notes={recentlyViewedNotes} isLoading={isLoading} />
-
                     <Separator />
-
                     <NavigationNotes notes={notes} isLoading={isLoading} />
-
                     <NavigationCreateNoteButton />
                 </>
             )}

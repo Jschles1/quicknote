@@ -42,7 +42,6 @@ const CreateNotePage: NextPageWithLayout = () => {
     const categoryErrorHeight = errors.category ? 28 : 0;
     const contentErrorHeight = errors.content ? 28 : 0;
 
-    // Custom handleSubmit to extend functionality to text editor
     const onSubmit: SubmitHandler<CreateFormSchemaType> = async (data) => {
         clearErrors();
         await mutateCreateNote(data);
