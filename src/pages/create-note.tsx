@@ -9,7 +9,7 @@ import TextEditor from '@/components/ui/TextEditor';
 import { Separator } from '@/components/ui/Separator';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { cn, decodeHtml } from '@/lib/util';
+import { cn } from '@/lib/util';
 import useCreateNote from '@/lib/hooks/use-create-note';
 import { createNoteSchema, CreateFormSchemaType } from '@/lib/formSchemas';
 
@@ -20,7 +20,6 @@ const CreateNotePage: NextPageWithLayout = () => {
         register,
         watch,
         setValue,
-        setError,
         clearErrors,
         handleSubmit,
         formState: { errors },
