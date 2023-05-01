@@ -26,7 +26,7 @@ const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
                         >
                             {note.category}
                         </Link>
-                        <NoteTypes note={note} />
+                        <NoteTypes note={note} variant="card" />
                     </div>
                 )}
                 <Link
@@ -34,7 +34,7 @@ const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
                     className={cn('mb-2 text-xl font-bold', isSwiperSlide ? 'flex items-center justify-between' : '')}
                 >
                     <div className="overflow-hidden text-ellipsis whitespace-nowrap">{note.name}</div>
-                    {isSwiperSlide && <NoteTypes note={note} />}
+                    {isSwiperSlide && <NoteTypes note={note} variant="card" />}
                 </Link>
             </div>
 

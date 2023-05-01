@@ -23,6 +23,7 @@ const NavigationCategoryNote: React.FC<Props> = ({ note, onStarClick }) => {
                     'absolute right-[14px] top-[10px] cursor-pointer',
                     isStarred ? 'fill-amber-500 hover:fill-none' : 'fill-none hover:fill-amber-500'
                 )}
+                strokeWidth={1}
                 onClick={() => onStarClick(note.id)}
             />
         </div>

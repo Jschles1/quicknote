@@ -200,38 +200,36 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                         )}
                     </div>
 
-                    <div className="flex items-center justify-between">
-                        <div>
-                            {isEditingTitleOrCategory ? (
-                                <Button
-                                    className="mr-3"
-                                    onClick={handleSubmit(handleSaveTitleAndCategoryChanges)}
-                                    disabled={isUpdateNoteLoading}
-                                >
-                                    Save Note Title / Content Changes
-                                </Button>
-                            ) : (
-                                <Button className="mr-3" onClick={() => setIsEditingTitleOrCategory(true)}>
-                                    Edit Note Title / Content
-                                </Button>
-                            )}
-                        </div>
-                        <NoteTypes note={note} />
+                    <div className="mr-3 flex items-center justify-between">
+                        <NoteTypes note={note} variant="detail" />
                     </div>
                 </div>
 
                 <Separator className="my-3" />
 
-                <div className="flex items-center">
+                <div className="mb-3 flex items-center justify-between">
+                    {isEditingTitleOrCategory ? (
+                        <Button
+                            className="mr-3"
+                            onClick={handleSubmit(handleSaveTitleAndCategoryChanges)}
+                            disabled={isUpdateNoteLoading}
+                        >
+                            Save Note Title / Content Changes
+                        </Button>
+                    ) : (
+                        <Button className="mr-3" onClick={() => setIsEditingTitleOrCategory(true)}>
+                            Edit Note Title / Content
+                        </Button>
+                    )}
                     <Button
                         disabled={note?.content === updatedContent || isUpdateNoteLoading}
-                        className="mb-3 mr-3"
                         onClick={handleSubmit(handleUpdateContent)}
                     >
                         Save Note Content Changes
                     </Button>
-                    {errors?.content && <p className="mb-3 text-sm text-red-500">{errors?.content?.message}</p>}
                 </div>
+
+                {errors?.content && <p className="mb-3 text-sm text-red-500">{errors?.content?.message}</p>}
 
                 <TextEditor
                     note={note}
