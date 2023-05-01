@@ -11,7 +11,7 @@ export interface SkeletonProps extends React.HTMLProps<HTMLDivElement> {
 const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
     ({ className, isLoading, height, width, children, ...props }, ref) => {
         const classNameStr = cn(
-            isLoading ? `h-[${height}px] animate-pulse rounded-full bg-gray-400` : '',
+            isLoading ? `h-[${height}px] animate-pulse rounded-full bg-gray-300` : '',
             isLoading && width && `w-[${width}px]`,
             className
         );
