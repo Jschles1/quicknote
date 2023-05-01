@@ -83,8 +83,8 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                 await mutateUpdateNote({
                     noteId: note?.id,
                     content: note?.content,
-                    name: data.name as string,
-                    category: data.category as string,
+                    name: data.name,
+                    category: data.category,
                     starred: note?.starred,
                 });
             }
