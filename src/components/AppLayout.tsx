@@ -2,13 +2,13 @@ import * as React from 'react';
 import { useRouter } from 'next/router';
 import Navigation from './Navigation';
 import LoadingOverlay from './LoadingOverlay';
+import NotSupported from './NotSupported';
 import { Toaster } from '@/components/ui/Toaster';
 import { api } from '@/utils/api';
 import { Note } from '@prisma/client';
 import useCreateNote from '@/lib/hooks/use-create-note';
 import useUpdateNote from '@/lib/hooks/use-update-note';
 import useMediaQuery from '@/lib/hooks/use-media-query';
-import NotSupported from './NotSupported';
 
 interface AppLayoutProps {
     children: React.ReactElement;
