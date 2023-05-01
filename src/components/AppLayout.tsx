@@ -20,7 +20,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const { data, isLoading: isGetAllLoading } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
     const { isCreateNoteLoading } = useCreateNote();
     const { isUpdateNoteLoading } = useUpdateNote();
-    const matches = useMediaQuery('(max-width: 1023px)');
+    const matches = useMediaQuery('(max-width: 1024px)');
 
     React.useEffect(() => {
         const recentlyViewedNotesStorage = localStorage.getItem('recentlyViewedNotes');
