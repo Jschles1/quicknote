@@ -20,7 +20,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const { data, isLoading: isGetAllLoading } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
     const { isCreateNoteLoading } = useCreateNote();
     const { isUpdateNoteLoading } = useUpdateNote();
-    const matches = useMediaQuery('(max-width: 768px)');
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     React.useEffect(() => {
         const recentlyViewedNotesStorage = localStorage.getItem('recentlyViewedNotes');
@@ -33,7 +33,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
     const isLoading = isGetAllLoading || isCreateNoteLoading || isUpdateNoteLoading;
 
-    if (matches) {
+    if (isMobile) {
         return <NotSupported />;
     }
 
