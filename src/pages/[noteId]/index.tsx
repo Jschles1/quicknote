@@ -166,7 +166,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
             </Head>
             <div className="w-full max-w-7xl p-4">
                 <div className="flex w-full items-center justify-between">
-                    <div className="max-w-[85%] basis-1/2">
+                    <div className="max-w-[76%] basis-1/2 lg:max-w-[85%]">
                         {isEditingTitleOrCategory ? (
                             <div>
                                 <div className="py-2 font-bold">Note Title:</div>
@@ -174,7 +174,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                                     className={cn('h-12 py-2 px-3 text-2xl', errors.name && errorInputClass)}
                                     {...register('name', { required: true })}
                                     placeholder="Note Title"
-                                    maxLength={100}
+                                    maxLength={50}
                                 />
                                 {errors.name && <div className="mt-2 text-sm text-red-500">{errors.name.message}</div>}
                                 <div className="py-2 font-bold">Note Category:</div>
@@ -182,7 +182,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                                     className={cn('h-12 py-2 px-3 text-2xl', errors.category && errorInputClass)}
                                     {...register('category', { required: true })}
                                     placeholder="Note Category"
-                                    maxLength={100}
+                                    maxLength={30}
                                 />
                                 {errors.category && (
                                     <div className="mt-2 text-sm text-red-500">{errors.category.message}</div>

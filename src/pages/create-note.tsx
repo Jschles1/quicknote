@@ -112,7 +112,7 @@ const CreateNotePage: NextPageWithLayout = () => {
                             className={cn('h-12 py-2 px-3 text-2xl', errors.name && errorInputClass)}
                             {...register('name', { required: true })}
                             placeholder="Note Title"
-                            maxLength={100}
+                            maxLength={50}
                         />
                         {errors.name && <div className="mt-2 text-sm text-red-500">{errors.name.message}</div>}
                         <div className="py-2 font-bold">Note Category:</div>
@@ -120,7 +120,7 @@ const CreateNotePage: NextPageWithLayout = () => {
                             className={cn('h-12 py-2 px-3 text-2xl', errors.category && errorInputClass)}
                             {...register('category', { required: true })}
                             placeholder="Note Category"
-                            maxLength={100}
+                            maxLength={30}
                         />
                         {errors.category && <div className="mt-2 text-sm text-red-500">{errors.category.message}</div>}
                     </div>
