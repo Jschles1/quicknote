@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/util';
 import useCreateNote from '@/lib/hooks/use-create-note';
-import { createNoteSchema, CreateFormSchemaType } from '@/lib/formSchemas';
+import { formSchema, FormSchemaType } from '@/lib/formSchemas';
 
 const CreateNotePage: NextPageWithLayout = () => {
     const { mutateCreateNote } = useCreateNote();
@@ -24,8 +24,8 @@ const CreateNotePage: NextPageWithLayout = () => {
         handleSubmit,
         formState: { errors },
         getValues,
-    } = useForm<CreateFormSchemaType>({
-        resolver: zodResolver(createNoteSchema),
+    } = useForm<FormSchemaType>({
+        resolver: zodResolver(formSchema),
         defaultValues: { name: '', content: '', category: '', starred: false },
     });
 
@@ -41,7 +41,7 @@ const CreateNotePage: NextPageWithLayout = () => {
     const categoryErrorHeight = errors.category ? 28 : 0;
     const contentErrorHeight = errors.content ? 28 : 0;
 
-    const onSubmit: SubmitHandler<CreateFormSchemaType> = async (data) => {
+    const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
         clearErrors();
         await mutateCreateNote(data);
     };

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import type { NextPageWithLayout } from '../_app';
 import AppLayout from '@/components/AppLayout';
 import TextEditor from '@/components/ui/TextEditor';
@@ -8,10 +10,10 @@ import { Separator } from '@/components/ui/Separator';
 import type { Note } from '@prisma/client';
 import NoteTypes from '@/components/NoteTypes';
 import useUpdateNote from '@/lib/hooks/use-update-note';
-import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/Button';
 import { cn, decodeHtml } from '@/lib/util';
 import { Input } from '@/components/ui/Input';
+import { formSchema, FormSchemaType } from '@/lib/formSchemas';
 
 const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const { mutateUpdateNote, isUpdateNoteLoading } = useUpdateNote();
@@ -23,14 +25,19 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     const {
         watch,
         setValue,
-        setError,
         clearErrors,
         register,
         formState: { errors, dirtyFields },
-        getValues,
         control,
-    } = useForm({
-        defaultValues: { name: note?.name, content: note?.content, category: note?.category, starred: false },
+        handleSubmit,
+    } = useForm<FormSchemaType>({
+        defaultValues: {
+            name: note?.name || '',
+            content: note?.content || '',
+            category: note?.category || '',
+            starred: false,
+        },
+        resolver: zodResolver(formSchema),
     });
 
     const updatedContent = watch('content');
@@ -53,61 +60,35 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         setValue('content', value);
     };
 
-    const handleUpdateContent = async (): Promise<void> => {
+    const handleUpdateContent: SubmitHandler<FormSchemaType> = async (data): Promise<void> => {
         if (note && note.content !== updatedContent) {
-            const updatedContent = getValues().content as string;
-            if (!decodeHtml(updatedContent)) {
-                setError('content', {
-                    type: 'manual',
-                    message: 'Note content is required.',
-                });
-            } else {
-                clearErrors('content');
-                await mutateUpdateNote({
-                    noteId: note.id,
-                    content: updatedContent,
-                    name: note.name,
-                    category: note.category,
-                    starred: note.starred,
-                });
-                window.removeEventListener('beforeunload', handleBeforeUnload);
-                router.events.off('routeChangeStart', handleBrowseAway);
-                setEventListenersAdded(false);
-            }
+            clearErrors('content');
+            await mutateUpdateNote({
+                noteId: note.id,
+                content: updatedContent,
+                name: note.name,
+                category: note.category,
+                starred: note.starred,
+            });
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            router.events.off('routeChangeStart', handleBrowseAway);
+            setEventListenersAdded(false);
         }
     };
 
-    const handleSaveTitleAndCategoryChanges = async (): Promise<void> => {
+    const handleSaveTitleAndCategoryChanges: SubmitHandler<FormSchemaType> = async (data): Promise<void> => {
         if (note) {
             clearErrors();
-            const values = getValues();
-            let isValid = true;
-            if (!values.category) {
-                setError('category', {
-                    type: 'manual',
-                    message: 'Category is required.',
+            if (note?.name !== data.name || note?.category !== data.category) {
+                await mutateUpdateNote({
+                    noteId: note?.id,
+                    content: note?.content,
+                    name: data.name as string,
+                    category: data.category as string,
+                    starred: note?.starred,
                 });
-                isValid = false;
             }
-            if (!values.name) {
-                setError('name', {
-                    type: 'manual',
-                    message: 'Name is required.',
-                });
-                isValid = false;
-            }
-            if (isValid) {
-                if (note?.name !== values.name || note?.category !== values.category) {
-                    await mutateUpdateNote({
-                        noteId: note?.id,
-                        content: note?.content,
-                        name: values.name as string,
-                        category: values.category as string,
-                        starred: note?.starred,
-                    });
-                }
-                setIsEditingTitleOrCategory(false);
-            }
+            setIsEditingTitleOrCategory(false);
         }
     };
 
@@ -224,7 +205,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                             {isEditingTitleOrCategory ? (
                                 <Button
                                     className="mr-3"
-                                    onClick={handleSaveTitleAndCategoryChanges}
+                                    onClick={handleSubmit(handleSaveTitleAndCategoryChanges)}
                                     disabled={isUpdateNoteLoading}
                                 >
                                     Save Note Title / Content Changes
@@ -245,7 +226,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                     <Button
                         disabled={note?.content === updatedContent || isUpdateNoteLoading}
                         className="mb-3 mr-3"
-                        onClick={handleUpdateContent}
+                        onClick={handleSubmit(handleUpdateContent)}
                     >
                         Save Note Content Changes
                     </Button>

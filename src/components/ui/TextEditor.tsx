@@ -73,9 +73,9 @@ interface Props {
     onEditorChange: (value: string) => void;
     error?: string | undefined;
     control?: Control<{
-        name: string | undefined;
-        content: string | undefined;
-        category: string | undefined;
+        name: string;
+        content: string;
+        category: string;
         starred: boolean;
     }>;
 }

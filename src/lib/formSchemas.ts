@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { decodeHtml } from './util';
 
-export const createNoteSchema = z
+export const formSchema = z
     .object({
         name: z.string().trim().min(1, 'Name is required.').max(100),
         category: z.string().trim().min(1, 'Name is required.').max(100),
@@ -13,4 +13,4 @@ export const createNoteSchema = z
         message: 'Content is required.',
     });
 
-export type CreateFormSchemaType = z.infer<typeof createNoteSchema>;
+export type FormSchemaType = z.infer<typeof formSchema>;
