@@ -9,7 +9,7 @@ interface Props {
 const AllNotesList: React.FC<Props> = ({ notes }) => {
     if (!notes) return null;
     return (
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap max-[841px]:flex-col">
             {notes.map((note) => (
                 <NoteCard key={note.id} note={note} />
             ))}
