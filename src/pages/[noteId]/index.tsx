@@ -166,7 +166,7 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
             </Head>
             <div className="w-full max-w-7xl p-4">
                 <div className="flex w-full items-center justify-between">
-                    <div className="basis-1/2">
+                    <div className="max-w-[85%] basis-1/2">
                         {isEditingTitleOrCategory ? (
                             <div>
                                 <div className="py-2 font-bold">Note Title:</div>
