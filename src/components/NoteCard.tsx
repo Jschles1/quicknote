@@ -13,8 +13,8 @@ const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
     return (
         <div
             className={cn(
-                'm-2 flex h-[300px] basis-[30%] flex-col gap-2  rounded-md border border-slate-200 bg-white p-4 hover:border-slate-400',
-                isSwiperSlide ? '' : 'm-2 max-w-[30%]'
+                'm-2 flex h-[300px] basis-[47%] flex-col gap-2 rounded-md  border border-slate-200 bg-white p-4 hover:border-slate-400 lg:basis-[30%]',
+                isSwiperSlide ? '' : 'm-2 max-w-[47%] lg:max-w-[30%]'
             )}
         >
             <div>

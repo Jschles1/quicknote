@@ -39,7 +39,7 @@ const NavigationNotes: React.FC<Props> = ({ notes, isLoading }) => {
                     sortedNotes.map((category, i) => (
                         <AccordionItem key={category.name} value={i.toString()} className="border-0">
                             <AccordionTrigger className="mb-4 rounded-md p-2 decoration-0 data-[state=open]:bg-slate-300 hover:bg-slate-300 hover:no-underline">
-                                <span className="max-w-[226px] overflow-hidden text-ellipsis whitespace-nowrap text-left">
+                                <span className="max-w-[186px] overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm lg:max-w-[226px] lg:text-base">
                                     {category.name}
                                 </span>
                             </AccordionTrigger>

@@ -20,7 +20,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const { data, isLoading: isGetAllLoading } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
     const { isCreateNoteLoading } = useCreateNote();
     const { isUpdateNoteLoading } = useUpdateNote();
-    const matches = useMediaQuery('(max-width: 1024px)');
+    const matches = useMediaQuery('(max-width: 768px)');
 
     React.useEffect(() => {
         const recentlyViewedNotesStorage = localStorage.getItem('recentlyViewedNotes');
@@ -40,7 +40,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     return (
         <main className="min-w-screen relative flex max-h-screen min-h-screen">
             <Navigation notes={data || []} recentlyViewedNotes={recentlyViewedNotes} isLoading={isGetAllLoading} />
-            <div className="relative mx-auto flex w-[calc(100%-300px)] flex-col items-center gap-12 overflow-y-scroll">
+            <div className="relative mx-auto flex w-[calc(100%-260px)] flex-col items-center gap-12 overflow-y-scroll lg:w-[calc(100%-300px)]">
                 {React.cloneElement(children, { notes: !!data ? data : [] })}
                 {isLoading && <LoadingOverlay />}
             </div>

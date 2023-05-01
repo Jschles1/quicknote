@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Skeleton } from './ui/Skeleton';
 import Image from 'next/image';
 import { ChevronDown, ChevronUp, LogOut } from 'lucide-react';
+import useMediaQuery from '@/lib/hooks/use-media-query';
 
 const UserImage: React.FC<{ name: string; src: string }> = ({ name, src }) => (
     <Image src={src} width={25} height={25} alt={name} className="rounded-full" />
@@ -12,11 +13,13 @@ const UserImage: React.FC<{ name: string; src: string }> = ({ name, src }) => (
 const UserDropdown: React.FC = () => {
     const [isOpened, setIsOpened] = React.useState(false);
     const session = useSession();
+    const isTablet = useMediaQuery('(max-width: 1024px)');
     if (!session) return null;
 
     const src = session?.data?.user?.image || '';
     const name = session?.data?.user?.name || '';
     const isLoading = !src && !name;
+    const arrowSize = isTablet ? 16 : 20;
 
     const handleOpenChange = (isOpen: boolean) => {
         setIsOpened(isOpen);
@@ -30,10 +33,15 @@ const UserDropdown: React.FC = () => {
                         <Skeleton height={25} width={25} isLoading={isLoading} className="relative h-full">
                             {src && <UserImage name={name} src={src} />}
                         </Skeleton>
-                        <Skeleton height={25} width={25} isLoading={isLoading} className="mx-3 flex-1">
+                        <Skeleton
+                            height={25}
+                            width={25}
+                            isLoading={isLoading}
+                            className="mx-3 flex-1 text-sm lg:text-base"
+                        >
                             {name}
                         </Skeleton>
-                        <div>{isOpened ? <ChevronUp size={20} /> : <ChevronDown size={20} />}</div>
+                        <div>{isOpened ? <ChevronUp size={arrowSize} /> : <ChevronDown size={arrowSize} />}</div>
                     </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="min-w-[268px]">
