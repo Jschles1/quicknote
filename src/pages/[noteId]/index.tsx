@@ -190,10 +190,10 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
                             </div>
                         ) : (
                             <>
-                                <p className={cn('text-lg italic text-gray-500', overflowClass)}>
+                                <p className={cn('text-md italic text-gray-500 lg:text-lg', overflowClass)}>
                                     Category: {note?.category}
                                 </p>
-                                <h1 className={cn('mt-2 text-3xl font-extrabold', overflowClass)}>
+                                <h1 className={cn('mt-2 text-2xl font-extrabold lg:text-3xl', overflowClass)}>
                                     {note?.name || 'Loading...'}
                                 </h1>
                             </>
