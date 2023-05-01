@@ -19,7 +19,7 @@ const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
         >
             <div>
                 {!isSwiperSlide && (
-                    <div className="mb-2 flex items-center justify-between text-xl italic">
+                    <div className="mb-2 flex items-center justify-between text-lg italic lg:text-xl">
                         <Link
                             href={`/${note.id}`}
                             className="max-w-[600px] flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
@@ -31,7 +31,10 @@ const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
                 )}
                 <Link
                     href={`/${note.id}`}
-                    className={cn('mb-2 text-xl font-bold', isSwiperSlide ? 'flex items-center justify-between' : '')}
+                    className={cn(
+                        'mb-2 text-lg font-bold lg:text-xl',
+                        isSwiperSlide ? 'flex items-center justify-between' : ''
+                    )}
                 >
                     <div className="overflow-hidden text-ellipsis whitespace-nowrap">{note.name}</div>
                     {isSwiperSlide && <NoteTypes note={note} variant="card" />}
@@ -39,7 +42,9 @@ const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
             </div>
 
             <Link href={`/${note.id}`} className="relative flex-1">
-                <p className="max-h-full break-words text-gray-700 line-clamp-4">{decodeHtml(note.content)}</p>
+                <p className="max-h-full break-words text-sm text-gray-700 line-clamp-4 lg:text-base">
+                    {decodeHtml(note.content)}
+                </p>
             </Link>
 
             <p className="mb-2 text-xs italic text-gray-500">Last Updated: {formatDate(note.updatedAt)}</p>

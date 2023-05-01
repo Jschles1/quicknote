@@ -18,9 +18,13 @@ const SearchAndFilter: React.FC<Props> = ({ onSearchChange, onFilterChange, curr
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between p-4">
                 <div>
                     {currentTab === 'category' ? (
-                        <div className="w-[408px]"></div>
+                        <div className="w-[408px] max-[835px]:w-[320px]"></div>
                     ) : (
-                        <Input className="w-[408px]" placeholder="Search notes:" onChange={onSearchChange} />
+                        <Input
+                            className="w-[408px] max-[835px]:w-[320px]"
+                            placeholder="Search notes:"
+                            onChange={onSearchChange}
+                        />
                     )}
                 </div>
                 <div>
