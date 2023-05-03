@@ -34,13 +34,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const isLoading = isGetAllLoading || isCreateNoteLoading || isUpdateNoteLoading;
 
     if (isMobile) {
-        return <NotSupported />;
+        // return <NotSupported />;
     }
 
     return (
-        <main className="min-w-screen relative flex max-h-screen min-h-screen">
+        <main className="min-w-screen relative flex max-h-screen min-h-screen flex-col md:flex-row">
             <Navigation notes={data || []} recentlyViewedNotes={recentlyViewedNotes} isLoading={isGetAllLoading} />
-            <div className="relative mx-auto flex w-[calc(100%-260px)] flex-col items-center gap-12 overflow-y-scroll lg:w-[calc(100%-300px)]">
+            <div className="relative mx-auto flex w-full flex-1 flex-col items-center gap-12 md:w-[calc(100%-260px)] md:overflow-y-scroll lg:w-[calc(100%-300px)]">
                 {React.cloneElement(children, { notes: !!data ? data : [] })}
                 {isLoading && <LoadingOverlay />}
             </div>

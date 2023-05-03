@@ -2,14 +2,20 @@ import * as React from 'react';
 import { Note } from '@prisma/client';
 import NavigationCategoryNote from './NavigationCategoryNote';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/Accordion';
-import { notesSortedByCategory } from '@/lib/util';
+import { cn, notesSortedByCategory } from '@/lib/util';
 import useNoteType from '@/lib/hooks/use-note-type';
 import { Skeleton } from './ui/Skeleton';
+import { HIDDEN_MOBILE_CLASS } from '@/lib/constants';
 
-const NavigationNotesSkeleton = () => (
+const NavigationNotesSkeleton: React.FC<{ isDesktop?: boolean }> = ({ isDesktop }) => (
     <>
         {Array.from({ length: 10 }).map((_, index) => (
-            <Skeleton key={index} height={40} isLoading className="mb-4 h-[40px]" />
+            <Skeleton
+                key={index}
+                height={40}
+                isLoading
+                className={cn('mb-4 h-[40px]', isDesktop && HIDDEN_MOBILE_CLASS)}
+            />
         ))}
     </>
 );
@@ -17,21 +23,28 @@ const NavigationNotesSkeleton = () => (
 interface Props {
     notes: Note[] | undefined;
     isLoading: boolean;
+    isDesktop?: boolean;
 }
 
-const NavigationNotes: React.FC<Props> = ({ notes, isLoading }) => {
+const NavigationNotes: React.FC<Props> = ({ notes, isLoading, isDesktop }) => {
     const { mutateNoteType } = useNoteType();
 
     if (!notes) return null;
 
     const sortedNotes = notesSortedByCategory(notes);
+    const hiddenClass = isDesktop ? HIDDEN_MOBILE_CLASS : '';
 
     const handleStarClick = async (noteId: string) => {
         await mutateNoteType({ noteId, type: 'starred' });
     };
 
     return (
-        <div className="my-[0.5px] h-[calc(100%-73px)] overflow-y-scroll p-4 scrollbar-thin scrollbar-track-slate-200 scrollbar-thumb-slate-300">
+        <div
+            className={cn(
+                'my-[0.5px] h-[calc(100%-73px)] overflow-y-scroll p-4 scrollbar-thin scrollbar-track-slate-200 scrollbar-thumb-slate-300',
+                hiddenClass
+            )}
+        >
             <Accordion type="single" collapsible>
                 {isLoading ? (
                     <NavigationNotesSkeleton />

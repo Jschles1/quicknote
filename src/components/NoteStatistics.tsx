@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Note } from '@prisma/client';
 import { Skeleton } from './ui/Skeleton';
 import { Star, Archive, Trash } from 'lucide-react';
+import { cn } from '@/lib/util';
+import { HIDDEN_MOBILE_CLASS } from '@/lib/constants';
 
 const StatLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
     <Link href={href} className="mb-2 flex items-center gap-4 rounded-md p-2 font-bold hover:bg-slate-300">
@@ -10,9 +12,9 @@ const StatLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href,
     </Link>
 );
 
-const NoteStatisticsSkeletons: React.FC = () => (
+const NoteStatisticsSkeletons: React.FC<{ isDesktop?: boolean }> = ({ isDesktop }) => (
     // TODO: Need to figure out why skeleton only shows on height={25} and not on others
-    <div className="p-4">
+    <div className={cn('p-4', isDesktop && HIDDEN_MOBILE_CLASS)}>
         <Skeleton isLoading={true} height={40} className="mb-2 h-[40px]" />
         <Skeleton isLoading={true} height={40} className="mb-2 h-[40px]" />
         <Skeleton isLoading={true} height={40} className="mb-2 h-[40px]" />
@@ -22,10 +24,11 @@ const NoteStatisticsSkeletons: React.FC = () => (
 interface Props {
     notes: Note[] | undefined;
     isLoading: boolean;
+    isDesktop?: boolean;
 }
 
-const NoteStatistics: React.FC<Props> = ({ notes, isLoading }) => {
-    if (isLoading) return <NoteStatisticsSkeletons />;
+const NoteStatistics: React.FC<Props> = ({ notes, isLoading, isDesktop }) => {
+    if (isLoading) return <NoteStatisticsSkeletons isDesktop={isDesktop} />;
     if (!notes) return null;
     const stats = {
         starred: 0,
@@ -39,8 +42,10 @@ const NoteStatistics: React.FC<Props> = ({ notes, isLoading }) => {
         if (note.trash) stats.trashed++;
     });
 
+    const hiddenClass = isDesktop ? HIDDEN_MOBILE_CLASS : '';
+
     return (
-        <div className="p-4">
+        <div className={cn('p-4', hiddenClass)}>
             <StatLink href="/?type=starred">
                 <Star className="fill-amber-500" strokeWidth={1} /> Starred{' '}
                 <span className="font-normal"> {stats.starred}</span>

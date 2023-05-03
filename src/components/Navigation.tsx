@@ -7,6 +7,8 @@ import NavigationCreateNoteButton from './NavigationCreateNoteButton';
 import NavigationRecentlyViewedNotes from './NavigationRecentlyViewedNotes';
 import { Separator } from './ui/Separator';
 import { Note } from '@prisma/client';
+import useMediaQuery from '@/lib/hooks/use-media-query';
+import { HIDDEN_MOBILE_CLASS } from '@/lib/constants';
 
 interface Props {
     notes: Note[];
@@ -15,17 +17,23 @@ interface Props {
 }
 
 const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes, isLoading }) => {
+    const isMobile = useMediaQuery('(max-width: 768px)');
+    console.log({ isMobile });
     return (
-        <div className="relative flex min-h-screen w-[260px] min-w-[260px] flex-col border border-r-slate-400 bg-slate-200 lg:w-[300px] lg:min-w-[300px]">
+        // add "fixed h-[60px] min-h-0" after done with styles
+        <div className="flex w-full flex-col border border-r-0 border-b-slate-400 bg-slate-200 md:relative md:min-h-screen md:w-[260px] md:min-w-[260px] md:border-b-0 md:border-r-slate-400 lg:w-[300px] lg:min-w-[300px]">
             {!!notes && (
                 <>
-                    <Logo />
-                    <UserDropdown />
-                    <NoteStatistics notes={notes} isLoading={isLoading} />
-                    <NavigationRecentlyViewedNotes notes={recentlyViewedNotes} isLoading={isLoading} />
-                    <Separator />
-                    <NavigationNotes notes={notes} isLoading={isLoading} />
-                    <NavigationCreateNoteButton />
+                    <div className="flex items-center justify-center">
+                        <Logo />
+                    </div>
+
+                    <UserDropdown isDesktop />
+                    <NoteStatistics notes={notes} isLoading={isLoading} isDesktop />
+                    <NavigationRecentlyViewedNotes notes={recentlyViewedNotes} isLoading={isLoading} isDesktop />
+                    <Separator className={HIDDEN_MOBILE_CLASS} />
+                    <NavigationNotes notes={notes} isLoading={isLoading} isDesktop />
+                    <NavigationCreateNoteButton isDesktop />
                 </>
             )}
         </div>
