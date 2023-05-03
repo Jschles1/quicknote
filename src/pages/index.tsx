@@ -164,31 +164,56 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="flex w-full flex-1 flex-col">
-                <div className="mx-auto w-full max-w-7xl p-4 pb-0">
-                    <h1 className="text-3xl font-extrabold text-black">Notes</h1>
+                <div className="mx-auto w-full max-w-7xl p-4 md:pb-0">
+                    <h1 className="text-2xl font-extrabold text-black md:text-3xl">Notes</h1>
                 </div>
                 <Tabs defaultValue={tabValue} value={tabValue} className="flex w-full flex-1 flex-col">
-                    <div className="mx-auto flex w-full max-w-7xl items-center justify-between p-4">
+                    <div className="mx-auto flex w-full max-w-7xl items-center justify-between p-2 pb-3 scrollbar-thin scrollbar-track-slate-200 scrollbar-thumb-slate-300 max-[542px]:overflow-x-scroll max-[542px]:bg-slate-100 md:overflow-x-auto md:bg-inherit md:p-4 md:pb-4">
                         <TabsList>
-                            <TabsTrigger onClick={handleTabChange} data-value="all" value="all">
+                            <TabsTrigger
+                                onClick={handleTabChange}
+                                data-value="all"
+                                value="all"
+                                className="text-xs md:text-sm"
+                            >
                                 All Notes
                             </TabsTrigger>
-                            <TabsTrigger onClick={handleTabChange} data-value="category" value="category">
+                            <TabsTrigger
+                                onClick={handleTabChange}
+                                data-value="category"
+                                value="category"
+                                className="text-xs md:text-sm"
+                            >
                                 By Category
                             </TabsTrigger>
-                            <TabsTrigger onClick={handleTabChange} data-value="starred" value="starred">
+                            <TabsTrigger
+                                onClick={handleTabChange}
+                                data-value="starred"
+                                value="starred"
+                                className="text-xs md:text-sm"
+                            >
                                 Starred
                             </TabsTrigger>
-                            <TabsTrigger onClick={handleTabChange} data-value="archived" value="archived">
+                            <TabsTrigger
+                                onClick={handleTabChange}
+                                data-value="archived"
+                                value="archived"
+                                className="text-xs md:text-sm"
+                            >
                                 Archived
                             </TabsTrigger>
-                            <TabsTrigger onClick={handleTabChange} data-value="trash" value="trash">
+                            <TabsTrigger
+                                onClick={handleTabChange}
+                                data-value="trash"
+                                value="trash"
+                                className="text-xs md:text-sm"
+                            >
                                 Trash
                             </TabsTrigger>
                         </TabsList>
 
                         {tabValue === 'trash' && (
-                            <div>
+                            <div className="hidden md:block">
                                 <Dialog open={isDialogOpen}>
                                     <DialogTrigger
                                         onClick={() => setisDialogOpen(true)}
