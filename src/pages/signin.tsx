@@ -12,7 +12,7 @@ const SignIn: NextPage = () => {
     };
 
     if (matches) {
-        return <NotSupported />;
+        // return <NotSupported />;
     }
 
     return (
