@@ -42,7 +42,7 @@ const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes, isLoading }) 
                                 <DialogTrigger onClick={() => setIsDialogOpen(true)}>
                                     <Menu />
                                 </DialogTrigger>
-                                <DialogContent className="h-full !max-w-full rounded-none bg-slate-200 px-4 pb-0 data-[state=open]:slide-in-from-left-1 data-[state=open]:slide-in-from-bottom-0">
+                                <DialogContent className="h-full !max-w-full rounded-none bg-slate-200 px-4 pb-0 data-[state=open]:!slide-in-from-left-1 data-[state=open]:!slide-in-from-bottom-0">
                                     <DialogClose onClick={() => setIsDialogOpen(false)} />
                                     <UserDropdown />
                                     <NoteStatistics notes={notes} isLoading={isLoading} />
