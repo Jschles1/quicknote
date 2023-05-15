@@ -2,18 +2,11 @@ import Head from 'next/head';
 import GoogleButton from 'react-google-button';
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { getSession, signIn } from 'next-auth/react';
-import useMediaQuery from '@/lib/hooks/use-media-query';
-import NotSupported from '@/components/NotSupported';
 
 const SignIn: NextPage = () => {
-    const matches = useMediaQuery('(max-width: 1023px)');
     const handleSignIn = async () => {
         await signIn('google');
     };
-
-    if (matches) {
-        // return <NotSupported />;
-    }
 
     return (
         <>
