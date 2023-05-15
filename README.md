@@ -33,7 +33,6 @@ QuickNote currently only supports Google authentication for user sign up and log
 -   Optimistic updates w/ TRPC
 -   Dark mode
 -   End to end and integration testing
--   Support for mobile devices
 -   Editor updates
     -   Image upload functionality
     -   Performance improvements
