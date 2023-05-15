@@ -207,23 +207,27 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
 
                 <Separator className="my-3" />
 
-                <div className="mb-3 flex items-center justify-between">
+                <div className="mb-3 md:flex md:items-center md:justify-between">
                     {isEditingTitleOrCategory ? (
                         <Button
-                            className="mr-3"
+                            className="mb-3 w-full md:mr-3 md:mb-0"
                             onClick={handleSubmit(handleSaveTitleAndCategoryChanges)}
                             disabled={isUpdateNoteLoading}
                         >
                             Save Note Title / Content Changes
                         </Button>
                     ) : (
-                        <Button className="mr-3" onClick={() => setIsEditingTitleOrCategory(true)}>
+                        <Button
+                            className="mb-3 w-full md:mr-3 md:mb-0"
+                            onClick={() => setIsEditingTitleOrCategory(true)}
+                        >
                             Edit Note Title / Content
                         </Button>
                     )}
                     <Button
                         disabled={note?.content === updatedContent || isUpdateNoteLoading}
                         onClick={handleSubmit(handleUpdateContent)}
+                        className="w-full"
                     >
                         Save Note Content Changes
                     </Button>
