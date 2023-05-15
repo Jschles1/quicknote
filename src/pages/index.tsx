@@ -2,29 +2,16 @@ import * as React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { Trash } from 'lucide-react';
 import { NextPageWithLayout } from './_app';
 import { GetServerSidePropsContext } from 'next';
 import AppLayout from '../components/AppLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Note } from '@prisma/client';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogClose,
-    DialogTitle,
-    DialogTrigger,
-    DialogFooter,
-} from '@/components/ui/Dialog';
 import SearchAndFilter from '@/components/SearchAndFilter';
 import CategoryNotesList from '@/components/CategoryNotesList';
 import AllNotesList from '@/components/AllNotesList';
 import EmptyTrashDialog from '@/components/EmptyTrashDialog';
 import useEmptyTrash from '@/lib/hooks/use-empty-trash';
-
-import { Button } from '@/components/ui/Button';
 
 type NotesByCategory = {
     category: string;
