@@ -49,6 +49,7 @@
         "zod": "^3.20.2"
     },
     "devDependencies": {
+        "@next/bundle-analyzer": "^13.4.2",
         "@tailwindcss/line-clamp": "^0.4.4",
         "@types/node": "^18.11.18",
         "@types/prettier": "^2.7.2",

@@ -4,6 +4,11 @@
  * This is especially useful for Docker builds.
  */
 !process.env.SKIP_ENV_VALIDATION && (await import('./src/env/server.mjs'));
+import NextBundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = NextBundleAnalyzer({
+    enabled: process.env.ANALYZE === 'true',
+});
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -18,4 +23,4 @@ const config = {
         domains: ['lh3.googleusercontent.com'],
     },
 };
-export default config;
+export default withBundleAnalyzer(config);
