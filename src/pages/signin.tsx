@@ -12,7 +12,7 @@ const SignIn: NextPage = () => {
     };
 
     if (matches) {
-        return <NotSupported />;
+        // return <NotSupported />;
     }
 
     return (
@@ -24,7 +24,7 @@ const SignIn: NextPage = () => {
             </Head>
 
             <main className="flex min-h-screen flex-col items-center justify-center bg-white">
-                <div className="flex w-1/3 flex-col items-center justify-center gap-12 rounded-md bg-[#f9f9f9] px-4 py-16">
+                <div className="flex flex-col items-center justify-center gap-12 rounded-md bg-slate-200 px-4 py-16 md:w-1/3">
                     <h1 className="text-xl font-bold italic">QuickNote</h1>
                     <GoogleButton onClick={handleSignIn} />
                 </div>

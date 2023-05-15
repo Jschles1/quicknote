@@ -18,10 +18,10 @@ const SearchAndFilter: React.FC<Props> = ({ onSearchChange, onFilterChange, curr
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between p-4">
                 <div>
                     {currentTab === 'category' ? (
-                        <div className="w-[408px] max-[835px]:w-[320px]"></div>
+                        <div className="max-[835px]:w-[320px] max-[460px]:w-auto md:w-[408px]"></div>
                     ) : (
                         <Input
-                            className="w-[408px] max-[835px]:w-[320px]"
+                            className="max-[835px]:w-[320px] max-[460px]:w-auto md:w-[408px]"
                             placeholder="Search notes:"
                             onChange={onSearchChange}
                         />
@@ -40,7 +40,7 @@ const SearchAndFilter: React.FC<Props> = ({ onSearchChange, onFilterChange, curr
                                 Oldest First
                             </DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer" onClick={onFilterChange} data-value="">
-                                Clear
+                                Clear Filter
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

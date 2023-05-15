@@ -5,12 +5,18 @@ import { Skeleton } from './ui/Skeleton';
 import Image from 'next/image';
 import { ChevronDown, ChevronUp, LogOut } from 'lucide-react';
 import useMediaQuery from '@/lib/hooks/use-media-query';
+import { cn } from '@/lib/util';
+import { HIDDEN_MOBILE_CLASS } from '@/lib/constants';
 
 const UserImage: React.FC<{ name: string; src: string }> = ({ name, src }) => (
     <Image src={src} width={25} height={25} alt={name} className="rounded-full" />
 );
 
-const UserDropdown: React.FC = () => {
+interface Props {
+    isDesktop?: boolean;
+}
+
+const UserDropdown: React.FC<Props> = ({ isDesktop }) => {
     const [isOpened, setIsOpened] = React.useState(false);
     const session = useSession();
     const isTablet = useMediaQuery('(max-width: 1024px)');
@@ -21,12 +27,14 @@ const UserDropdown: React.FC = () => {
     const isLoading = !src && !name;
     const arrowSize = isTablet ? 16 : 20;
 
+    const hiddenClass = isDesktop ? HIDDEN_MOBILE_CLASS : '';
+
     const handleOpenChange = (isOpen: boolean) => {
         setIsOpened(isOpen);
     };
 
     return (
-        <div className="p-4">
+        <div className={cn('mt-6 md:mt-0 md:p-4', hiddenClass)}>
             <DropdownMenu onOpenChange={(isOpen) => handleOpenChange(isOpen)}>
                 <DropdownMenuTrigger className="'active:scale-95 dark:data-[state=open]:bg-slate-300' text-md inline-flex w-full items-center justify-center rounded-md p-2 font-medium outline-none transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-slate-300 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900 dark:hover:bg-slate-300">
                     <div className="flex w-full items-center justify-start">
@@ -37,7 +45,7 @@ const UserDropdown: React.FC = () => {
                             height={25}
                             width={25}
                             isLoading={isLoading}
-                            className="mx-3 flex-1 text-sm lg:text-base"
+                            className="mx-3 flex-1 text-sm md:mx-0 lg:text-base"
                         >
                             {name}
                         </Skeleton>

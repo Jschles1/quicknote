@@ -4,11 +4,18 @@ import NavigationCategoryNote from './NavigationCategoryNote';
 import { Note } from '@prisma/client';
 import useNoteType from '@/lib/hooks/use-note-type';
 import { Skeleton } from './ui/Skeleton';
+import { cn } from '@/lib/util';
+import { HIDDEN_MOBILE_CLASS } from '@/lib/constants';
 
-const NavigationRecentlyViewedNotesSkeleton = () => (
+const NavigationRecentlyViewedNotesSkeleton: React.FC<{ isDesktop?: boolean }> = ({ isDesktop }) => (
     <>
         {Array.from({ length: 5 }).map((_, index) => (
-            <Skeleton key={index} height={36} isLoading className="mb-2 h-[36px]" />
+            <Skeleton
+                key={index}
+                height={36}
+                isLoading
+                className={cn('mb-2 h-[36px]', isDesktop && HIDDEN_MOBILE_CLASS)}
+            />
         ))}
     </>
 );
@@ -16,9 +23,10 @@ const NavigationRecentlyViewedNotesSkeleton = () => (
 interface Props {
     notes: Note[] | undefined;
     isLoading: boolean;
+    isDesktop?: boolean;
 }
 
-const NavigationRecentlyViewedNotes: React.FC<Props> = ({ notes, isLoading }) => {
+const NavigationRecentlyViewedNotes: React.FC<Props> = ({ notes, isLoading, isDesktop }) => {
     const { mutateNoteType } = useNoteType();
 
     const handleStarClick = async (noteId: string) => {
@@ -26,11 +34,12 @@ const NavigationRecentlyViewedNotes: React.FC<Props> = ({ notes, isLoading }) =>
     };
 
     const hasNotes = notes && notes.length > 0;
+    const hiddenClass = isDesktop ? HIDDEN_MOBILE_CLASS : '';
 
     return (
         <>
-            <Separator />
-            <div className="p-4">
+            <Separator className={hiddenClass} />
+            <div className={cn('md:p-4', hiddenClass)}>
                 <div className="p-2 font-bold">Recently Viewed:</div>
                 {hasNotes ? (
                     notes.map((note: Note) => (
@@ -41,7 +50,7 @@ const NavigationRecentlyViewedNotes: React.FC<Props> = ({ notes, isLoading }) =>
                         />
                     ))
                 ) : isLoading ? (
-                    <NavigationRecentlyViewedNotesSkeleton />
+                    <NavigationRecentlyViewedNotesSkeleton isDesktop={isDesktop} />
                 ) : null}
             </div>
         </>

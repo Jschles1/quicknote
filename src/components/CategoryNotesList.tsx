@@ -20,7 +20,9 @@ const CategoryNotesList: React.FC<Props> = ({ data }) => {
     const slidesPerView = singleSlideBreakpoint ? 1 : 3;
     return (
         <div>
-            <h1 className="my-4 ml-4 text-xl font-bold italic">{data.category}</h1>
+            <h1 className="my-4 ml-4 overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold italic">
+                {data.category}
+            </h1>
             <Swiper
                 modules={[Navigation]}
                 navigation={data.notes.length > 3}
