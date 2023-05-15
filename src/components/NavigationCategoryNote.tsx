@@ -12,10 +12,12 @@ interface Props {
 const NavigationCategoryNote: React.FC<Props> = ({ note, onStarClick }) => {
     const isStarred = note.starred;
     return (
-        <div className="relative mb-2 rounded-md p-2 hover:bg-slate-300">
+        <div className="relative mb-2 rounded-md p-2 last:mb-0 hover:bg-slate-300">
             <Link href={`/${note.id}`} key={note.id} className="flex items-center gap-2 text-sm">
                 <FileText size="1rem" color="gray" />{' '}
-                <span className="w-[calc(100%-3rem)] overflow-hidden text-ellipsis whitespace-nowrap">{note.name}</span>{' '}
+                <span className="w-[225px] overflow-hidden text-ellipsis whitespace-nowrap md:w-[calc(100%-3rem)]">
+                    {note.name}
+                </span>{' '}
             </Link>
             <Star
                 size="1rem"

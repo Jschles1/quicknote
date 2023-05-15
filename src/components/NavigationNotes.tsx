@@ -41,7 +41,7 @@ const NavigationNotes: React.FC<Props> = ({ notes, isLoading, isDesktop }) => {
     return (
         <div
             className={cn(
-                'my-[0.5px] h-[calc(100%-73px)] overflow-y-scroll p-4 scrollbar-thin scrollbar-track-slate-200 scrollbar-thumb-slate-300',
+                'my-[0.5px] overflow-y-scroll scrollbar-thin scrollbar-track-slate-200 scrollbar-thumb-slate-300 md:h-[calc(100%-73px)] md:p-4',
                 hiddenClass
             )}
         >

@@ -39,7 +39,7 @@ const NavigationRecentlyViewedNotes: React.FC<Props> = ({ notes, isLoading, isDe
     return (
         <>
             <Separator className={hiddenClass} />
-            <div className={cn('p-4', hiddenClass)}>
+            <div className={cn('md:p-4', hiddenClass)}>
                 <div className="p-2 font-bold">Recently Viewed:</div>
                 {hasNotes ? (
                     notes.map((note: Note) => (
