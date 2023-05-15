@@ -1,3 +1,4 @@
+import '../wdyr';
 import * as React from 'react';
 import { type NextPage } from 'next';
 import type { AppType, AppProps } from 'next/app';
@@ -11,6 +12,7 @@ import '../styles/globals.css';
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: React.ReactElement) => React.ReactNode;
+    whyDidYouRender?: boolean;
 };
 
 type AppPropsWithLayout = AppProps & {
