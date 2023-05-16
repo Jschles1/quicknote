@@ -14,7 +14,7 @@ function useNoteType() {
             const prevData = utils.notes.getAll.getData() as Note[];
 
             // Optimistically update the data with our new post
-            utils.notes.getAll.setData(undefined, (notes) =>
+            utils.notes.getAll.setData('notes', (notes) =>
                 notes?.map((note) => {
                     if (note.id === updated.noteId) {
                         return {
@@ -43,13 +43,13 @@ function useNoteType() {
                     description,
                     variant: 'success',
                 });
-                await utils.notes.invalidate();
+                await utils.notes.getAll.invalidate('notes');
             }
         },
         onError: (error, _, ctx) => {
             // If the mutation fails, use the context-value from onMutate
             if (ctx) {
-                utils.notes.getAll.setData(undefined, ctx.prevData);
+                utils.notes.getAll.setData('notes', ctx.prevData);
             }
             console.log('Form submission failed with error: ', error);
             toast({

@@ -12,7 +12,7 @@ function useEmptyTrash() {
             console.log('Emptying Trash');
         },
         onSuccess: async () => {
-            await utils.notes.invalidate();
+            await utils.notes.getAll.invalidate('notes');
             console.log('Emptied Trash');
             toast({
                 description: 'Successfully emptied trash!',

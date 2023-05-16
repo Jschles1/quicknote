@@ -17,4 +17,4 @@ const AllNotesList: React.FC<Props> = ({ notes }) => {
     );
 };
 
-export default AllNotesList;
+export default React.memo(AllNotesList);

@@ -14,7 +14,7 @@ function useCreateNote() {
             console.log('Submitting form with values: ', data);
         },
         onSuccess: async (data) => {
-            await utils.notes.invalidate();
+            await utils.notes.getAll.invalidate('notes');
             console.log('Form submitted successfully with values: ', data);
             await router.push('/');
             toast({

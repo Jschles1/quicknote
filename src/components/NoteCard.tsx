@@ -3,13 +3,14 @@ import Link from 'next/link';
 import NoteTypes from './NoteTypes';
 import { cn, decodeHtml, formatDate } from '@/lib/util';
 import { Note } from '@prisma/client';
+import { ReactFCWithWDYR } from '@/lib/interfaces';
 
 interface Props {
     note: Note;
     isSwiperSlide?: boolean;
 }
 
-const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
+const NoteCard: ReactFCWithWDYR<Props> = ({ note, isSwiperSlide }) => {
     return (
         <div
             className={cn(
@@ -52,4 +53,6 @@ const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
     );
 };
 
-export default NoteCard;
+NoteCard.whyDidYouRender = true;
+
+export default React.memo(NoteCard);

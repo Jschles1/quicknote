@@ -12,7 +12,7 @@ function useUpdateNote() {
             console.log('Submitting updated form with values: ', data);
         },
         onSuccess: async (data) => {
-            await utils.notes.invalidate();
+            await utils.notes.getAll.invalidate('notes');
             console.log('Updated form submitted successfully with values: ', data);
             toast({
                 description: 'Successfully updated note!',

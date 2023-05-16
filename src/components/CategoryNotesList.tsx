@@ -39,4 +39,4 @@ const CategoryNotesList: React.FC<Props> = ({ data }) => {
     );
 };
 
-export default CategoryNotesList;
+export default React.memo(CategoryNotesList);
