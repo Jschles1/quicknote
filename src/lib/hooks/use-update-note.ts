@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { api } from '@/utils/api';
 import { useToast } from './use-toast';
 
@@ -12,7 +13,7 @@ function useUpdateNote() {
             console.log('Submitting updated form with values: ', data);
         },
         onSuccess: async (data) => {
-            await utils.notes.invalidate();
+            await utils.notes.getAll.invalidate('notes');
             console.log('Updated form submitted successfully with values: ', data);
             toast({
                 description: 'Successfully updated note!',
@@ -28,7 +29,14 @@ function useUpdateNote() {
         },
     });
 
-    return { mutateUpdateNote: mutateAsync, isUpdateNoteLoading: isLoading };
+    const mutateUpdateNote = React.useCallback(
+        async (variables: { name: string; content: string; category: string; starred: boolean; noteId: string }) => {
+            await mutateAsync(variables);
+        },
+        [mutateAsync]
+    );
+
+    return { mutateUpdateNote, isUpdateNoteLoading: isLoading };
 }
 
 export default useUpdateNote;

@@ -27,10 +27,14 @@ const EmptyTrashDialog: React.FC<Props> = ({
     closeDialog,
     handleEmptyTrash,
 }) => {
+    const handleOpenDialog = React.useCallback(() => {
+        setIsDialogOpen(true);
+    }, []);
+
     return (
         <Dialog open={isDialogOpen}>
             <DialogTrigger
-                onClick={() => setIsDialogOpen(true)}
+                onClick={handleOpenDialog}
                 disabled={disabled}
                 className="inline-flex h-10 items-center justify-center rounded-md bg-red-500 py-2 px-4 text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-red-600 active:scale-95 dark:focus:ring-slate-400 dark:hover:bg-red-600 dark:hover:text-slate-100"
             >

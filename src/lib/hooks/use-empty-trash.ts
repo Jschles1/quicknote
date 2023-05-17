@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { api } from '@/utils/api';
 import { useToast } from './use-toast';
 
@@ -12,7 +13,7 @@ function useEmptyTrash() {
             console.log('Emptying Trash');
         },
         onSuccess: async () => {
-            await utils.notes.invalidate();
+            await utils.notes.getAll.invalidate('notes');
             console.log('Emptied Trash');
             toast({
                 description: 'Successfully emptied trash!',
@@ -28,7 +29,11 @@ function useEmptyTrash() {
         },
     });
 
-    return { mutateEmptyTrash: mutateAsync, isEmptyTrashLoading: isLoading };
+    const mutateEmptyTrash = React.useCallback(async () => {
+        await mutateAsync();
+    }, [mutateAsync]);
+
+    return { mutateEmptyTrash, isEmptyTrashLoading: isLoading };
 }
 
 export default useEmptyTrash;

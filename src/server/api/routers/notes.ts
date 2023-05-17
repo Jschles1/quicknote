@@ -5,7 +5,7 @@ import sanitize from '@/lib/sanitize';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 
 export const notesRouter = createTRPCRouter({
-    getAll: protectedProcedure.query(({ ctx }) => {
+    getAll: protectedProcedure.input(z.string()).query(({ ctx }) => {
         const userId = ctx.session.user.id;
         return ctx.prisma.note.findMany({ where: { userId } });
     }),

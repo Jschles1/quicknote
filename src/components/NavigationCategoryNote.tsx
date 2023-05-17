@@ -32,4 +32,4 @@ const NavigationCategoryNote: React.FC<Props> = ({ note, onStarClick }) => {
     );
 };
 
-export default NavigationCategoryNote;
+export default React.memo(NavigationCategoryNote);

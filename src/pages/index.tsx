@@ -59,60 +59,63 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
     const [filter, setFilter] = React.useState<string>('');
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
     const { mutateEmptyTrash } = useEmptyTrash();
+    const memoDeps = [notes, search, filter];
 
-    const filterNotes = (notes: Note[], type: 'all' | 'starred' | 'archived' | 'trash', isCategory = false) => {
-        const hasSearch = search.trim().length > 0;
-        const hasFilter = filter.trim().length > 0;
+    const filterNotes = React.useCallback(
+        (notes: Note[], type: 'all' | 'starred' | 'archived' | 'trash', isCategory = false) => {
+            const hasSearch = search.trim().length > 0;
+            const hasFilter = filter.trim().length > 0;
+            let filteredNotes = notes;
 
-        let filteredNotes = notes;
+            const hasSearchTerm = (note: Note) =>
+                hasSearch
+                    ? (note.name.toLowerCase().includes(search.toLowerCase()) ||
+                          note.category.toLowerCase().includes(search.toLowerCase())) &&
+                      !isCategory
+                    : true;
 
-        const hasSearchTerm = (note: Note) =>
-            hasSearch
-                ? (note.name.toLowerCase().includes(search.toLowerCase()) ||
-                      note.category.toLowerCase().includes(search.toLowerCase())) &&
-                  !isCategory
-                : true;
+            switch (type) {
+                case 'all':
+                    filteredNotes = notes.filter((note) => {
+                        return hasSearchTerm(note) && !note.archived && !note.trash;
+                    });
+                    break;
+                case 'starred':
+                    filteredNotes = notes.filter((note) => {
+                        return hasSearchTerm(note) && note.starred && !note.archived && !note.trash;
+                    });
+                    break;
+                case 'archived':
+                    filteredNotes = notes.filter((note) => {
+                        return hasSearchTerm(note) && note.archived;
+                    });
+                    break;
+                case 'trash':
+                    filteredNotes = notes.filter((note) => {
+                        return hasSearchTerm(note) && note.trash;
+                    });
+                    break;
+                default:
+                    break;
+            }
 
-        switch (type) {
-            case 'all':
-                filteredNotes = notes.filter((note) => {
-                    return hasSearchTerm(note) && !note.archived && !note.trash;
-                });
-                break;
-            case 'starred':
-                filteredNotes = notes.filter((note) => {
-                    return hasSearchTerm(note) && note.starred && !note.archived && !note.trash;
-                });
-                break;
-            case 'archived':
-                filteredNotes = notes.filter((note) => {
-                    return hasSearchTerm(note) && note.archived;
-                });
-                break;
-            case 'trash':
-                filteredNotes = notes.filter((note) => {
-                    return hasSearchTerm(note) && note.trash;
-                });
-                break;
-            default:
-                break;
-        }
+            if (hasFilter) {
+                filteredNotes =
+                    filter === 'newest'
+                        ? filteredNotes.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+                        : filteredNotes.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
+            }
 
-        if (hasFilter) {
-            filteredNotes =
-                filter === 'newest'
-                    ? filteredNotes.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
-                    : filteredNotes.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
-        }
+            return filteredNotes;
+        },
+        memoDeps
+    );
 
-        return filteredNotes;
-    };
-
-    const allNotes = filterNotes(notes, 'all');
-    const categoryNotes = sortNotesByCategory(filterNotes(notes, 'all', true));
-    const starredNotes = filterNotes(notes, 'starred');
-    const archivedNotes = filterNotes(notes, 'archived');
-    const trashNotes = filterNotes(notes, 'trash');
+    const allNotes = React.useMemo(() => filterNotes(notes, 'all'), memoDeps);
+    const categoryNotes = React.useMemo(() => sortNotesByCategory(filterNotes(notes, 'all', true)), memoDeps);
+    const starredNotes = React.useMemo(() => filterNotes(notes, 'starred'), memoDeps);
+    const archivedNotes = React.useMemo(() => filterNotes(notes, 'archived'), memoDeps);
+    const trashNotes = React.useMemo(() => filterNotes(notes, 'trash'), memoDeps);
 
     const handleTabChange = (e: React.SyntheticEvent) => {
         setTabValue(e.currentTarget.getAttribute('data-value')!);

@@ -12,21 +12,21 @@ interface Props {
 const NoteTypes: React.FC<Props> = ({ note, variant }) => {
     const { mutateNoteType } = useNoteType();
 
-    const handleStarClick = async (noteId: string) => {
-        await mutateNoteType({ noteId, type: 'starred' });
-    };
+    const handleStarClick = React.useCallback(async () => {
+        await mutateNoteType({ noteId: note!.id, type: 'starred' });
+    }, [note?.id]);
 
-    const handleArchiveClick = async (noteId: string) => {
-        await mutateNoteType({ noteId, type: 'archived' });
-    };
+    const handleArchiveClick = React.useCallback(async () => {
+        await mutateNoteType({ noteId: note!.id, type: 'archived' });
+    }, [note?.id]);
 
-    const handleTrashClick = async (noteId: string) => {
-        await mutateNoteType({ noteId, type: 'trash' });
-    };
-
-    if (!note) return null;
+    const handleTrashClick = React.useCallback(async () => {
+        await mutateNoteType({ noteId: note!.id, type: 'trash' });
+    }, [note?.id]);
 
     const variantClass = variant === 'card' ? 'gap-2' : 'gap-4 mr-3';
+
+    if (!note) return null;
 
     return (
         <div className={cn('flex items-center gap-2', variantClass)}>
@@ -35,7 +35,7 @@ const NoteTypes: React.FC<Props> = ({ note, variant }) => {
                     'cursor-pointer',
                     note.starred ? 'fill-amber-500 hover:fill-none' : 'fill-none hover:fill-amber-500'
                 )}
-                onClick={() => handleStarClick(note.id)}
+                onClick={handleStarClick}
                 strokeWidth={1}
             />
             <Archive
@@ -43,7 +43,7 @@ const NoteTypes: React.FC<Props> = ({ note, variant }) => {
                     'cursor-pointer',
                     note.archived ? 'fill-lime-500 hover:fill-none' : 'fill-none hover:fill-lime-500'
                 )}
-                onClick={() => handleArchiveClick(note.id)}
+                onClick={handleArchiveClick}
                 strokeWidth={1}
             />
             <Trash
@@ -51,7 +51,7 @@ const NoteTypes: React.FC<Props> = ({ note, variant }) => {
                     'cursor-pointer',
                     note.trash ? 'fill-red-500 hover:fill-none' : 'fill-none hover:fill-red-500'
                 )}
-                onClick={() => handleTrashClick(note.id)}
+                onClick={handleTrashClick}
                 strokeWidth={1}
             />
         </div>

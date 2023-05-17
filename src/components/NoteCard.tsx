@@ -52,4 +52,4 @@ const NoteCard: React.FC<Props> = ({ note, isSwiperSlide }) => {
     );
 };
 
-export default NoteCard;
+export default React.memo(NoteCard);

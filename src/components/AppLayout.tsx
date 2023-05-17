@@ -15,7 +15,12 @@ interface AppLayoutProps {
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const router = useRouter();
     const [recentlyViewedNotes, setRecentlyViewedNotes] = React.useState<Note[]>([]);
-    const { data, isLoading: isGetAllLoading } = api.notes.getAll.useQuery(undefined, { refetchOnWindowFocus: false });
+    const { data, isLoading: isGetAllLoading } = api.notes.getAll.useQuery('notes', {
+        refetchOnWindowFocus: false,
+        notifyOnChangeProps: ['data'],
+        refetchOnMount: false,
+    });
+
     const { isCreateNoteLoading } = useCreateNote();
     const { isUpdateNoteLoading } = useUpdateNote();
 
@@ -30,6 +35,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
     const isLoading = isGetAllLoading || isCreateNoteLoading || isUpdateNoteLoading;
 
+    if (isLoading && !data) return <LoadingOverlay />;
+
     return (
         <main className="min-w-screen relative flex max-h-screen min-h-screen flex-col md:flex-row">
             <Navigation notes={data || []} recentlyViewedNotes={recentlyViewedNotes} isLoading={isGetAllLoading} />
@@ -42,4 +49,4 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     );
 };
 
-export default AppLayout;
+export default React.memo(AppLayout);

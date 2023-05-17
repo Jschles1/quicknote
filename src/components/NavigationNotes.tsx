@@ -27,6 +27,7 @@ interface Props {
 }
 
 const NavigationNotes: React.FC<Props> = ({ notes, isLoading, isDesktop }) => {
+    console.log('NavigationNotes render');
     const { mutateNoteType } = useNoteType();
 
     if (!notes) return null;
@@ -73,4 +74,4 @@ const NavigationNotes: React.FC<Props> = ({ notes, isLoading, isDesktop }) => {
     );
 };
 
-export default NavigationNotes;
+export default React.memo(NavigationNotes);
