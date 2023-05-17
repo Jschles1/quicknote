@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { api } from '@/utils/api';
 import { useToast } from './use-toast';
 
@@ -28,7 +29,11 @@ function useEmptyTrash() {
         },
     });
 
-    return { mutateEmptyTrash: mutateAsync, isEmptyTrashLoading: isLoading };
+    const mutateEmptyTrash = React.useCallback(() => {
+        mutateAsync();
+    }, [mutateAsync]);
+
+    return { mutateEmptyTrash, isEmptyTrashLoading: isLoading };
 }
 
 export default useEmptyTrash;

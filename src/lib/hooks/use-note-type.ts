@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { api } from '@/utils/api';
 import { useToast } from './use-toast';
 import { Note } from '@prisma/client';
@@ -59,7 +60,14 @@ function useNoteType() {
         },
     });
 
-    return { mutateNoteType: mutateAsync };
+    const mutateNoteType = React.useCallback(
+        (variables: { type: 'starred' | 'archived' | 'trash'; noteId: string }) => {
+            mutateAsync(variables);
+        },
+        [mutateAsync]
+    );
+
+    return { mutateNoteType };
 }
 
 export default useNoteType;

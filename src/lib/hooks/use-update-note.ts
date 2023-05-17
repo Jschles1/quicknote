@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { api } from '@/utils/api';
 import { useToast } from './use-toast';
 
@@ -28,7 +29,14 @@ function useUpdateNote() {
         },
     });
 
-    return { mutateUpdateNote: mutateAsync, isUpdateNoteLoading: isLoading };
+    const mutateUpdateNote = React.useCallback(
+        (variables: { name: string; content: string; category: string; starred: boolean; noteId: string }) => {
+            mutateAsync(variables);
+        },
+        [mutateAsync]
+    );
+
+    return { mutateUpdateNote, isUpdateNoteLoading: isLoading };
 }
 
 export default useUpdateNote;

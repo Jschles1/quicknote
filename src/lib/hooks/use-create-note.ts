@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { api } from '@/utils/api';
 import { useRouter } from 'next/router';
 import { useToast } from './use-toast';
@@ -31,7 +32,14 @@ function useCreateNote() {
         },
     });
 
-    return { mutateCreateNote: mutateAsync, isCreateNoteLoading: isLoading };
+    const mutateCreateNote = React.useCallback(
+        (variables: { name: string; content: string; category: string; starred: boolean }) => {
+            mutateAsync(variables);
+        },
+        [mutateAsync]
+    );
+
+    return { mutateCreateNote, isCreateNoteLoading: isLoading };
 }
 
 export default useCreateNote;
