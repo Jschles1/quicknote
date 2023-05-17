@@ -11,7 +11,7 @@ import type { Note } from '@prisma/client';
 import NoteTypes from '@/components/NoteTypes';
 import useUpdateNote from '@/lib/hooks/use-update-note';
 import { Button } from '@/components/ui/Button';
-import { cn, decodeHtml } from '@/lib/util';
+import { cn } from '@/lib/util';
 import { Input } from '@/components/ui/Input';
 import { formSchema, FormSchemaType } from '@/lib/formSchemas';
 
@@ -92,6 +92,10 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
         }
     };
 
+    const redirect = React.useCallback(async () => {
+        await router.push('/404');
+    }, []);
+
     React.useEffect(() => {
         if (router.isReady) {
             setParam(router.query.noteId as string);
@@ -99,9 +103,6 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
     }, [router.isReady, router.pathname, router?.query?.noteId]);
 
     React.useEffect(() => {
-        const redirect = async () => {
-            await router.push('/404');
-        };
         if (param && notes.length) {
             const note = notes.find((note) => note.id === param) || undefined;
             if (note) {
@@ -156,6 +157,8 @@ const NoteDetailPage: NextPageWithLayout<{ notes: Note[] }> = ({ notes }) => {
             }
         }
     }, [updatedContent]);
+
+    if (!param) return null;
 
     return (
         <>
