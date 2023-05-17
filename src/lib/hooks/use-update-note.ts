@@ -30,8 +30,8 @@ function useUpdateNote() {
     });
 
     const mutateUpdateNote = React.useCallback(
-        (variables: { name: string; content: string; category: string; starred: boolean; noteId: string }) => {
-            mutateAsync(variables);
+        async (variables: { name: string; content: string; category: string; starred: boolean; noteId: string }) => {
+            await mutateAsync(variables);
         },
         [mutateAsync]
     );

@@ -63,11 +63,8 @@ const Home: NextPageWithLayout<Props> = ({ notes, defaultTab }) => {
 
     const filterNotes = React.useCallback(
         (notes: Note[], type: 'all' | 'starred' | 'archived' | 'trash', isCategory = false) => {
-            console.log('type', type);
             const hasSearch = search.trim().length > 0;
-            console.log({ hasSearch });
             const hasFilter = filter.trim().length > 0;
-            console.log('filter', filter);
             let filteredNotes = notes;
 
             const hasSearchTerm = (note: Note) =>
@@ -269,5 +266,3 @@ export default Home;
 Home.getLayout = function getLayout(page) {
     return <AppLayout>{page}</AppLayout>;
 };
-
-Home.whyDidYouRender = true;

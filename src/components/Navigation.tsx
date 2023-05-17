@@ -11,7 +11,6 @@ import { Separator } from './ui/Separator';
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from './ui/Dialog';
 import { Note } from '@prisma/client';
 import { HIDDEN_MOBILE_CLASS } from '@/lib/constants';
-import { ReactFCWithWDYR } from '@/lib/interfaces';
 
 interface Props {
     notes: Note[];
@@ -19,7 +18,7 @@ interface Props {
     isLoading: boolean;
 }
 
-const Navigation: ReactFCWithWDYR<Props> = ({ notes, recentlyViewedNotes, isLoading }) => {
+const Navigation: React.FC<Props> = ({ notes, recentlyViewedNotes, isLoading }) => {
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
     const router = useRouter();
 
@@ -68,7 +67,5 @@ const Navigation: ReactFCWithWDYR<Props> = ({ notes, recentlyViewedNotes, isLoad
         </div>
     );
 };
-
-Navigation.whyDidYouRender = true;
 
 export default Navigation;

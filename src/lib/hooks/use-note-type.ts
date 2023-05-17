@@ -61,8 +61,8 @@ function useNoteType() {
     });
 
     const mutateNoteType = React.useCallback(
-        (variables: { type: 'starred' | 'archived' | 'trash'; noteId: string }) => {
-            mutateAsync(variables);
+        async (variables: { type: 'starred' | 'archived' | 'trash'; noteId: string }) => {
+            await mutateAsync(variables);
         },
         [mutateAsync]
     );

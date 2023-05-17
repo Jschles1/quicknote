@@ -7,13 +7,12 @@ import { api } from '@/utils/api';
 import { Note } from '@prisma/client';
 import useCreateNote from '@/lib/hooks/use-create-note';
 import useUpdateNote from '@/lib/hooks/use-update-note';
-import { ReactFCWithWDYR } from '@/lib/interfaces';
 
 interface AppLayoutProps {
     children: React.ReactElement;
 }
 
-const AppLayout: ReactFCWithWDYR<AppLayoutProps> = ({ children }) => {
+const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     const router = useRouter();
     const [recentlyViewedNotes, setRecentlyViewedNotes] = React.useState<Note[]>([]);
     const { data, isLoading: isGetAllLoading } = api.notes.getAll.useQuery('notes', {
@@ -49,7 +48,5 @@ const AppLayout: ReactFCWithWDYR<AppLayoutProps> = ({ children }) => {
         </main>
     );
 };
-
-AppLayout.whyDidYouRender = true;
 
 export default React.memo(AppLayout);

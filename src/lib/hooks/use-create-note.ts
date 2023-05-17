@@ -33,8 +33,8 @@ function useCreateNote() {
     });
 
     const mutateCreateNote = React.useCallback(
-        (variables: { name: string; content: string; category: string; starred: boolean }) => {
-            mutateAsync(variables);
+        async (variables: { name: string; content: string; category: string; starred: boolean }) => {
+            await mutateAsync(variables);
         },
         [mutateAsync]
     );

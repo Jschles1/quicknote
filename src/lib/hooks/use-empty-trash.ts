@@ -29,8 +29,8 @@ function useEmptyTrash() {
         },
     });
 
-    const mutateEmptyTrash = React.useCallback(() => {
-        mutateAsync();
+    const mutateEmptyTrash = React.useCallback(async () => {
+        await mutateAsync();
     }, [mutateAsync]);
 
     return { mutateEmptyTrash, isEmptyTrashLoading: isLoading };

@@ -6,7 +6,6 @@ import { cn, notesSortedByCategory } from '@/lib/util';
 import useNoteType from '@/lib/hooks/use-note-type';
 import { Skeleton } from './ui/Skeleton';
 import { HIDDEN_MOBILE_CLASS } from '@/lib/constants';
-import { ReactFCWithWDYR } from '@/lib/interfaces';
 
 const NavigationNotesSkeleton: React.FC<{ isDesktop?: boolean }> = ({ isDesktop }) => (
     <>
@@ -27,7 +26,7 @@ interface Props {
     isDesktop?: boolean;
 }
 
-const NavigationNotes: ReactFCWithWDYR<Props> = ({ notes, isLoading, isDesktop }) => {
+const NavigationNotes: React.FC<Props> = ({ notes, isLoading, isDesktop }) => {
     console.log('NavigationNotes render');
     const { mutateNoteType } = useNoteType();
 
@@ -74,7 +73,5 @@ const NavigationNotes: ReactFCWithWDYR<Props> = ({ notes, isLoading, isDesktop }
         </div>
     );
 };
-
-NavigationNotes.whyDidYouRender = true;
 
 export default React.memo(NavigationNotes);
