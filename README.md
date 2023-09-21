@@ -1,6 +1,6 @@
 # QuickNote
 
-QuickNote is a simple iOS Notes app clone I built to familiarize myself with the [T3 Stack](https://create.t3.gg/).
+QuickNote is a single page application I built to familiarize myself with the [T3 Stack](https://create.t3.gg/).
 
 Users can create, update and delete notes using a rich text editor. Notes can be flagged by the user to be starred, archived, or trash.
 
