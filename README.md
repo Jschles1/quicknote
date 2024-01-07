@@ -30,11 +30,9 @@ QuickNote currently only supports Google authentication for user sign up and log
 
 ## Post MVP TODO
 
--   Optimistic updates w/ TRPC
 -   Dark mode
 -   End to end and integration testing
 -   Editor updates
-    -   Image upload functionality
-    -   Performance improvements
+    -   Implement new editor in place of Quill
 -   Interactive tutorial for new users
 -   Add more authentication options
